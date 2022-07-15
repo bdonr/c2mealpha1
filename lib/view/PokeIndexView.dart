@@ -1,13 +1,19 @@
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
+import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
+import 'package:c2mealpha1/events/PageEvents.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../events/PokemonEvent.dart';
+
 class PokeIndexView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<PokemonBloc>(context).add(PokemonRequestEvent(0));
     return Scaffold(
       appBar: AppBar(
         title: Text('Pokedex'),
@@ -25,7 +31,9 @@ class PokeIndexView extends StatelessWidget {
               itemCount: state.list.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: ()=>BlocProvider.of<NavCubit>(context).showPokemonDetails(state.list[index].id),
+                  onTap: ()=>{BlocProvider.of<NavBloc>(context).add(DetailPage()),
+                  BlocProvider.of<PokemonDetailsCubit>(context).getPokemonDetails(state.list[index].id)
+                  },
                   child: Column(
                     children: [
                       Text(state.list[index].name),

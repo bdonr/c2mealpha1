@@ -21,5 +21,6 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         emit(PokemonLoadedError(e));
       }
     });
+
   }
 }

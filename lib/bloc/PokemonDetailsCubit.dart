@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PokemonDetailsCubit extends Cubit<PokemonDetails?>{
   PokemonDetailsCubit():super(null);
 
-  PokemonRepository _rep = PokemonRepository();
+  final PokemonRepository _rep = PokemonRepository();
 
   void clearPokemonDetails() => emit(null);
 
@@ -17,16 +17,16 @@ class PokemonDetailsCubit extends Cubit<PokemonDetails?>{
     if(responses[0]!=null && responses[1] != null) {
       final pokeinfo = responses[0] as PokemonInfoResponse;
       final species = responses[1] as PokemonSpeciesInfoResponse;
-      emit(PokemonDetails(
+      final x = PokemonDetails(
           pokeinfo.id,
           pokeinfo.name,
           pokeinfo.imageUrl,
           pokeinfo.types,
           pokeinfo.height,
           pokeinfo.weight,
-          species.description));
+          species.description);
+      print(x);
+      emit(x);
     }
-    return null;
-
   }
 }

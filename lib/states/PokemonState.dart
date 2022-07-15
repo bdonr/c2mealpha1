@@ -8,7 +8,6 @@ abstract class PokemonState extends Equatable{
 }
 
 class PokemonInitState extends PokemonState{
-  @override
   List<Object?> get props => [];
 }
 

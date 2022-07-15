@@ -1,21 +1,29 @@
+import 'package:c2mealpha1/events/PageEvents.dart';
+import 'package:c2mealpha1/states/PageStates.dart';
+import 'package:c2mealpha1/view/PokemonDetailsView.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'PokemonDetailsCubit.dart';
 
-class NavCubit extends Cubit<int?>{
+class NavBloc extends Bloc<PageEvents,PageStates>{
+  PokemonDetailsCubit pokemonDetailsCubit= PokemonDetailsCubit();
 
-  final PokemonDetailsCubit pokemonDetailsCubit;
+  NavBloc():super(InitState()){
+    on<StartPage>((event, emit) => emit(StartPageState()));
+    on<ViewPokemonListPage>((event,emit) => emit (ViewPokemonListPageState()));
+    on<DetailPage>((event,emit) => {
+      emit (DetailPageState())
+    });
 
-  NavCubit(this.pokemonDetailsCubit):super(null);
-
-
-  void showPokemonDetails(int id){
+  }
+  void showPokemonDetails(int id) async{
     pokemonDetailsCubit.getPokemonDetails(id);
-    emit(id);
+    await Future<void>.delayed(const Duration(seconds: 2));
+
   }
 
   void popToHome(){
-    emit(null);
+    emit(StartPageState());
   }
 }

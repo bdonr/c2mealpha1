@@ -16,6 +16,7 @@ class PokemonDetailsView extends StatelessWidget {
       backgroundColor: Color(0xFFF2F2F2),
       body: BlocBuilder<PokemonDetailsCubit, PokemonDetails?>(
         builder: (context, details) {
+          print("here"+details.toString());
           return details != null
               ? Center(
               child: Column(
@@ -57,7 +58,7 @@ class PokemonDetailsView extends StatelessWidget {
                 ],
               ))
               : Center(
-            child: CircularProgressIndicator(),
+            child: Text("leer"),
           );
         },
       ),
