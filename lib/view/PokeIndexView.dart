@@ -2,6 +2,7 @@ import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
 import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
 import 'package:c2mealpha1/events/PageEvents.dart';
+import 'package:c2mealpha1/navigation/AppNavigator.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,10 @@ class PokeIndexView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pokedex'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () =>  BlocProvider.of<NavBloc>(context).add(StartPage())
+        ),
       ),
       body: BlocBuilder<PokemonBloc, PokemonState>(
         builder: (context, state) {

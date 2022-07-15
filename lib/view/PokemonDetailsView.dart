@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/NavCubit.dart';
+import '../events/PageEvents.dart';
+
 class PokemonDetailsView extends StatelessWidget {
   const PokemonDetailsView({Key? key}) : super(key: key);
 
@@ -12,6 +15,10 @@ class PokemonDetailsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () =>  BlocProvider.of<NavBloc>(context).add(ViewPokemonListPage())
+        ),
       ),
       backgroundColor: Color(0xFFF2F2F2),
       body: BlocBuilder<PokemonDetailsCubit, PokemonDetails?>(
