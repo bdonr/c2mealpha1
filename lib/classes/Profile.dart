@@ -14,6 +14,7 @@ class Profile{
   }
 
 
+  List<Profile> get follower => _follower;
 
   set follows(List<Profile> value) {
     _follows = value;
@@ -24,4 +25,7 @@ class Profile{
     _follower = value;
   }
 
+  List<Profile> get follows => _follows;
+
+  List<Profile> get near => _near;
 }
