@@ -24,6 +24,12 @@ class PokemonLoadedSucc extends PokemonState{
   List<Object?> get props => [this.list,this.canLoadNextPage];
 }
 
+class PokemonLoadedDone extends PokemonState{
+  PokemonLoadedDone();
+  List<Object?> get props => [];
+}
+
+
 class PokemonLoadedError extends PokemonState{
   final Object err;
 

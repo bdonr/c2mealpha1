@@ -11,56 +11,61 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../events/PokemonEvent.dart';
 
 class PokeIndexView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PokemonBloc>(context).add(PokemonRequestEvent(0));
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pokedex'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () =>  BlocProvider.of<NavBloc>(context).add(StartPage())
+      body: CustomScrollView(slivers: [
+        SliverAppBar(
+          title: Text("List"),
+          leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () =>  BlocProvider.of<NavBloc>(context).add(StartPage()))
         ),
-      ),
-      body: BlocBuilder<PokemonBloc, PokemonState>(
-        builder: (context, state) {
-          if (state is PokemonLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is PokemonLoadedSucc) {
-            return GridView.builder(
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-              itemCount: state.list.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: ()=>{BlocProvider.of<NavBloc>(context).add(DetailPage()),
-                  BlocProvider.of<PokemonDetailsCubit>(context).getPokemonDetails(state.list[index].id)
-                  },
-                  child: Column(
-                    children: [
-                      Text(state.list[index].name),
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.deepPurple,
-                        backgroundImage: NetworkImage(state.list[index].imageUrl),
-                      ),
-                    ],
-                  ),
+        SliverToBoxAdapter(
+          child: BlocBuilder<PokemonBloc, PokemonState>(
+            builder: (context, state) {
+              if (state is PokemonLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            );
-          } else if (state is PokemonLoadedError) {
-            return Center(
-              child: Text(state.err.toString()),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+              } else if (state is PokemonLoadedSucc) {
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4),
+                  itemCount: state.list.length,
+                    shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => {
+                        BlocProvider.of<NavBloc>(context).add(DetailPage()),
+                        BlocProvider.of<PokemonDetailsCubit>(context)
+                            .getPokemonDetails(state.list[index].id)
+                      },
+                      child: Column(
+                        children: [
+                          Text(state.list[index].name),
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.deepPurple,
+                            backgroundImage:
+                                NetworkImage(state.list[index].imageUrl),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              } else if (state is PokemonLoadedError) {
+                return Center(
+                  child: Text(state.err.toString()),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+        ),
+      ]),
     );
   }
 }

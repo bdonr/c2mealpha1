@@ -19,21 +19,31 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("asdasd")),
-        body: Container(
-          child: Column(
+    return CustomScrollView(slivers: [
+      const SliverAppBar(
+        title: Text("Welcome to c2me"),
+      ),
+      SliverToBoxAdapter(
+          child: Container(
+        height: 100,
+        child: Scaffold(
+          body: Column(
             children: [
+              const Text("jo"),
               IconButton(
-                icon: Icon(Icons.send),
-                onPressed: (){
-                  BlocProvider.of<NavBloc>(context).add(ViewPokemonListPage());
-
-                },
-              ),
-              Text("hi"),
+                  onPressed: () async => {
+                        BlocProvider.of<NavBloc>(context)
+                            .add(ViewPokemonListPage()),
+                        if(BlocProvider.of<PokemonBloc>(context).state is  PokemonInitState){
+                                    BlocProvider.of<PokemonBloc>(context)
+                                        .add(PokemonRequestEvent(0))
+                                }
+                      },
+                  icon: const Icon(Icons.add)),
             ],
           ),
-        ));
+        ),
+      ))
+    ]);
   }
 }
