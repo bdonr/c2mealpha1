@@ -1,7 +1,9 @@
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
 import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
+import 'package:c2mealpha1/bloc/ProfilCubit.dart';
 import 'package:c2mealpha1/events/PokemonEvent.dart';
+import 'package:c2mealpha1/events/ProfileEvent.dart';
 import 'package:c2mealpha1/navigation/AppNavigator.dart';
 import 'package:c2mealpha1/states/PageStates.dart';
 import 'package:c2mealpha1/view/PokeIndexView.dart';
@@ -25,7 +27,8 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(providers: [
           BlocProvider(create: (context) => NavBloc()..add(StartPage())),
         BlocProvider(create: (context)=> PokemonBloc()),
-        BlocProvider(create: (context)=> PokemonDetailsCubit())
+        BlocProvider(create: (context)=> PokemonDetailsCubit()),
+        BlocProvider(create: (context)=> ProfilCubit()..add(ProfileLoad()))
       ], child: AppNavigator()),
     );
   }
