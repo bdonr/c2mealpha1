@@ -1,3 +1,5 @@
+import 'package:c2mealpha1/classes/Social.dart';
+import 'package:c2mealpha1/classes/SocialMedia.dart';
 import 'package:c2mealpha1/events/ProfileEvent.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,6 +52,7 @@ class ProfilCubit extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileLoad>((event, emit) => {
           users[0].near = [users[1], users[2], users[4], users[7]],
           users[0].follower = [users[1], users[2]],
+          users[0].socials = [new Social(SocialMedia.BLIZZARD, "uwuwuwwuwu"),new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu")],
           emit(ProfileLoadedState(users[0]))
         });
   }

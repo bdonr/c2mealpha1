@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context)=> PokemonBloc()),
         BlocProvider(create: (context)=> PokemonDetailsCubit()),
         BlocProvider(create: (context)=> ProfilCubit()..add(ProfileLoad()))
-      ], child: AppNavigator()),
+      ], child: SafeArea(child: AppNavigator())),
     );
   }
 }

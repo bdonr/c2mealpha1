@@ -1,3 +1,6 @@
+import 'Social.dart';
+import 'SocialMedia.dart';
+
 class Profile{
   final String name;
   final String url;
@@ -5,6 +8,8 @@ class Profile{
   late final List<Profile> _follower;
   late List<Profile> _follows;
   late final List<Profile> _near;
+  late final List<Social> _socials;
+
 
   Profile(this.name, this.url, this.id);
 
@@ -13,6 +18,12 @@ class Profile{
     _near = value;
   }
 
+
+  List<Social> get socials => _socials;
+
+  set socials(List<Social> value) {
+    _socials = value;
+  }
 
   List<Profile> get follower => _follower;
 

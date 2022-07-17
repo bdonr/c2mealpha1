@@ -1,3 +1,4 @@
+import 'package:c2mealpha1/config/SocialConfig.dart';
 import 'package:c2mealpha1/events/ProfileEvent.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,35 +58,27 @@ class _TopViewState extends State<TopView> {
           ),
           child: Stack(
             children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  height: 250,
-                  width: 370,
-                  child: BlocBuilder<ProfilCubit, ProfileState>(
-                      builder: (context, state) {
-                    if (state is ProfileLoadedState) {
-                      return ClipOval(
-                        child: FadeInImage.assetNetwork(
-                          placeholder: state.profile.url,
-                          image: state.profile.url,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                      );
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  }),
-                ),
-              ),
+              ProfileImageHeader(),
               Padding(
                 padding: const EdgeInsets.only(top: 200.0),
                 child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white.withOpacity(0.7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26.withOpacity(0.5),
+                        spreadRadius: -10,
+                        blurRadius: 9,
+                        offset: Offset(0, -5), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  height: 200,
+                  width: double.infinity,
                   child: Row(
-                    children: [
-                      const Padding(
+                    children: const [
+                      Padding(
                         padding: EdgeInsets.only(left: 65, bottom: 120),
                         child: FaIcon(
                           FontAwesomeIcons.solidHeart,
@@ -114,20 +107,6 @@ class _TopViewState extends State<TopView> {
                       )
                     ],
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.white.withOpacity(0.7),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26.withOpacity(0.5),
-                        spreadRadius: -10,
-                        blurRadius: 9,
-                        offset: Offset(0, -5), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  height: 200,
-                  width: double.infinity,
                 ),
               ),
               Padding(
@@ -145,8 +124,8 @@ class _TopViewState extends State<TopView> {
                           fontSize: 20),
                     )),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 270),
+              const Padding(
+                padding: EdgeInsets.only(top: 270),
                 child: Text(
                   "My Socials",
                   style: TextStyle(
@@ -157,10 +136,76 @@ class _TopViewState extends State<TopView> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 300.0),
-                child: Text("asdasd"),
+                child: BlocBuilder<ProfilCubit, ProfileState>(
+                    builder: (context, state) {
+                  if (state is ProfileLoadedState) {
+                    return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.profile.socials.length,
+                        itemBuilder: (context, index) {
+                          List<String> x = state
+                              .profile.socials[index].socialMedia
+                              .toString()
+                              .toLowerCase()
+                              .split(".");
+                          String j = x[1];
+
+                          return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25.0),
+                                child: Container(
+                                  color: SocialConfig.configColor(state.profile.socials[index]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 34,top: 30),
+                                    child: SocialConfig.configIcon(state.profile.socials[index]),
+                                  ),
+                                  width: 90,
+                                  height: 100,
+                                ),
+                              )
+
+                          );
+                        });
+                  }
+                  return CircularProgressIndicator();
+                }),
               )
             ],
           ),
         ));
+  }
+}
+
+class ProfileImageHeader extends StatelessWidget {
+  const ProfileImageHeader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        height: 250,
+        width: 370,
+        child:
+            BlocBuilder<ProfilCubit, ProfileState>(builder: (context, state) {
+          if (state is ProfileLoadedState) {
+            return ClipOval(
+              child: FadeInImage.assetNetwork(
+                placeholder: state.profile.url,
+                image: state.profile.url,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        }),
+      ),
+    );
   }
 }
