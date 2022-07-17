@@ -52,7 +52,13 @@ class ProfilCubit extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileLoad>((event, emit) => {
           users[0].near = [users[1], users[2], users[4], users[7]],
           users[0].follower = [users[1], users[2]],
-          users[0].socials = [new Social(SocialMedia.BLIZZARD, "uwuwuwwuwu"),new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu")],
+          users[0].socials = [
+            new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+            new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+            new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+            new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+            new Social(SocialMedia.XING, "uwuwuwwuwu"),
+          ],
           emit(ProfileLoadedState(users[0]))
         });
   }

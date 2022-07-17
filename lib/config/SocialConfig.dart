@@ -49,6 +49,9 @@ class SocialConfig {
     if (x.socialMedia == SocialMedia.PINTEREST) {
       return FaIcon(FontAwesomeIcons.pinterest, color: Colors.white);
     }
+    if (x.socialMedia == SocialMedia.XING) {
+      return FaIcon(FontAwesomeIcons.xing, color: Colors.white);
+    }
     return FaIcon(FontAwesomeIcons.hourglassEmpty, color: Colors.white);
   }
 
