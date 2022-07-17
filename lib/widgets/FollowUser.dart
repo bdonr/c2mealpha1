@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/ProfilCubit.dart';
 import '../states/ProfileState.dart';
-import '../view/AvatarView.dart';
+import 'AvatarView.dart';
 
 class FollowUser extends StatefulWidget {
   const FollowUser({Key? key}) : super(key: key);

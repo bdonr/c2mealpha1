@@ -6,7 +6,7 @@ import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 import '../states/ProfileState.dart';
 import '../states/ProfileState.dart';
-import '../view/AvatarView.dart';
+import 'AvatarView.dart';
 
 class UserListView extends StatefulWidget {
   const UserListView({

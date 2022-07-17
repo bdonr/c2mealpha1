@@ -3,7 +3,7 @@ import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
 import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
-import 'package:c2mealpha1/view/AvatarView.dart';
+import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:c2mealpha1/widgets/FollowUser.dart';
 import 'package:c2mealpha1/widgets/NearUser.dart';
 import 'package:c2mealpha1/widgets/TopView.dart';
