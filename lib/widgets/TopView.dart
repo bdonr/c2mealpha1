@@ -26,30 +26,10 @@ class _TopViewState extends State<TopView> {
         centerTitle: false,
         floating: true,
         actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: const FaIcon(FontAwesomeIcons.house),
-            color: Color(0xD2D0D0CE),
-            iconSize: 20,
-          ),
-          IconButton(
-            onPressed: () => {},
-            icon: const FaIcon(FontAwesomeIcons.message),
-            color: Color(0xD2D0D0CE),
-            iconSize: 20,
-          ),
-          IconButton(
-            onPressed: () => {},
-            icon: const FaIcon(FontAwesomeIcons.bell),
-            color: Color(0xD2D0D0CE),
-            iconSize: 20,
-          ),
-          IconButton(
-            onPressed: () => {},
-            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
-            color: Color(0xD2D0D0CE),
-            iconSize: 20,
-          ),
+          MenuButton((){},FaIcon(FontAwesomeIcons.house)),
+          MenuButton((){},FaIcon(FontAwesomeIcons.message)),
+          MenuButton((){},FaIcon(FontAwesomeIcons.bell)),
+          MenuButton((){},FaIcon(FontAwesomeIcons.magnifyingGlass)),
         ],
         flexibleSpace: Container(
           width: 100,
@@ -177,6 +157,24 @@ class _TopViewState extends State<TopView> {
   }
 }
 
+class MenuButton extends StatelessWidget {
+  const MenuButton(this.callback,this.icon,{
+    Key? key,
+  }) : super(key: key);
+  final VoidCallback callback;
+  final FaIcon icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: callback,
+      icon: icon,
+      color: Color(0xD2D0D0CE),
+      iconSize: 20,
+    );
+  }
+}
+
 class ProfileImageHeader extends StatelessWidget {
   const ProfileImageHeader({
     Key? key,
@@ -188,11 +186,11 @@ class ProfileImageHeader extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Container(
         height: 250,
-        width: 370,
+        width: 700,
         child:
             BlocBuilder<ProfilCubit, ProfileState>(builder: (context, state) {
           if (state is ProfileLoadedState) {
-            return ClipOval(
+            return ClipRRect(
               child: FadeInImage.assetNetwork(
                 placeholder: state.profile.url,
                 image: state.profile.url,
