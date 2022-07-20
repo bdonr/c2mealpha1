@@ -1,4 +1,6 @@
+import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/config/SocialConfig.dart';
+import 'package:c2mealpha1/events/PageEvents.dart';
 import 'package:c2mealpha1/events/ProfileEvent.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,10 +28,10 @@ class _TopViewState extends State<TopView> {
         centerTitle: false,
         floating: true,
         actions: [
-          MenuButton((){},FaIcon(FontAwesomeIcons.house)),
-          MenuButton((){},FaIcon(FontAwesomeIcons.message)),
-          MenuButton((){},FaIcon(FontAwesomeIcons.bell)),
-          MenuButton((){},FaIcon(FontAwesomeIcons.magnifyingGlass)),
+          MenuButton((){BlocProvider.of<NavBloc>(context)..add(StartPage());},FaIcon(FontAwesomeIcons.house)),
+          MenuButton((){BlocProvider.of<NavBloc>(context)..add(MessagePage());},FaIcon(FontAwesomeIcons.message)),
+          MenuButton((){BlocProvider.of<NavBloc>(context)..add(NotificationPage());},FaIcon(FontAwesomeIcons.bell)),
+          MenuButton((){BlocProvider.of<NavBloc>(context)..add(SearchPage());},FaIcon(FontAwesomeIcons.magnifyingGlass)),
         ],
         flexibleSpace: Container(
           width: 100,

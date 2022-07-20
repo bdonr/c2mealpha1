@@ -15,7 +15,21 @@ class InitState extends PageStates{
 class StartPageState extends PageStates{
 
 }
+class MessagePageState extends PageStates {
 
+}
+class FollowerPageState extends PageStates {
+
+}
+
+
+class SearchPageState extends PageStates {
+
+}
+
+class NotificationPageState extends PageStates {
+
+}
 class DetailPageState extends PageStates{
 
   DetailPageState(){

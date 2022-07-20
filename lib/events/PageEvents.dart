@@ -13,6 +13,24 @@ class StartPage extends PageEvents{
 
 }
 
+class MessagePage extends PageEvents{
+
+}
+
+class FollowerPage extends PageEvents{
+
+}
+
+
+class NotificationPage extends PageEvents{
+
+}
+
+
+class SearchPage extends PageEvents{
+
+}
+
 class DetailPage extends PageEvents{
   DetailPage(){
   }

@@ -11,6 +11,11 @@ class NavBloc extends Bloc<PageEvents,PageStates>{
 
   NavBloc():super(InitState()){
     on<StartPage>((event, emit) => emit(StartPageState()));
+    on<MessagePage>((event, emit) => emit(MessagePageState()));
+    on<FollowerPage>((event, emit) => emit(FollowerPageState()));
+    on<NotificationPage>((event, emit) => emit(NotificationPageState()));
+    on<SearchPage>((event, emit) => emit(SearchPageState()));
+
     on<ViewPokemonListPage>((event,emit) => emit (ViewPokemonListPageState()));
     on<DetailPage>((event,emit) => {
       emit (DetailPageState())
