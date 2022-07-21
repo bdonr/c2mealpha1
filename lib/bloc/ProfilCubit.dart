@@ -7,20 +7,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../classes/Profile.dart';
 import '../states/ProfileState.dart';
 
-class ProfilCubit extends Bloc<ProfileEvent, ProfileState> {
+class ProfilCubit extends Cubit<Profile?> {
+
+
   final PersonRepository personRepository= PersonRepository();
-  ProfilCubit() : super(ProfileInitState()) {
-
-    on<ProfileLoad>((event, emit) => {
-
-          personRepository.users[0].socials = [
-            new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
-            new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
-            new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
-            new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
-            new Social(SocialMedia.XING, "uwuwuwwuwu"),
-          ],
-          emit(ProfileLoadedState(personRepository.users[0]))
-        });
+  ProfilCubit() : super(null) {
+    personRepository.users[0].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
   }
+
+  void getProfile(int id) async{
+    print(id);
+    print(personRepository.users[id]);
+    emit(personRepository.users[id]);
+ }
 }
+

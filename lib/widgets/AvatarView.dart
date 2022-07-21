@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 
 class AvatarView extends StatefulWidget {
@@ -54,7 +56,8 @@ class _AvatarViewState extends State<AvatarView> {
               clipBehavior: Clip.hardEdge,
               color: Colors.transparent,
               child: InkWell(onTap: (){
-
+                  Navigator.pushNamed(context, '/profileview');
+                  BlocProvider.of<ProfilCubit>(context).getProfile(widget.profile!.id);
               },),
             ),
           ),

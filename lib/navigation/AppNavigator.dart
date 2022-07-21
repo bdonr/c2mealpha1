@@ -16,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/PokemonDetailsCubit.dart';
 import '../states/PageStates.dart';
 import '../view/MessageView.dart';
+import '../view/ProfileView.dart';
 
 class AppNavigator extends StatelessWidget {
   @override
@@ -33,6 +34,7 @@ class AppNavigator extends StatelessWidget {
         '/notifications':(context)=>const NotificationView(),
         '/home' : (context)=> const StartPage(),
         '/search': (context)=> const SearchView(),
+        '/profileview': (context)=> const ProfileView(),
 
       },
     );

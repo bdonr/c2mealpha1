@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../bloc/ProfilCubit.dart';
+import '../classes/Profile.dart';
 
 class TopView extends StatefulWidget {
   const TopView({Key? key}) : super(key: key);
@@ -27,11 +28,25 @@ class _TopViewState extends State<TopView> {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         centerTitle: false,
         floating: true,
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () async => {
+                  Navigator.of(context).pop(context),
+                  BlocProvider.of<ProfilCubit>(context).getProfile(0)
+                }),
         actions: [
-          MenuButton((){Navigator.pushNamed(context, '/home');},FaIcon(FontAwesomeIcons.house)),
-          MenuButton((){Navigator.pushNamed(context, '/messages');},FaIcon(FontAwesomeIcons.message)),
-          MenuButton((){Navigator.pushNamed(context, '/notifications');},FaIcon(FontAwesomeIcons.bell)),
-          MenuButton((){Navigator.pushNamed(context, '/search');},FaIcon(FontAwesomeIcons.magnifyingGlass)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/home');
+          }, FaIcon(FontAwesomeIcons.house)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/messages');
+          }, FaIcon(FontAwesomeIcons.message)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/notifications');
+          }, FaIcon(FontAwesomeIcons.bell)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/search');
+          }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
         ],
         flexibleSpace: Container(
           width: 100,
@@ -118,15 +133,14 @@ class _TopViewState extends State<TopView> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 300.0),
-                child: BlocBuilder<ProfilCubit, ProfileState>(
-                    builder: (context, state) {
-                  if (state is ProfileLoadedState) {
+                child: BlocBuilder<ProfilCubit, Profile?>(
+                    builder: (context, details) {
+                  if (details != null) {
                     return ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: state.profile.socials.length,
+                        itemCount: details.socials.length,
                         itemBuilder: (context, index) {
-                          List<String> x = state
-                              .profile.socials[index].socialMedia
+                          List<String> x = details.socials[index].socialMedia
                               .toString()
                               .toLowerCase()
                               .split(".");
@@ -137,17 +151,18 @@ class _TopViewState extends State<TopView> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(25.0),
                                 child: Container(
-                                  color: SocialConfig.configColor(state.profile.socials[index]),
+                                  color: SocialConfig.configColor(
+                                      details.socials[index]),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 34,top: 30),
-                                    child: SocialConfig.configIcon(state.profile.socials[index]),
+                                    padding: const EdgeInsets.only(
+                                        left: 34, top: 30),
+                                    child: SocialConfig.configIcon(
+                                        details.socials[index]),
                                   ),
                                   width: 90,
                                   height: 100,
                                 ),
-                              )
-
-                          );
+                              ));
                         });
                   }
                   return CircularProgressIndicator();
@@ -160,7 +175,9 @@ class _TopViewState extends State<TopView> {
 }
 
 class MenuButton extends StatelessWidget {
-  const MenuButton(this.callback,this.icon,{
+  const MenuButton(
+    this.callback,
+    this.icon, {
     Key? key,
   }) : super(key: key);
   final VoidCallback callback;
@@ -189,13 +206,12 @@ class ProfileImageHeader extends StatelessWidget {
       child: Container(
         height: 250,
         width: 700,
-        child:
-            BlocBuilder<ProfilCubit, ProfileState>(builder: (context, state) {
-          if (state is ProfileLoadedState) {
+        child: BlocBuilder<ProfilCubit, Profile?>(builder: (context, details) {
+          if (details != null) {
             return ClipRRect(
               child: FadeInImage.assetNetwork(
-                placeholder: state.profile.url,
-                image: state.profile.url,
+                placeholder: details.url,
+                image: details.url,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: double.infinity,

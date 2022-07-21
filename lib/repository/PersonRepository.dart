@@ -51,12 +51,15 @@ class PersonRepository {
   }
 
   static Stream<List<Profile>> test(int k, int min) async* {
+    var intValue = Random().nextInt(_users.length);
     while (near.length < min) {
       await Future.delayed(const Duration(seconds: 2));
-      var intValue = Random().nextInt(_users.length);
       if (intValue != k) {
         near.add(_users[intValue]);
         yield near;
+      }
+      else{
+        intValue = Random().nextInt(_users.length);
       }
     }
   }

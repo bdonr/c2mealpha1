@@ -40,7 +40,7 @@ class _FollowUserState extends State<FollowUser> {
               const Expanded(
                 flex: 2,
                 child: Text(
-                  "near",
+                  "follower",
                 ),
               ),
               Expanded(
@@ -48,16 +48,9 @@ class _FollowUserState extends State<FollowUser> {
                 child: Container(
                   height: 100,
                   color: Colors.white,
-                  child: BlocBuilder<ProfilCubit, ProfileState>(
-                      builder: (context, state) {
-                    if (state is ProfileLoadedState) {
-                      return BlocBuilder<FollowCubit, List<Profile>>(
-                          builder: (context, details) {
-                            return UserListView(list: details);
-                        });
-                    } else {
-                      return CircularProgressIndicator();
-                    }
+                  child: BlocBuilder<FollowCubit, List<Profile>>(
+                      builder: (context, details) {
+                    return UserListView(list: details);
                   }),
                 ),
               ),

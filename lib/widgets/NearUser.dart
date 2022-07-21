@@ -36,24 +36,10 @@ class _NearUserState extends State<NearUser> {
                 child: Container(
                   height: 100,
                   color: Colors.white,
-                  child: BlocBuilder<ProfilCubit, ProfileState>(
-                      builder: (context, state) {
-                        if (state is ProfileLoadedState) {
-                          return BlocBuilder<ProfilCubit, ProfileState>(
-                              builder: (context, state) {
-                                if (state is ProfileLoadedState) {
-                                  return BlocBuilder<NearCubit, List<Profile>>(
-                                      builder: (context, details) {
-                                        return UserListView(list: details);
-                                      });
-                                } else {
-                                  return CircularProgressIndicator();
-                                }
-                              });
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      }),
+                  child: BlocBuilder<NearCubit, List<Profile>>(
+                      builder: (context, details) {
+                    return UserListView(list: details);
+                  }),
                 ),
               ),
             ],
