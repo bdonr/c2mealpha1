@@ -28,10 +28,10 @@ class _TopViewState extends State<TopView> {
         centerTitle: false,
         floating: true,
         actions: [
-          MenuButton((){BlocProvider.of<NavBloc>(context)..add(StartPage());},FaIcon(FontAwesomeIcons.house)),
-          MenuButton((){BlocProvider.of<NavBloc>(context)..add(MessagePage());},FaIcon(FontAwesomeIcons.message)),
-          MenuButton((){BlocProvider.of<NavBloc>(context)..add(NotificationPage());},FaIcon(FontAwesomeIcons.bell)),
-          MenuButton((){BlocProvider.of<NavBloc>(context)..add(SearchPage());},FaIcon(FontAwesomeIcons.magnifyingGlass)),
+          MenuButton((){Navigator.pushNamed(context, '/home');},FaIcon(FontAwesomeIcons.house)),
+          MenuButton((){Navigator.pushNamed(context, '/messages');},FaIcon(FontAwesomeIcons.message)),
+          MenuButton((){Navigator.pushNamed(context, '/notifications');},FaIcon(FontAwesomeIcons.bell)),
+          MenuButton((){Navigator.pushNamed(context, '/search');},FaIcon(FontAwesomeIcons.magnifyingGlass)),
         ],
         flexibleSpace: Container(
           width: 100,

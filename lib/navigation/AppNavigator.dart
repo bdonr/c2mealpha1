@@ -20,31 +20,21 @@ import '../view/MessageView.dart';
 class AppNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavBloc, PageStates?>(builder: (context, state) {
-      return Navigator(
-          pages: [
-            if (state == InitState() || state == StartPageState())
-              const MaterialPage(child: StartPage()),
-            if (state == ViewPokemonListPageState())
-              MaterialPage(child: PokeIndexView()),
-            if (state == DetailPageState())
-              MaterialPage(child: PokemonDetailsView()),
-            if (state == MessagePageState())
-              MaterialPage(child: MessageView()),
-            if (state == FollowerPageState())
-              MaterialPage(child: FollowerView()),
-            if (state == NotificationPageState())
-              MaterialPage(child: NotificationView()),
-            if (state == SearchPageState())
-              MaterialPage(child: SearchView()),
-          ],
+    return MaterialApp(
+      title: 'Named Routes Demo',
+      // Start the app with the "/" named route. In this case, the app starts
+      // on the FirstScreen widget.
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const StartPage(),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/messages': (context) => const MessageView(),
+        '/notifications':(context)=>const NotificationView(),
+        '/home' : (context)=> const StartPage(),
+        '/search': (context)=> const SearchView(),
 
-
-          onPopPage: (route, result) {
-            BlocProvider.of<NavBloc>(context).popToHome();
-            print(result+" ");
-            return route.didPop(result);
-          });
-    });
+      },
+    );
   }
 }

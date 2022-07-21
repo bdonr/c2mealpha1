@@ -27,7 +27,7 @@ class _MessageViewState extends State<MessageView> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () async => {
-                Navigator.of(context, rootNavigator: true).pop(context)}
+                Navigator.of(context).pop(context)}
             ),
             flexibleSpace: Container(child: Text("Message")))]);
   }

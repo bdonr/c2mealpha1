@@ -27,7 +27,7 @@ class _FollowerViewState extends State<FollowerView> {
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () async => {
-                BlocProvider.of<NavBloc>(context)..add(StartPage())
+                Navigator.of(context).pop()
             }
             ),
             flexibleSpace: Container(child: Text("Follower")))]);

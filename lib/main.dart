@@ -27,9 +27,6 @@ class MyApp extends StatelessWidget {
       theme: Theme.of(context)
           .copyWith(primaryColor: Colors.red, accentColor: Colors.redAccent),
       home: MultiBlocProvider(providers: [
-          BlocProvider(create: (context) => NavBloc()..add(StartPage())),
-        BlocProvider(create: (context)=> PokemonBloc()),
-        BlocProvider(create: (context)=> PokemonDetailsCubit()),
         BlocProvider(create: (context)=> ProfilCubit()..add(ProfileLoad())),
         BlocProvider(create: (context)=> NearCubit()..get()),
         BlocProvider(create: (context)=> FollowCubit()..get()),
