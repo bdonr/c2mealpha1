@@ -1,3 +1,4 @@
+import 'package:c2mealpha1/bloc/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
 import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
@@ -11,6 +12,7 @@ import 'package:c2mealpha1/view/PokemonDetailsView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/FollowCubit.dart';
 import 'events/PageEvents.dart';
 
 void main() {
@@ -28,7 +30,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => NavBloc()..add(StartPage())),
         BlocProvider(create: (context)=> PokemonBloc()),
         BlocProvider(create: (context)=> PokemonDetailsCubit()),
-        BlocProvider(create: (context)=> ProfilCubit()..add(ProfileLoad()))
+        BlocProvider(create: (context)=> ProfilCubit()..add(ProfileLoad())),
+        BlocProvider(create: (context)=> NearCubit()..get()),
+        BlocProvider(create: (context)=> FollowCubit()..get()),
       ], child: SafeArea(child: AppNavigator())),
     );
   }

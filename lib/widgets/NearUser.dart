@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/NearCubit.dart';
 import '../bloc/ProfilCubit.dart';
+import '../classes/Profile.dart';
 import '../states/ProfileState.dart';
 import 'AvatarView.dart';
 
@@ -37,7 +39,17 @@ class _NearUserState extends State<NearUser> {
                   child: BlocBuilder<ProfilCubit, ProfileState>(
                       builder: (context, state) {
                         if (state is ProfileLoadedState) {
-                          return UserListView(list: state.profile.near);
+                          return BlocBuilder<ProfilCubit, ProfileState>(
+                              builder: (context, state) {
+                                if (state is ProfileLoadedState) {
+                                  return BlocBuilder<NearCubit, List<Profile>>(
+                                      builder: (context, details) {
+                                        return UserListView(list: details);
+                                      });
+                                } else {
+                                  return CircularProgressIndicator();
+                                }
+                              });
                         } else {
                           return CircularProgressIndicator();
                         }
