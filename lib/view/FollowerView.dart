@@ -1,3 +1,4 @@
+import 'package:c2mealpha1/navigation/AppNavigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +27,8 @@ class _FollowerViewState extends State<FollowerView> {
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () async => {
-                  BlocProvider.of<NavBloc>(context)..add(StartPage())}
+                BlocProvider.of<NavBloc>(context)..add(StartPage())
+            }
             ),
             flexibleSpace: Container(child: Text("Follower")))]);
   }

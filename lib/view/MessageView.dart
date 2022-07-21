@@ -27,7 +27,7 @@ class _MessageViewState extends State<MessageView> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () async => {
-                BlocProvider.of<NavBloc>(context)..add(StartPage())}
+                Navigator.of(context, rootNavigator: true).pop(context)}
             ),
             flexibleSpace: Container(child: Text("Message")))]);
   }

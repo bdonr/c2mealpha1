@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'PokemonDetailsCubit.dart';
 
-class NavBloc extends Bloc<PageEvents,PageStates>{
+class NavBloc extends Bloc<PageEvents,PageStates?>{
   PokemonDetailsCubit pokemonDetailsCubit= PokemonDetailsCubit();
 
   NavBloc():super(InitState()){
@@ -15,7 +15,7 @@ class NavBloc extends Bloc<PageEvents,PageStates>{
     on<FollowerPage>((event, emit) => emit(FollowerPageState()));
     on<NotificationPage>((event, emit) => emit(NotificationPageState()));
     on<SearchPage>((event, emit) => emit(SearchPageState()));
-
+    on<PopPage>((event, emit) => emit(PopState()));
     on<ViewPokemonListPage>((event,emit) => emit (ViewPokemonListPageState()));
     on<DetailPage>((event,emit) => {
       emit (DetailPageState())
@@ -28,7 +28,9 @@ class NavBloc extends Bloc<PageEvents,PageStates>{
 
   }
 
+
+
   void popToHome(){
-    emit(StartPageState());
+    emit(InitState());
   }
 }

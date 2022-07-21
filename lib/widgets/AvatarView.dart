@@ -10,7 +10,7 @@ class AvatarView extends StatefulWidget {
   const AvatarView(this.avatarsize,this.profile,
       {super.key});
 
-  final Profile profile;
+  final Profile? profile;
   final double avatarsize;
 
   @override
@@ -48,7 +48,7 @@ class _AvatarViewState extends State<AvatarView> {
           CircleAvatar(
             radius: widget.avatarsize,
             backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(widget.profile.url),
+            backgroundImage: widget.profile!=null ?NetworkImage(widget.profile!.url):null,
             child: Material(
               shape: CircleBorder(),
               clipBehavior: Clip.hardEdge,

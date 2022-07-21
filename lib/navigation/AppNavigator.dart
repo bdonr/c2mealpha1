@@ -20,8 +20,7 @@ import '../view/MessageView.dart';
 class AppNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavBloc, PageStates>(builder: (context, state) {
-      print(state);
+    return BlocBuilder<NavBloc, PageStates?>(builder: (context, state) {
       return Navigator(
           pages: [
             if (state == InitState() || state == StartPageState())
@@ -38,9 +37,12 @@ class AppNavigator extends StatelessWidget {
               MaterialPage(child: NotificationView()),
             if (state == SearchPageState())
               MaterialPage(child: SearchView()),
-
           ],
+
+
           onPopPage: (route, result) {
+            BlocProvider.of<NavBloc>(context).popToHome();
+            print(result+" ");
             return route.didPop(result);
           });
     });

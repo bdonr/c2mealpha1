@@ -25,7 +25,10 @@ class _SearchViewState extends State<SearchView> {
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () async => {
-                  BlocProvider.of<NavBloc>(context)..add(StartPage())}
+
+                  Navigator.of(context).pop(context)
+                  // BlocProvider.of<NavBloc>(context)..add(PopPage())
+                }
             ),
             flexibleSpace: Container(child: Text("Search")))]);
   }

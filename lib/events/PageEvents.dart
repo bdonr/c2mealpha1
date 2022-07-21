@@ -20,7 +20,9 @@ class MessagePage extends PageEvents{
 class FollowerPage extends PageEvents{
 
 }
+class PopPage extends PageEvents {
 
+}
 
 class NotificationPage extends PageEvents{
 

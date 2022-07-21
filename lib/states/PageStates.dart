@@ -27,6 +27,11 @@ class SearchPageState extends PageStates {
 
 }
 
+class PopState extends PageStates {
+
+}
+
+
 class NotificationPageState extends PageStates {
 
 }
