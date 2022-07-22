@@ -12,7 +12,7 @@ class NearCubit extends Cubit<List<Profile>> {
   NearCubit():super([]);
 
   void get() async{
-    c = PersonRepository.test(2, 29).listen((event) {
+    c = PersonRepository.test(0, 29).listen((event) {
         emit (event.map((e) => e).toList());
     });
   }

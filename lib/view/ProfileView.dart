@@ -1,5 +1,12 @@
+import 'package:c2mealpha1/view/FollowerView.dart';
+import 'package:c2mealpha1/widgets/NearUser.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/ProfilCubit.dart';
+import '../classes/Profile.dart';
+import '../widgets/FollowUser.dart';
 import '../widgets/TopView.dart';
 
 class ProfileView extends StatefulWidget {
@@ -14,6 +21,22 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
       TopView(),
+      BlocBuilder<ProfilCubit, Profile?>(builder: (context, details) {
+        print(details!.id);
+        if (details != null && details.id == 1) {
+          return const FollowUser();
+        }
+        return SliverToBoxAdapter();
+      }),
+
+      BlocBuilder<ProfilCubit, Profile?>(builder: (context, details) {
+        print(details!.id);
+        if (details != null && details.id == 1) {
+          return const NearUser();
+        }
+        return SliverToBoxAdapter();
+      }),
+
       /* return
                 */
     ]);

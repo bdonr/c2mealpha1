@@ -32,7 +32,7 @@ class AppNavigator extends StatelessWidget {
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/messages': (context) => const MessageView(),
         '/notifications':(context)=>const NotificationView(),
-        '/home' : (context)=> const StartPage(),
+        '/home' : (context)=> const ProfileView(),
         '/search': (context)=> const SearchView(),
         '/profileview': (context)=> const ProfileView(),
 

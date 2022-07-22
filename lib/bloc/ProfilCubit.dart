@@ -19,6 +19,62 @@ class ProfilCubit extends Cubit<Profile?> {
       new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
       new Social(SocialMedia.XING, "uwuwuwwuwu"),
     ];
+
+    personRepository.users[1].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
+
+    personRepository.users[2].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
+
+    personRepository.users[3].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
+
+    personRepository.users[4].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
+
+    personRepository.users[5].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
+
+    personRepository.users[6].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
+
+    personRepository.users[7].socials = [
+      new Social(SocialMedia.TWITTER, "uwuwuwwuwu"),
+      new Social(SocialMedia.INSTAGRAM, "uwuwuwwuwu"),
+      new Social(SocialMedia.FACEBOOK, "uwuwuwwuwu"),
+      new Social(SocialMedia.SNAPSHAT, "uwuwuwwuwu"),
+      new Social(SocialMedia.XING, "uwuwuwwuwu"),
+    ];
   }
 
   void getProfile(int id) async{

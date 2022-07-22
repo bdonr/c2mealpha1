@@ -27,12 +27,33 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
-      TopView(),
-      const FollowUser(),
-      const NearUser()
-
-      /* return
-                */
-    ]);
+        SliverAppBar(
+        expandedHeight: 400,
+        backgroundColor: Color(0xFFFFFFFF),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        centerTitle: false,
+        floating: true,
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () async =>
+            {
+              Navigator.of(context).pop(context),
+              BlocProvider.of<ProfilCubit>(context).getProfile(0)
+            }),
+        actions: [
+          MenuButton(() {
+            Navigator.pushNamed(context, '/home');
+          }, FaIcon(FontAwesomeIcons.house)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/messages');
+          }, FaIcon(FontAwesomeIcons.message)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/notifications');
+          }, FaIcon(FontAwesomeIcons.bell)),
+          MenuButton(() {
+            Navigator.pushNamed(context, '/search');
+          }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
+        ]
+    )]);
   }
 }
