@@ -55,10 +55,12 @@ class PersonRepository {
     while (near.length < min) {
       await Future.delayed(const Duration(seconds: 2));
       if (intValue != k) {
-        near.add(_users[intValue]);
+        near.add(_users
+            .where((element) => element.id == intValue)
+            .first);
         yield near;
       }
-      else{
+      else {
         intValue = Random().nextInt(_users.length);
       }
     }
@@ -70,7 +72,9 @@ class PersonRepository {
       await Future.delayed(const Duration(seconds: 2));
       var intValue = Random().nextInt(_users.length);
       if (intValue != k) {
-        near.add(_users[intValue]);
+        near.add(_users
+            .where((element) => element.id == intValue)
+            .first);
         yield near;
       }
     }

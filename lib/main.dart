@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: Theme.of(context)
           .copyWith(primaryColor: Colors.red, accentColor: Colors.redAccent),
       home: MultiBlocProvider(providers: [
-        BlocProvider(create: (context)=> ProfilCubit()..getProfile(0)),
+        BlocProvider(create: (context)=> ProfilCubit()..getProfile(1)),
         BlocProvider(create: (context)=> NearCubit()..get()),
         BlocProvider(create: (context)=> FollowCubit()..get()),
       ], child: SafeArea(child: AppNavigator())),

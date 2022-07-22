@@ -78,9 +78,8 @@ class ProfilCubit extends Cubit<Profile?> {
   }
 
   void getProfile(int id) async{
-    print(id);
-    print(personRepository.users[id]);
-    emit(personRepository.users[id]);
+    print(personRepository.users.where((element) => element.id==id).first.id.toString());
+    emit(personRepository.users.where((element) => element.id==id).first);
  }
 }
 

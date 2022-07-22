@@ -32,7 +32,7 @@ class _TopViewState extends State<TopView> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () async => {
                   Navigator.of(context).pop(context),
-                  BlocProvider.of<ProfilCubit>(context).getProfile(0)
+                  BlocProvider.of<ProfilCubit>(context).getProfile(1)
                 }),
         actions: [
           MenuButton(() {

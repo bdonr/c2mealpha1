@@ -26,7 +26,7 @@ class _ProfileViewState extends State<ProfileView> {
         if (details != null && details.id == 1) {
           return const FollowUser();
         }
-        return SliverToBoxAdapter();
+        return SliverToBoxAdapter(child: Container(child: Text("sdad"),),);
       }),
 
       BlocBuilder<ProfilCubit, Profile?>(builder: (context, details) {
@@ -34,7 +34,7 @@ class _ProfileViewState extends State<ProfileView> {
         if (details != null && details.id == 1) {
           return const NearUser();
         }
-        return SliverToBoxAdapter();
+        return SliverToBoxAdapter(child: Container(child: Text("sdad"),),);
       }),
 
       /* return
