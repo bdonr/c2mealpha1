@@ -87,7 +87,7 @@ class _TopViewState extends State<TopView> {
                         child: BlocBuilder<FollowerCubit, List<Profile>>(
                             builder: (context, details) {
                           return Text(
-                            Formater.func(details.length.toDouble()),
+                            Formater.func(details.length),
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.deepPurple,
@@ -100,7 +100,7 @@ class _TopViewState extends State<TopView> {
                         child: BlocBuilder<FollowsCubit, List<Profile?>>(
                             builder: (context, details) {
                           return Text(
-                            "Follows${Formater.func(details.length.toDouble())}",
+                            "Follows${Formater.func(details.length)}",
                             style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.deepPurple,

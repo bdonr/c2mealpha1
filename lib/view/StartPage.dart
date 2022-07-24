@@ -16,10 +16,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../bloc/FollowerCubit.dart';
 import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 import '../events/PageEvents.dart';
 import '../events/PokemonEvent.dart';
+import '../helper/formater.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -61,18 +63,45 @@ class _StartPageState extends State<StartPage> {
           ],
           flexibleSpace:
               BlocBuilder<LoginCubit, Profile?>(builder: (context, details) {
-
             if (details != null) {
-              return BlocBuilder<MainImageCubit,MainImage?>(
-                builder:(context,image){
-                  if(image!=null) {
-                    return Container(child: ProfileImageHeader(image.url));
-                  }
-                  return CircularProgressIndicator();
+              return BlocBuilder<LoggedInImageCubit, ProfileImageHeader?>(
+                  builder: (context, image) {
+                if (image != null) {
+                  return Column(children: [
+                    Container(child: image),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 65, bottom: 120),
+                          child: FaIcon(
+                            FontAwesomeIcons.solidHeart,
+                            color: Colors.red,
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 0, bottom: 120),
+                            child: Text(
+                              Formater.func(details.followerCount),
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.deepPurple,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        Padding(
+                            padding: EdgeInsets.only(left: 70, bottom: 120),
+                            child: Text(
+                              "Follows${Formater.func(details.follows)}",
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.deepPurple,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ],
+                    ),
+                  ]);
                 }
-              );
-              print(details.toString());
-              return Text(details.name);
+                return CircularProgressIndicator();
+              });
             }
             return CircularProgressIndicator();
           }),
@@ -106,30 +135,31 @@ class _StartPageState extends State<StartPage> {
       ],
     );
   }
-
 }
+
 class ProfileImageHeader extends StatelessWidget {
-  const ProfileImageHeader(this.imageurl,{
+  const ProfileImageHeader(
+    this.imageurl, {
     Key? key,
   }) : super(key: key);
-final imageurl;
+  final imageurl;
+
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        height: 250,
-        width: 700,
-        child: ClipRRect(
-              child: FadeInImage.assetNetwork(
-                placeholder: imageurl,
-                image: imageurl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-      ),
-      ));
+        alignment: Alignment.topCenter,
+        child: Container(
+          height: 250,
+          width: 700,
+          child: ClipRRect(
+            child: FadeInImage.assetNetwork(
+              placeholder: imageurl,
+              image: imageurl,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
+        ));
   }
 }
-

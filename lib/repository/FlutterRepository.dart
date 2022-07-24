@@ -29,15 +29,13 @@ class FlutterRepository {
         .collection("users")
         .doc(uid)
         .snapshots()
-        .map((event) => Profile(event.id,event.get('name')));
+        .map((event) => Profile(
+            event.id,
+            event.get('name'),
+            event.get('followerCount'),
+            event.get('messageCount'),
+            event.get('followsCount')));
   }
-
-
-
-
-
-
-
 
   static Stream<List<Profile>> findUserByLocation(
       LocationData locationData, uid) {
@@ -53,8 +51,10 @@ class FlutterRepository {
     return geo
         .collection(collectionRef: res)
         .within(center: g, radius: 10, field: 'position')
-        .map((event) =>
-            event.map((e) => Profile(e.get('username'), e.id)).toList());
+        .map((event) => event
+            .map((e) => Profile(e.id, e.get('name'), e.get('followerCount'),
+                e.get('messageCount'), e.get('followsCount')))
+            .toList());
   }
 
   static Stream<MainImage> getImage(String id) {
@@ -64,7 +64,7 @@ class FlutterRepository {
         .collection("images")
         .where("main", isEqualTo: true)
         .get()
-        .then((value) =>
-            value.docs.map((e) => MainImage(e.get("url"))).first).asStream();
+        .then((value) => value.docs.map((e) => MainImage(e.get("url"))).first)
+        .asStream();
   }
 }

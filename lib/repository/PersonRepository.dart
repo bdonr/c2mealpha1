@@ -7,47 +7,8 @@ class PersonRepository {
   static List<Profile> near = [];
   static List<Profile> follow = [];
   static List<Profile> follows = [];
-  static List<Profile> _users = [
-    Profile(
-        "Sabrina",
-        "1"),
-    Profile(
-        "Sarah",
-        "2"),
-    Profile(
-        "Jenny1",
-        "3"),
-    Profile(
-        "Jenny2",
-        "4"),
-    Profile(
-        "Jenny3",
-        "5"),
-    Profile(
-        "Jenny4",
-        "6"),
-    Profile(
-        "Jenny5",
-        "7"),
-    Profile(
-        "Jenny6",
-        "8"),
-    Profile(
-        "Jenny7",
-        "9"),
-    Profile(
-        "Jenny8",
-        "10"),
-    Profile(
-        "Jenny9",
-       "11"),
-    Profile(
-        "Jenny10",
-        "12"),
-    Profile(
-        "Jenny11",
-        "13")
-  ];
+  static List<Profile> _users = [];
+
 
   List<Profile> get users => _users;
 

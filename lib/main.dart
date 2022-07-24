@@ -26,8 +26,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  Future<FirebaseApp> fbApp = Firebase.initializeApp(
-      options: DefaultFirebaseOptions.android);
+  Future<FirebaseApp> fbApp =
+      Firebase.initializeApp(options: DefaultFirebaseOptions.android);
+
   @override
   Widget build(BuildContext context) {
     final pdc = PokemonDetailsCubit();
@@ -39,28 +40,21 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return MultiBlocProvider(providers: [
-                BlocProvider(create: (context) =>
-                ProfilCubit()),
-                BlocProvider(create: (context) =>
-                FollowsCubit()
-                  ..getFollows()),
-                BlocProvider(create: (context) =>
-                LoginCubit()
-                  ..login("50myTvoVDnY1TIkhiFJh")),
-                BlocProvider(create: (context) =>
-                NearCubit()
-                  ..get()),
-                BlocProvider(create: (context) =>
-                MainImageCubit()..getImage("50myTvoVDnY1TIkhiFJh")),
-                BlocProvider(create: (context) =>
-                FollowerCubit()
-                  ..get()),
+                BlocProvider(create: (context) => ProfilCubit()),
+                BlocProvider(create: (context) => FollowsCubit()..getFollows()),
+                BlocProvider(
+                    create: (context) =>
+                        LoginCubit()..login("50myTvoVDnY1TIkhiFJh")),
+                BlocProvider(create: (context) => NearCubit()..get()),
+                BlocProvider(
+                    create: (context) =>
+                        LoggedInImageCubit()..getImage("50myTvoVDnY1TIkhiFJh")),
+                BlocProvider(create: (context) => FollowerCubit()..get()),
               ], child: SafeArea(child: AppNavigator()));
             }
             if (snapshot.hasError) {
               return Text("${snapshot.error}");
-            }
-            else {
+            } else {
               return CircularProgressIndicator();
             }
           }),

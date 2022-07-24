@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:c2mealpha1/repository/FlutterRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../classes/Profile.dart';
@@ -13,8 +14,6 @@ class FollowerCubit extends Cubit<List<Profile>> {
 
 
   void get() async{
-    c = PersonRepository.followerProfile(1, 10000000).listen((event) {
-      emit (event.map((e) => e).toList());
-    });
+
   }
 }

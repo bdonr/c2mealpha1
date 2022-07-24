@@ -2,7 +2,7 @@ import 'dart:math';
 
 class Formater{
 
-  static String func(double i) {
+  static String func(int i) {
     if (i > 999 && i < 999999) {
       return _roundDouble(i / 1000, 3) + "k";
     }
