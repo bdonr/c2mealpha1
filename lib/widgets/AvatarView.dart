@@ -9,10 +9,10 @@ import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 
 class AvatarView extends StatefulWidget {
-  const AvatarView(this.avatarsize,this.profile,
+  const AvatarView(this.avatarsize,this.url,
       {super.key});
 
-  final Profile? profile;
+  final String url;
   final double avatarsize;
 
   @override
@@ -46,20 +46,19 @@ class _AvatarViewState extends State<AvatarView> {
       padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: [
-          Text(widget.profile!.name,style: TextStyle(color: Colors.grey,fontStyle: FontStyle.italic),),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: CircleAvatar(
               radius: widget.avatarsize,
               backgroundColor: Colors.transparent,
-              backgroundImage: widget.profile!=null ?NetworkImage(widget.profile!.url):null,
+              backgroundImage: widget.url!=null ?NetworkImage(widget.url):null,
               child: Material(
                 shape: CircleBorder(),
                 clipBehavior: Clip.hardEdge,
                 color: Colors.transparent,
                 child: InkWell(onTap: (){
                     Navigator.pushNamed(context, '/profileview');
-                    BlocProvider.of<ProfilCubit>(context).getProfile(widget.profile!.id);
+                    BlocProvider.of<ProfilCubit>(context).getProfile(widget.url);
                 },),
               ),
             ),

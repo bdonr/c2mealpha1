@@ -25,7 +25,7 @@ class _UserListViewState extends State<UserListView> {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: widget.list.length,
-      itemBuilder: (context, index) => widget!=null ? AvatarView(30, widget.list![index]):Text("n"),
+      itemBuilder: (context, index) => widget!=null ? AvatarView(30, ""):Text("n"),
     );
   }
 }

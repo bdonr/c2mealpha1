@@ -10,56 +10,43 @@ class PersonRepository {
   static List<Profile> _users = [
     Profile(
         "Sabrina",
-        "https://mindjazz-pictures.de/wp-content/uploads/2020/06/Woman_header_Still0-1440x810.jpg",
-        1),
+        "1"),
     Profile(
         "Sarah",
-        "https://media.gettyimages.com/photos/beauty-portrait-of-young-woman-picture-id1309405076?s=612x612",
-        2),
+        "2"),
     Profile(
         "Jenny1",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        3),
+        "3"),
     Profile(
         "Jenny2",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        4),
+        "4"),
     Profile(
         "Jenny3",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        5),
+        "5"),
     Profile(
         "Jenny4",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        6),
+        "6"),
     Profile(
         "Jenny5",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        7),
+        "7"),
     Profile(
         "Jenny6",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        8),
+        "8"),
     Profile(
         "Jenny7",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        9),
+        "9"),
     Profile(
         "Jenny8",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        10),
+        "10"),
     Profile(
         "Jenny9",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-       11),
+       "11"),
     Profile(
         "Jenny10",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        12),
+        "12"),
     Profile(
         "Jenny11",
-        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        13)
+        "13")
   ];
 
   List<Profile> get users => _users;
@@ -103,6 +90,11 @@ class PersonRepository {
       }
     }
   }
+
+
+
+
+
 
   static Stream<List<Profile>> followsProfile(int k, int min) async* {
     var intValue = Random().nextInt(_users.length-1);

@@ -1,4 +1,4 @@
-
+import 'package:c2mealpha1/bloc/SocialsCubit.dart';
 import 'package:c2mealpha1/config/SocialConfig.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import '../bloc/FollowerCubit.dart';
 import '../bloc/FollowsCubit.dart';
 import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
+import '../classes/Social.dart';
 import '../helper/formater.dart';
 
 class TopView extends StatefulWidget {
@@ -30,11 +31,10 @@ class _TopViewState extends State<TopView> {
         floating: true,
         leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () async =>
-            {
-              Navigator.of(context).pop(context),
-              BlocProvider.of<ProfilCubit>(context).getProfile(1)
-            }),
+            onPressed: () async => {
+                  Navigator.of(context).pop(context),
+                  BlocProvider.of<ProfilCubit>(context).getProfile("1")
+                }),
         actions: [
           MenuButton(() {
             Navigator.pushNamed(context, '/home');
@@ -56,7 +56,6 @@ class _TopViewState extends State<TopView> {
           ),
           child: Stack(
             children: [
-              ProfileImageHeader(),
               Padding(
                 padding: const EdgeInsets.only(top: 200.0),
                 child: Container(
@@ -76,7 +75,7 @@ class _TopViewState extends State<TopView> {
                   width: double.infinity,
                   child: Row(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 65, bottom: 120),
                         child: FaIcon(
                           FontAwesomeIcons.solidHeart,
@@ -87,30 +86,28 @@ class _TopViewState extends State<TopView> {
                         padding: EdgeInsets.only(left: 0, bottom: 120),
                         child: BlocBuilder<FollowerCubit, List<Profile>>(
                             builder: (context, details) {
-                              return Text(
-                                Formater.func(details.length.toDouble()),
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.deepPurple,
-                                    fontWeight: FontWeight.bold),
-                              );
-                            }),
+                          return Text(
+                            Formater.func(details.length.toDouble()),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold),
+                          );
+                        }),
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 70, bottom: 120),
                         child: BlocBuilder<FollowsCubit, List<Profile?>>(
                             builder: (context, details) {
-                              return Text(
-                                "Follows${Formater.func(details.length.toDouble())}",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.deepPurple,
-                                    fontWeight: FontWeight.bold),
-                              );
-                            }),
+                          return Text(
+                            "Follows${Formater.func(details.length.toDouble())}",
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold),
+                          );
+                        }),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -144,39 +141,41 @@ class _TopViewState extends State<TopView> {
                 padding: const EdgeInsets.only(top: 300.0),
                 child: BlocBuilder<ProfilCubit, Profile?>(
                     builder: (context, details) {
-                      if (details != null) {
-                        return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: details.socials.length,
-                            itemBuilder: (context, index) {
-                              List<String> x = details.socials[index]
-                                  .socialMedia
-                                  .toString()
-                                  .toLowerCase()
-                                  .split(".");
-                              String j = x[1];
+                  if (details != null) {
+                    return BlocBuilder<SocialsCubit, List<Social?>>(
+                        builder: (context, list) {
+                      return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: list.length,
+                          itemBuilder: (context, index) {
+                            List<String> x = list[index]!
+                                .socialMedia
+                                .toString()
+                                .toLowerCase()
+                                .split(".");
 
-                              return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    child: Container(
-                                      color: SocialConfig.configColor(
-                                          details.socials[index]),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 34, top: 30),
-                                        child: SocialConfig.configIcon(
-                                            details.socials[index]),
-                                      ),
-                                      width: 90,
-                                      height: 100,
+                            return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  child: Container(
+                                    color:
+                                        SocialConfig.configColor(list[index]!),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 34, top: 30),
+                                      child:
+                                          SocialConfig.configIcon(list[index]!),
                                     ),
-                                  ));
-                            });
-                      }
-                      return CircularProgressIndicator();
-                    }),
+                                    width: 90,
+                                    height: 100,
+                                  ),
+                                ));
+                          });
+                    });
+                  }
+                  return CircularProgressIndicator();
+                }),
               )
             ],
           ),
@@ -185,10 +184,11 @@ class _TopViewState extends State<TopView> {
 }
 
 class MenuButton extends StatelessWidget {
-  const MenuButton(this.callback,
-      this.icon, {
-        Key? key,
-      }) : super(key: key);
+  const MenuButton(
+    this.callback,
+    this.icon, {
+    Key? key,
+  }) : super(key: key);
   final VoidCallback callback;
   final FaIcon icon;
 
@@ -203,34 +203,4 @@ class MenuButton extends StatelessWidget {
   }
 }
 
-class ProfileImageHeader extends StatelessWidget {
-  const ProfileImageHeader({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        height: 250,
-        width: 700,
-        child: BlocBuilder<ProfilCubit, Profile?>(builder: (context, details) {
-          if (details != null) {
-            return ClipRRect(
-              child: FadeInImage.assetNetwork(
-                placeholder: details.url,
-                image: details.url,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        }),
-      ),
-    );
-  }
-}
