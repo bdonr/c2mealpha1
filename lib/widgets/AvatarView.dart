@@ -46,19 +46,22 @@ class _AvatarViewState extends State<AvatarView> {
       padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: [
-          //
-          CircleAvatar(
-            radius: widget.avatarsize,
-            backgroundColor: Colors.transparent,
-            backgroundImage: widget.profile!=null ?NetworkImage(widget.profile!.url):null,
-            child: Material(
-              shape: CircleBorder(),
-              clipBehavior: Clip.hardEdge,
-              color: Colors.transparent,
-              child: InkWell(onTap: (){
-                  Navigator.pushNamed(context, '/profileview');
-                  BlocProvider.of<ProfilCubit>(context).getProfile(widget.profile!.id);
-              },),
+          Text(widget.profile!.name,style: TextStyle(color: Colors.grey,fontStyle: FontStyle.italic),),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: CircleAvatar(
+              radius: widget.avatarsize,
+              backgroundColor: Colors.transparent,
+              backgroundImage: widget.profile!=null ?NetworkImage(widget.profile!.url):null,
+              child: Material(
+                shape: CircleBorder(),
+                clipBehavior: Clip.hardEdge,
+                color: Colors.transparent,
+                child: InkWell(onTap: (){
+                    Navigator.pushNamed(context, '/profileview');
+                    BlocProvider.of<ProfilCubit>(context).getProfile(widget.profile!.id);
+                },),
+              ),
             ),
           ),
           Padding(

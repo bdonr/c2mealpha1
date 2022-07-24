@@ -5,6 +5,8 @@ import '../classes/Profile.dart';
 
 class PersonRepository {
   static List<Profile> near = [];
+  static List<Profile> follow = [];
+  static List<Profile> follows = [];
   static List<Profile> _users = [
     Profile(
         "Sabrina",
@@ -15,33 +17,49 @@ class PersonRepository {
         "https://media.gettyimages.com/photos/beauty-portrait-of-young-woman-picture-id1309405076?s=612x612",
         2),
     Profile(
-        "Jenny",
+        "Jenny1",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
         3),
     Profile(
-        "Jenny",
+        "Jenny2",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
         4),
     Profile(
-        "Jenny",
+        "Jenny3",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
         5),
     Profile(
-        "Jenny",
+        "Jenny4",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
         6),
     Profile(
-        "Jenny",
+        "Jenny5",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
         7),
     Profile(
-        "Jenny",
+        "Jenny6",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
         8),
     Profile(
-        "Jenny",
+        "Jenny7",
         "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
-        9)
+        9),
+    Profile(
+        "Jenny8",
+        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
+        10),
+    Profile(
+        "Jenny9",
+        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
+       11),
+    Profile(
+        "Jenny10",
+        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
+        12),
+    Profile(
+        "Jenny11",
+        "https://media.vogue.fr/photos/5d2c4510c9cf700008f68f3c/3:2/w_1439,h_959,c_limit/D4_6SNzWwAAyAfV.jpg",
+        13)
   ];
 
   List<Profile> get users => _users;
@@ -50,10 +68,10 @@ class PersonRepository {
     _users = value;
   }
 
-  static Stream<List<Profile>> test(int k, int min) async* {
-    var intValue = Random().nextInt(_users.length);
+  static Stream<List<Profile>> nearProfile(int k, int min) async* {
+    var intValue = Random().nextInt(_users.length-1);
     while (near.length < min) {
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(milliseconds: 1));
       if (intValue != k) {
         near.add(_users
             .where((element) => element.id == intValue)
@@ -61,22 +79,51 @@ class PersonRepository {
         yield near;
       }
       else {
-        intValue = Random().nextInt(_users.length);
+        intValue = Random().nextInt(_users.length-1);
       }
     }
   }
 
 
-  static Stream<List<Profile>> test2(int k, int min) async* {
-    while (near.length < min) {
-      await Future.delayed(const Duration(seconds: 2));
-      var intValue = Random().nextInt(_users.length);
+  static Stream<List<Profile>> followerProfile(int k, int min) async* {
+    var intValue = Random().nextInt(_users.length-1);
+    print(intValue);
+    while (follow.length < min) {
+      await Future.delayed(const Duration(milliseconds: 1));
       if (intValue != k) {
-        near.add(_users
+        follow.add(_users
             .where((element) => element.id == intValue)
             .first);
-        yield near;
+        yield follow;
+      }
+      else {
+        print("follow"+intValue.toString());
+
+        intValue = Random().nextInt(_users.length-1);
       }
     }
   }
+
+  static Stream<List<Profile>> followsProfile(int k, int min) async* {
+    var intValue = Random().nextInt(_users.length-1);
+    print(intValue);
+    while (follows.length < min) {
+      await Future.delayed(const Duration(milliseconds: 1));
+      if (intValue != k) {
+        follows.add(_users
+            .where((element) => element.id == intValue)
+            .first);
+        yield follows;
+      }
+      else {
+        print("follow"+intValue.toString());
+
+        intValue = Random().nextInt(_users.length-1);
+      }
+    }
+  }
+
+
+
+
 }

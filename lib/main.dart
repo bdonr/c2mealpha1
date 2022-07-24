@@ -1,3 +1,4 @@
+import 'package:c2mealpha1/bloc/FollowsCubit.dart';
 import 'package:c2mealpha1/bloc/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
@@ -12,7 +13,7 @@ import 'package:c2mealpha1/view/PokemonDetailsView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/FollowCubit.dart';
+import 'bloc/FollowerCubit.dart';
 import 'events/PageEvents.dart';
 
 void main() {
@@ -28,8 +29,9 @@ class MyApp extends StatelessWidget {
           .copyWith(primaryColor: Colors.red, accentColor: Colors.redAccent),
       home: MultiBlocProvider(providers: [
         BlocProvider(create: (context)=> ProfilCubit()..getProfile(1)),
+        BlocProvider(create: (context)=> FollowsCubit()..getFollows()),
         BlocProvider(create: (context)=> NearCubit()..get()),
-        BlocProvider(create: (context)=> FollowCubit()..get()),
+        BlocProvider(create: (context)=> FollowerCubit()..get()),
       ], child: SafeArea(child: AppNavigator())),
     );
   }

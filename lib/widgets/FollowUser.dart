@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:c2mealpha1/bloc/FollowCubit.dart';
+import 'package:c2mealpha1/bloc/FollowerCubit.dart';
 import 'package:c2mealpha1/bloc/NearCubit.dart';
 import 'package:c2mealpha1/repository/PersonRepository.dart';
 import 'package:c2mealpha1/widgets/UserListView.dart';
@@ -48,7 +48,7 @@ class _FollowUserState extends State<FollowUser> {
                 child: Container(
                   height: 100,
                   color: Colors.white,
-                  child: BlocBuilder<FollowCubit, List<Profile>>(
+                  child: BlocBuilder<FollowerCubit, List<Profile>>(
                       builder: (context, details) {
                     return UserListView(list: details);
                   }),
