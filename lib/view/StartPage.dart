@@ -66,7 +66,7 @@ class _StartPageState extends State<StartPage> {
               return BlocBuilder<MainImageCubit,MainImage?>(
                 builder:(context,image){
                   if(image!=null) {
-                    return Container(child: AvatarView(20,image.url));
+                    return Container(child: ProfileImageHeader(image.url));
                   }
                   return CircularProgressIndicator();
                 }
@@ -106,4 +106,30 @@ class _StartPageState extends State<StartPage> {
       ],
     );
   }
+
 }
+class ProfileImageHeader extends StatelessWidget {
+  const ProfileImageHeader(this.imageurl,{
+    Key? key,
+  }) : super(key: key);
+final imageurl;
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        height: 250,
+        width: 700,
+        child: ClipRRect(
+              child: FadeInImage.assetNetwork(
+                placeholder: imageurl,
+                image: imageurl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+      ),
+      ));
+  }
+}
+
