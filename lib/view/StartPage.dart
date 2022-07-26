@@ -8,6 +8,7 @@ import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:c2mealpha1/widgets/FollowUser.dart';
+import 'package:c2mealpha1/widgets/LoggedInMenu.dart';
 import 'package:c2mealpha1/widgets/NearUser.dart';
 import 'package:c2mealpha1/widgets/TopView.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,11 +31,12 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  List<Widget> e = [];
+
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
+    return CustomScrollView(slivers: [
+      SliverAppBar(
           expandedHeight: 400,
           backgroundColor: Color(0xFFFFFFFF),
           systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -61,79 +63,61 @@ class _StartPageState extends State<StartPage> {
               Navigator.pushNamed(context, '/search');
             }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
           ],
-          flexibleSpace:
-              BlocBuilder<LoginCubit, Profile?>(builder: (context, details) {
-            if (details != null) {
-              return BlocBuilder<LoggedInImageCubit, ProfileImageHeader?>(
-                  builder: (context, image) {
-                if (image != null) {
-                  return Column(children: [
-                    Container(child: image),
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 65, bottom: 120),
-                          child: FaIcon(
-                            FontAwesomeIcons.solidHeart,
-                            color: Colors.red,
-                          ),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(left: 0, bottom: 120),
-                            child: Text(
-                              Formater.func(details.followerCount),
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        Padding(
-                            padding: EdgeInsets.only(left: 70, bottom: 120),
-                            child: Text(
-                              "Follows${Formater.func(details.follows)}",
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ],
-                    ),
-                  ]);
-                }
-                return CircularProgressIndicator();
-              });
-            }
-            return CircularProgressIndicator();
-          }),
-        ),
-        SliverToBoxAdapter(
-          child: Container(
-            height: 100,
-            child: Scaffold(
-              body: Row(
-                children: [
-                  Expanded(
-                    flex: 8,
-                    child: Container(
-                      height: 100,
-                      color: Colors.white,
-                      child: BlocBuilder<LoginCubit, Profile?>(
-                          builder: (context, details) {
-                        if (details != null) {
-                          print(details.toString());
-                          return Text(details.name);
-                        }
-                        return CircularProgressIndicator();
-                      }),
-                    ),
+          flexibleSpace: LoggedInMenu()),
+      SliverToBoxAdapter(
+        child: Container(
+          height: 100,
+          child: Scaffold(
+            body: Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Container(
+                    height: 100,
+                    color: Colors.white,
+                    child: BlocBuilder<LoginCubit, Profile?>(
+                        builder: (context, details) {
+                      if (details != null) {
+                        print(details.toString());
+                        return Text(details.name);
+                      }
+                      return CircularProgressIndicator();
+                    }),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        )
-      ],
-    );
+        ),
+      ),
+      SliverToBoxAdapter(
+          child: Container(
+              height: 100,
+              child: Scaffold(body: BlocBuilder<FollowerCubit, List<Profile?>>(
+                  builder: (context, list) {
+                print(list);
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                    itemCount: list.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => Container(
+                          child: Text(list[index]!.name),
+                        ));
+              }))))
+    ]);
+  }
+}
+
+class FollowerFollowsMenu extends StatelessWidget {
+  const FollowerFollowsMenu(
+    this.details, {
+    Key? key,
+  }) : super(key: key);
+  final Profile details;
+
+  @override
+  Widget build(BuildContext context) {
+    return LoggedInMenu();
   }
 }
 

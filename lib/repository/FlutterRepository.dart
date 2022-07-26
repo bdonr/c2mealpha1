@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -34,7 +37,7 @@ class FlutterRepository {
             event.get('name'),
             event.get('followerCount'),
             event.get('messageCount'),
-            event.get('followsCount')));
+            event.get('follows')));
   }
 
   static Stream<List<Profile>> findUserByLocation(
@@ -53,7 +56,7 @@ class FlutterRepository {
         .within(center: g, radius: 10, field: 'position')
         .map((event) => event
             .map((e) => Profile(e.id, e.get('name'), e.get('followerCount'),
-                e.get('messageCount'), e.get('followsCount')))
+                e.get('messageCount'), e.get('follows')))
             .toList());
   }
 
@@ -67,4 +70,23 @@ class FlutterRepository {
         .then((value) => value.docs.map((e) => MainImage(e.get("url"))).first)
         .asStream();
   }
+
+  static Stream<List<Profile>> findFollower(String id) async* {
+    List<Profile> p = [];
+    var y = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(id)
+        .collection("follower")
+        .get();
+
+    for(var x in y.docs ){
+      x['user'].get().then((o) async*
+          {
+        p.add(Profile(o.id, o.get("name"), o.get("followerCount"), o.get("messageCount"), o.get("follows")));
+
+      });
+    }
+    yield p;
+  }
+
 }

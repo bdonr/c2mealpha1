@@ -14,7 +14,7 @@ class SocialsCubit extends Cubit<List<Social>>{
       event.forEach((element) {
         socials.add(element);
       });
-      emit(socials);
+      emit(socials.toList());
     });
   }
 
