@@ -16,12 +16,7 @@ class FollowerCubit extends Cubit<List<Profile>> {
   List<Profile> p = [];
   void get(String id) {
     FlutterRepository.findFollower(id).listen((event) {
-      print("triggeret");
-      print(p.length);
-      event.forEach((element) {
-        p.add(element);
-      });
-      emit(p.toList());
+      emit(event);
     });
   }
 }
