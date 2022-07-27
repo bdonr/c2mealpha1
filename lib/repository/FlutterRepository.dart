@@ -15,6 +15,7 @@ import '../classes/Social.dart';
 
 class FlutterRepository {
   final databaseReference = FirebaseDatabase.instance;
+  static List<Profile> follower = [];
 
   static Stream<List<Social>> socials(uid) {
     return FirebaseFirestore.instance
@@ -72,21 +73,17 @@ class FlutterRepository {
   }
 
   static Stream<List<Profile>> findFollower(String id) async* {
-    List<Profile> p = [];
     var y = await FirebaseFirestore.instance
         .collection("users")
         .doc(id)
         .collection("follower")
         .get();
 
-    for(var x in y.docs ){
-      x['user'].get().then((o) async*
-          {
-        p.add(Profile(o.id, o.get("name"), o.get("followerCount"), o.get("messageCount"), o.get("follows")));
-
-      });
+    for (var x in y.docs) {
+      var a = await x['user'].get();
+      follower.add(Profile(a.id, a.get('name'), a.get('followerCount'),
+          a.get('messageCount'), a.get('follows')));
+      yield follower;
     }
-    yield p;
   }
-
 }
