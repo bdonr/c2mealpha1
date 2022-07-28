@@ -38,7 +38,8 @@ class FlutterRepository {
             event.get('name'),
             event.get('followerCount'),
             event.get('messageCount'),
-            event.get('follows'),"sadas"));
+            event.get('follows'),
+            "sadas"));
   }
 
   static Stream<List<Profile>> findUserByLocation(
@@ -48,20 +49,16 @@ class FlutterRepository {
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
     //var res = FirebaseFirestore.instance.collection('users').where(FieldPath.documentId, isNotEqualTo: "Pdu9166AKjSz4BxDOaKtmNkRf3h1").orderBy(FieldPath.documentId);
-    var res = FirebaseFirestore.instance
+    var ref = FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .collection('collectionPath');
     return geo
-        .collection(collectionRef: res)
+        .collection(collectionRef: ref)
         .within(center: g, radius: 10, field: 'position')
         .map((event) => event
-            .map((e) => Profile(
-                e.id,
-                e.get('name'),
-                e.get('followerCount'),
-                e.get('messageCount'),
-                e.get('follows'),"sadas"))
+            .map((e) => Profile(e.id, e.get('name'), e.get('followerCount'),
+                e.get('messageCount'), e.get('follows'), "sadas"))
             .toList());
   }
 
@@ -76,36 +73,34 @@ class FlutterRepository {
         .asStream();
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> _getInfo(String id) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> _getInfo(
+      String id, collectionName) {
     return FirebaseFirestore.instance
         .collection("users")
         .doc(id)
-        .collection("follower")
+        .collection(collectionName)
         .snapshots();
   }
 
   static Stream<List<Profile>> findFollower(String id) =>
-      _getInfo(id).asyncMap<List<Profile>>(
-        (profileList) => Future.wait(
-          profileList.docs.map<Future<Profile>>((m) async {
-            var a = await m['user'].get();
-            var z = await a['mainImage'].get();
-            return Profile(a.id, await a.get('name'), a.get('followerCount'),
-                a.get('messageCount'), a.get('follows'),z.get("url"));
-          }),
-        ),
-      ).asBroadcastStream();
+      _getInfo(id, "follower")
+          .asyncMap<List<Profile>>(
+            (profileList) => Future.wait(_mapList(profileList)),
+          )
+          .asBroadcastStream();
+
+  static Stream<List<Profile>> findFollows(String id) => _getInfo(id, "follows")
+      .asyncMap<List<Profile>>(
+        (profileList) => Future.wait(_mapList(profileList)),
+      )
+      .asBroadcastStream();
+
+  static Iterable<Future<Profile>> _mapList(
+          QuerySnapshot<Map<String, dynamic>> profileList) =>
+      profileList.docs.map<Future<Profile>>((m) async {
+        var a = await m['user'].get();
+        var z = await a['mainImage'].get();
+        return Profile(a.id, await a.get('name'), a.get('followerCount'),
+            a.get('messageCount'), a.get('follows'), z.get("url"));
+      });
 }
-   String func (Future a) =>"url";
-
-
-
-/**    .transform((event){
-    for (var x in event.docs) {
-    var a = await x['user'].get();
-    follower.add(Profile(a.id, a.get('name'), a.get('followerCount'),
-    a.get('messageCount'), a.get('follows')));
-    return follower;
-
-    }
- **/

@@ -6,7 +6,8 @@ class LoginCubit extends Cubit<Profile?>{
   LoginCubit():super(null);
 
   void login(String id){
-    FlutterRepository.getProfile( id).listen((event) {
+
+    FlutterRepository.getProfile(id).listen((event) {
       emit(event);
     });
   }

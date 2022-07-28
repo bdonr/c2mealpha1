@@ -8,7 +8,7 @@ class FollowsCubit extends Cubit<List<Profile?>>{
   FollowsCubit():super([]);
 
   void getFollows() async{
-    PersonRepository.followsProfile(1, 1000000).listen((event) {
+    PersonRepository.followsProfile(1, 1000).listen((event) {
       emit (event.map((e) => e).toList());
     });
   }

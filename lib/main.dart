@@ -46,10 +46,11 @@ class MyApp extends StatelessWidget {
                     create: (context) =>
                         LoginCubit()..login("50myTvoVDnY1TIkhiFJh")),
                 BlocProvider(create: (context) => NearCubit()..get()),
+                BlocProvider(create: (context) => FollowerCubit()..get("50myTvoVDnY1TIkhiFJh")),
                 BlocProvider(
                     create: (context) =>
                         LoggedInImageCubit()..getImage("50myTvoVDnY1TIkhiFJh")),
-                BlocProvider(create: (context) => FollowerCubit()..get("50myTvoVDnY1TIkhiFJh")),
+
               ], child: SafeArea(child: AppNavigator()));
             }
             if (snapshot.hasError) {
