@@ -11,6 +11,7 @@ import 'package:c2mealpha1/widgets/FollowUser.dart';
 import 'package:c2mealpha1/widgets/LoggedInMenu.dart';
 import 'package:c2mealpha1/widgets/NearUser.dart';
 import 'package:c2mealpha1/widgets/TopView.dart';
+import 'package:c2mealpha1/widgets/UserListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,16 +94,9 @@ class _StartPageState extends State<StartPage> {
       SliverToBoxAdapter(
           child: Container(
               height: 100,
-              child: Scaffold(body: BlocBuilder<FollowerCubit, List<Profile?>>(
+              child: Scaffold(body: BlocBuilder<FollowerCubit, List<Profile>>(
                   builder: (context, list) {
-                print(list);
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                    itemCount: list.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => Container(
-                          child: Text(list[index]!.name),
-                        ));
+                return UserListView(list: list);
               }))))
     ]);
   }

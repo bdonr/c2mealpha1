@@ -7,7 +7,8 @@ class Profile{
   final int followerCount;
   final int messageCount;
   final int follows;
+  final String profilImageurl;
 
-  Profile(this.id,this.name, this.followerCount, this.messageCount, this.follows);
+  Profile(this.id,this.name, this.followerCount, this.messageCount, this.follows,this.profilImageurl);
 
 }

@@ -13,7 +13,7 @@ class UserListView extends StatefulWidget {
     Key? key,
     required this.list,
   }) : super(key: key);
-  final List<Profile?> list;
+  final List<Profile> list;
 
   @override
   State<UserListView> createState() => _UserListViewState();
@@ -25,7 +25,7 @@ class _UserListViewState extends State<UserListView> {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: widget.list.length,
-      itemBuilder: (context, index) => widget!=null ? AvatarView(30, ""):Text("n"),
+      itemBuilder: (context, index) => AvatarView(30, widget.list[index]),
     );
   }
 }

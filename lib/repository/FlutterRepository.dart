@@ -33,12 +33,12 @@ class FlutterRepository {
         .collection("users")
         .doc(uid)
         .snapshots()
-        .map((event) => Profile(
+        .asyncMap((event) async => Profile(
             event.id,
             event.get('name'),
             event.get('followerCount'),
             event.get('messageCount'),
-            event.get('follows')));
+            event.get('follows'),"sadas"));
   }
 
   static Stream<List<Profile>> findUserByLocation(
@@ -56,8 +56,12 @@ class FlutterRepository {
         .collection(collectionRef: res)
         .within(center: g, radius: 10, field: 'position')
         .map((event) => event
-            .map((e) => Profile(e.id, e.get('name'), e.get('followerCount'),
-                e.get('messageCount'), e.get('follows')))
+            .map((e) => Profile(
+                e.id,
+                e.get('name'),
+                e.get('followerCount'),
+                e.get('messageCount'),
+                e.get('follows'),"sadas"))
             .toList());
   }
 
@@ -76,7 +80,8 @@ class FlutterRepository {
     return FirebaseFirestore.instance
         .collection("users")
         .doc(id)
-        .collection("follower").snapshots();
+        .collection("follower")
+        .snapshots();
   }
 
   static Stream<List<Profile>> findFollower(String id) =>
@@ -84,12 +89,17 @@ class FlutterRepository {
         (profileList) => Future.wait(
           profileList.docs.map<Future<Profile>>((m) async {
             var a = await m['user'].get();
+            var z = await a['mainImage'].get();
             return Profile(a.id, await a.get('name'), a.get('followerCount'),
-                a.get('messageCount'), a.get('follows'));
+                a.get('messageCount'), a.get('follows'),z.get("url"));
           }),
         ),
       ).asBroadcastStream();
 }
+   String func (Future a) =>"url";
+
+
+
 /**    .transform((event){
     for (var x in event.docs) {
     var a = await x['user'].get();

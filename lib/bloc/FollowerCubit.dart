@@ -8,7 +8,6 @@ import '../classes/Profile.dart';
 import '../repository/PersonRepository.dart';
 
 class FollowerCubit extends Cubit<List<Profile>> {
-  PersonRepository repo = new PersonRepository();
   late StreamSubscription c;
 
   FollowerCubit():super([]);
