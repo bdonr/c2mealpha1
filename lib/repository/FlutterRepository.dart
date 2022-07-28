@@ -72,18 +72,30 @@ class FlutterRepository {
         .asStream();
   }
 
-  static Stream<List<Profile>> findFollower(String id) async* {
-    var y = await FirebaseFirestore.instance
+  static Stream<QuerySnapshot<Map<String, dynamic>>> _getInfo(String id) {
+    return FirebaseFirestore.instance
         .collection("users")
         .doc(id)
-        .collection("follower")
-        .get();
-
-    for (var x in y.docs) {
-      var a = await x['user'].get();
-      follower.add(Profile(a.id, a.get('name'), a.get('followerCount'),
-          a.get('messageCount'), a.get('follows')));
-      yield follower;
-    }
+        .collection("follower").snapshots();
   }
+
+  static Stream<List<Profile>> findFollower(String id) =>
+      _getInfo(id).asyncMap<List<Profile>>(
+        (profileList) => Future.wait(
+          profileList.docs.map<Future<Profile>>((m) async {
+            var a = await m['user'].get();
+            return Profile(a.id, await a.get('name'), a.get('followerCount'),
+                a.get('messageCount'), a.get('follows'));
+          }),
+        ),
+      ).asBroadcastStream();
 }
+/**    .transform((event){
+    for (var x in event.docs) {
+    var a = await x['user'].get();
+    follower.add(Profile(a.id, a.get('name'), a.get('followerCount'),
+    a.get('messageCount'), a.get('follows')));
+    return follower;
+
+    }
+ **/

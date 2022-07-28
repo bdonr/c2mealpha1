@@ -15,8 +15,10 @@ class FollowerCubit extends Cubit<List<Profile>> {
 
   List<Profile> p = [];
   void get(String id) {
-    FlutterRepository.findFollower(id).listen((event) {
-      emit(event);
-    });
+     c = FlutterRepository.findFollower(id).listen((event) {});
+     c.onData((data) {
+       emit(data);
+     });
+
   }
 }
