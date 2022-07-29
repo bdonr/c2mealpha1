@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:c2mealpha1/classes/MainImage.dart';
-import 'package:c2mealpha1/repository/FlutterRepository.dart';
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../view/StartPage.dart';

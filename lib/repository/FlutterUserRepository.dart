@@ -12,6 +12,7 @@ import 'package:location/location.dart';
 import '../classes/MainImage.dart';
 import '../classes/Profile.dart';
 import '../classes/Social.dart';
+import 'Flutter.dart';
 
 class FlutterRepository {
   final databaseReference = FirebaseDatabase.instance;
@@ -23,17 +24,16 @@ class FlutterRepository {
         .doc(uid)
         .collection("socials")
         .snapshots()
-        .map((event) => event.docs
+        .map((event) =>
+        event.docs
             .map((e) => Social(e.get('name'), e.get('url')))
             .toList());
   }
 
   static Stream<Profile> getProfile(uid) {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .snapshots()
-        .asyncMap((event) async => Profile(
+    return FlutterRepo.getReferenceOFCollectionAsStream(uid,"users")
+        .asyncMap((event) async =>
+        Profile(
             event.id,
             event.get('name'),
             event.get('followerCount'),
@@ -42,65 +42,65 @@ class FlutterRepository {
             "sadas"));
   }
 
-  static Stream<List<Profile>> findUserByLocation(
-      LocationData locationData, uid) {
+  static Stream<List<Profile>> findUserByLocation(LocationData locationData,
+      uid) {
     var geo = new Geoflutterfire();
 
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
     //var res = FirebaseFirestore.instance.collection('users').where(FieldPath.documentId, isNotEqualTo: "Pdu9166AKjSz4BxDOaKtmNkRf3h1").orderBy(FieldPath.documentId);
-    var ref = FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('collectionPath');
+
     return geo
-        .collection(collectionRef: ref)
+        .collection(collectionRef:  FlutterRepo.getReferenceOFCollection("users"))
         .within(center: g, radius: 10, field: 'position')
-        .map((event) => event
-            .map((e) => Profile(e.id, e.get('name'), e.get('followerCount'),
+        .map((event) =>
+        event
+            .map((e) =>
+            Profile(e.id, e.get('name'), e.get('followerCount'),
                 e.get('messageCount'), e.get('follows'), "sadas"))
             .toList());
   }
 
   static Stream<MainImage> getImage(String id) {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(id)
-        .collection("images")
+    return FlutterRepo.getReferenceAndSubCollection(id, "users","images")
         .where("main", isEqualTo: true)
         .get()
-        .then((value) => value.docs.map((e) => MainImage(e.get("url"))).first)
+        .then((value) =>
+    value.docs
+        .map((e) => MainImage(e.get("url")))
+        .first)
         .asStream();
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> _getInfo(
-      String id, collectionName) {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(id)
-        .collection(collectionName)
-        .snapshots();
-  }
+
 
   static Stream<List<Profile>> findFollower(String id) =>
-      _getInfo(id, "follower")
+      FlutterRepo.getReferenceAndSubCollectionAsStream(id, "users","follower")
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
-          )
+      )
           .asBroadcastStream();
 
-  static Stream<List<Profile>> findFollows(String id) => _getInfo(id, "follows")
-      .asyncMap<List<Profile>>(
-        (profileList) => Future.wait(_mapList(profileList)),
+  static Stream<List<Profile>> findFollows(String id) =>
+      FlutterRepo.getReferenceAndSubCollectionAsStream(id,"users","follows")
+          .asyncMap<List<Profile>>(
+            (profileList) => Future.wait(_mapList(profileList)),
       )
-      .asBroadcastStream();
+          .asBroadcastStream();
+
+
+
 
   static Iterable<Future<Profile>> _mapList(
-          QuerySnapshot<Map<String, dynamic>> profileList) =>
+      QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Profile>>((m) async {
         var a = await m['user'].get();
         var z = await a['mainImage'].get();
-        return Profile(a.id, await a.get('name'), a.get('followerCount'),
-            a.get('messageCount'), a.get('follows'), z.get("url"));
+        return _mapProfile(a, z);
       });
+
+
+
+  static _mapProfile(a,z)=>Profile(a.id, a.get('name'), a.get('followerCount'),
+  a.get('messageCount'), a.get('follows'), z.get("url"));
 }

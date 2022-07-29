@@ -1,5 +1,5 @@
 import 'package:c2mealpha1/classes/Profile.dart';
-import 'package:c2mealpha1/repository/FlutterRepository.dart';
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<Profile?>{
