@@ -5,8 +5,6 @@ import 'package:c2mealpha1/events/PokemonEvent.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/view/FollowerView.dart';
 import 'package:c2mealpha1/view/NotificationView.dart';
-import 'package:c2mealpha1/view/PokeIndexView.dart';
-import 'package:c2mealpha1/view/PokemonDetailsView.dart';
 import 'package:c2mealpha1/view/SearchView.dart';
 import 'package:c2mealpha1/view/StartPage.dart';
 import 'package:flutter/material.dart';

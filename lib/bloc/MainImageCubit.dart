@@ -9,11 +9,16 @@ import '../view/StartPage.dart';
 class LoggedInImageCubit extends Cubit<ProfileImageHeader?>{
   LoggedInImageCubit():super(null);
   late StreamSubscription subscription;
-  getImage(uid){
+ getImage(uid){
     subscription = FlutterRepository.getImage(uid).listen((event) {
       print(event.toString());
-      emit(ProfileImageHeader(event.url));
+
     });
   }
 
+
 }
+
+class ProfileImageHeader {
+}
+

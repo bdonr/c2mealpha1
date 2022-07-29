@@ -8,7 +8,7 @@ import '../bloc/MainImageCubit.dart';
 import '../classes/Profile.dart';
 import '../helper/formater.dart';
 import '../view/StartPage.dart';
-
+/**
 class LoggedInMenu extends StatelessWidget {
   const LoggedInMenu({
     Key? key,
@@ -62,3 +62,4 @@ class LoggedInMenu extends StatelessWidget {
   });
   }
 }
+    **/

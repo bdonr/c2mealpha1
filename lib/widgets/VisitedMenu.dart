@@ -9,7 +9,7 @@ import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 import '../helper/formater.dart';
 import '../view/StartPage.dart';
-
+/**
 class VisitedMenu extends StatelessWidget {
   const VisitedMenu({
     Key? key,
@@ -63,3 +63,4 @@ class VisitedMenu extends StatelessWidget {
   });
   }
 }
+    **/

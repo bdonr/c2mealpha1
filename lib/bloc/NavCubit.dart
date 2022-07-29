@@ -1,6 +1,5 @@
 import 'package:c2mealpha1/events/PageEvents.dart';
 import 'package:c2mealpha1/states/PageStates.dart';
-import 'package:c2mealpha1/view/PokemonDetailsView.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

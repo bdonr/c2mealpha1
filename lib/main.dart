@@ -11,8 +11,6 @@ import 'package:c2mealpha1/events/PokemonEvent.dart';
 import 'package:c2mealpha1/events/ProfileEvent.dart';
 import 'package:c2mealpha1/navigation/AppNavigator.dart';
 import 'package:c2mealpha1/states/PageStates.dart';
-import 'package:c2mealpha1/view/PokeIndexView.dart';
-import 'package:c2mealpha1/view/PokemonDetailsView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
