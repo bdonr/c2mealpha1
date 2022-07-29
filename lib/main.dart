@@ -6,6 +6,7 @@ import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
 import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
 import 'package:c2mealpha1/bloc/ProfilCubit.dart';
+import 'package:c2mealpha1/classes/MainImage.dart';
 import 'package:c2mealpha1/events/PokemonEvent.dart';
 import 'package:c2mealpha1/events/ProfileEvent.dart';
 import 'package:c2mealpha1/navigation/AppNavigator.dart';
@@ -40,16 +41,11 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return MultiBlocProvider(providers: [
-                BlocProvider(create: (context) => ProfilCubit()),
-                BlocProvider(create: (context) => FollowsCubit()..getFollows()),
-                BlocProvider(
-                    create: (context) =>
-                        LoginCubit()..login("50myTvoVDnY1TIkhiFJh")),
-                BlocProvider(create: (context) => NearCubit()..get()),
-                BlocProvider(create: (context) => FollowerCubit()..get("50myTvoVDnY1TIkhiFJh")),
-                BlocProvider(
-                    create: (context) =>
-                        LoggedInImageCubit()..getImage("50myTvoVDnY1TIkhiFJh")),
+                _visitProfile(),
+                _login(),
+                _startFollow(),
+                _startFollower(),
+                _mainImage(),
 
               ], child: SafeArea(child: AppNavigator()));
             }
@@ -61,4 +57,10 @@ class MyApp extends StatelessWidget {
           }),
     );
   }
+
+  static _startFollow()=>BlocProvider(create: (context) => FollowsCubit()..getFollows("50myTvoVDnY1TIkhiFJh"));
+  static _startFollower()=>BlocProvider(create: (context) => FollowerCubit()..getFollower("50myTvoVDnY1TIkhiFJh"));
+  static _login()=>BlocProvider(create: (context) => LoginCubit()..login("50myTvoVDnY1TIkhiFJh"));
+  static _mainImage()=>BlocProvider(create: (context) => LoggedInImageCubit()..getImage("50myTvoVDnY1TIkhiFJh"));
+  static _visitProfile() => BlocProvider(create: (context)=>ProfilCubit()..getProfile("50myTvoVDnY1TIkhiFJh"));
 }
