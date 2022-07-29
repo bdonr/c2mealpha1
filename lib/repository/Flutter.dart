@@ -1,27 +1,28 @@
+import 'package:c2mealpha1/repository/CollectionEnum.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FlutterRepo {
   static Stream<QuerySnapshot<Map<String, dynamic>>>
       getReferenceAndSubCollectionAsStream(
-          String id, collectionName, subCollection) {
+          String id, CollectionEnum collectionName, CollectionEnum subCollection) {
     return getReferenceAndSubCollection(id, collectionName, subCollection)
         .snapshots();
   }
 
   static CollectionReference<Map<String, dynamic>> getReferenceAndSubCollection(
-      String id, collectionName, subCollection) {
+      String id, CollectionEnum collectionName, CollectionEnum subCollection) {
     return getReferenceOFCollection(collectionName)
         .doc(id)
-        .collection(subCollection);
+        .collection(subCollection.name);
   }
 
   static CollectionReference<Map<String, dynamic>> getReferenceOFCollection(
-      collectionName) {
-    return FirebaseFirestore.instance.collection(collectionName);
+      CollectionEnum collectionName) {
+    return FirebaseFirestore.instance.collection(collectionName.name);
   }
 
   static Stream<DocumentSnapshot<Map<String, dynamic>>>
-      getReferenceOFCollectionAsStream(String id, collectionName) {
+      getReferenceOFCollectionAsStream(String id, CollectionEnum collectionName) {
     return getReferenceOFCollection(collectionName).doc(id).snapshots();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:c2mealpha1/repository/CollectionEnum.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -19,11 +20,7 @@ class FlutterRepository {
   static List<Profile> follower = [];
 
   static Stream<List<Social>> socials(uid) {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .collection("socials")
-        .snapshots()
+    return FlutterRepo.getReferenceAndSubCollectionAsStream(uid, CollectionEnum.users, CollectionEnum.socials)
         .map((event) =>
         event.docs
             .map((e) => Social(e.get('name'), e.get('url')))
@@ -31,7 +28,7 @@ class FlutterRepository {
   }
 
   static Stream<Profile> getProfile(uid) {
-    return FlutterRepo.getReferenceOFCollectionAsStream(uid,"users")
+    return FlutterRepo.getReferenceOFCollectionAsStream(uid,CollectionEnum.users)
         .asyncMap((event) async =>
         Profile(
             event.id,
@@ -51,7 +48,7 @@ class FlutterRepository {
     //var res = FirebaseFirestore.instance.collection('users').where(FieldPath.documentId, isNotEqualTo: "Pdu9166AKjSz4BxDOaKtmNkRf3h1").orderBy(FieldPath.documentId);
 
     return geo
-        .collection(collectionRef:  FlutterRepo.getReferenceOFCollection("users"))
+        .collection(collectionRef:  FlutterRepo.getReferenceOFCollection(CollectionEnum.users))
         .within(center: g, radius: 10, field: 'position')
         .map((event) =>
         event
@@ -62,7 +59,7 @@ class FlutterRepository {
   }
 
   static Stream<MainImage> getImage(String id) {
-    return FlutterRepo.getReferenceAndSubCollection(id, "users","images")
+    return FlutterRepo.getReferenceAndSubCollection(id, CollectionEnum.users, CollectionEnum.images)
         .where("main", isEqualTo: true)
         .get()
         .then((value) =>
@@ -75,14 +72,14 @@ class FlutterRepository {
 
 
   static Stream<List<Profile>> findFollower(String id) =>
-      FlutterRepo.getReferenceAndSubCollectionAsStream(id, "users","follower")
+      FlutterRepo.getReferenceAndSubCollectionAsStream(id, CollectionEnum.users, CollectionEnum.follower)
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
       )
           .asBroadcastStream();
 
   static Stream<List<Profile>> findFollows(String id) =>
-      FlutterRepo.getReferenceAndSubCollectionAsStream(id,"users","follows")
+      FlutterRepo.getReferenceAndSubCollectionAsStream(id,CollectionEnum.users, CollectionEnum.follows)
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
       )
