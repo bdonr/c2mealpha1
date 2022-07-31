@@ -7,28 +7,40 @@ const db = admin.firestore();
 
 
 export const newFollower = functions.firestore
-    .document("follower/{id}")
-    .onCreate(async (snapshot) => {
+    .document("users/{id}/follower/{fid}")
+    .onCreate(async (snapshot, context) => {
       const follower = snapshot.data();
-      const id1 = follower.from;
-      console.log(id1);
-      const id2 = follower.to;
-      const userRef = db.collection("users").doc(id2);
-      userRef.collection("follower").add(follower);
-      userRef.update({follower_count: admin.firestore.FieldValue.increment(1)});
-      userRef.update({messages_count: admin.firestore.FieldValue.increment(1)});
+      const useref = follower.user.id;
+      console.log(useref);
       const time = admin.firestore.FieldValue.serverTimestamp();
-      await userRef.get().then(async () =>
-        db.collection("users")
-            .doc(id2).collection("messages").add({
-              from: id1,
-              to: id2,
-              info: "follow",
-              read: false,
-              time: time,
-            })
-      );
+      db.collection("users/"+context.params.id+"/messages/").
+          add({
+            from: follower.user,
+            info: "follow",
+            read: false,
+            time: time,
+          });
     });
+export const deleteFollow = functions.firestore
+    .document("users/{id}/follower/{fid}")
+    .onDelete(async (snapshot, context) => {
+      const follower = snapshot.data();
+      const useref = follower.user;
+      console.log(useref);
+      const x = await db.collection("users/"+context.params.id.toString+
+      "/messages/").
+          where("info", "==", "follow").
+          where("from", "==", follower.user).get();
+      if (x!=null) {
+        x.docs.forEach(async (f) => {
+          console.log(f.data().id);
+          f.data().delete();
+        });
+      } else {
+        console.log("empty");
+      }
+    });
+
 
 export const changedSocial = functions.firestore
     .document("users/{id}/socials/{docid}")
