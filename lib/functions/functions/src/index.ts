@@ -14,7 +14,7 @@ export const newFollower = functions.firestore
       db.collection("/users/"+context.params.id.toString()+"/messages/").
           add({
             from: follower.user,
-            info: "follow",
+            info: ["follow"],
             read: false,
             active: true,
             time: time,
@@ -32,7 +32,6 @@ export const addSocials = functions.firestore
           get().then((e) => {
             e.docs.forEach(async (f) => {
               if (f.data().active==true) {
-                console.log(snapshot.data().type);
                 f.data().user.collection("messages").add({
                   from: f.data().user,
                   info: ["socials", snapshot.data().type],
@@ -40,8 +39,9 @@ export const addSocials = functions.firestore
                   time: time,
                   active: true,
                 });
+                f.data().user.update({
+                  messageCount: admin.firestore.FieldValue.increment(1)});
               }
             });
           });
     });
-
