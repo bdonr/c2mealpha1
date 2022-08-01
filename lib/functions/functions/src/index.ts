@@ -32,9 +32,10 @@ export const addSocials = functions.firestore
           get().then((e) => {
             e.docs.forEach(async (f) => {
               if (f.data().active==true) {
+                console.log(snapshot.data().type);
                 f.data().user.collection("messages").add({
                   from: f.data().user,
-                  info: ["x", "y"],
+                  info: ["socials", snapshot.data().type],
                   read: false,
                   time: time,
                   active: true,
