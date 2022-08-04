@@ -1,5 +1,6 @@
 import 'package:c2mealpha1/bloc/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/MessageCubit.dart';
+import 'package:c2mealpha1/helper/formater.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,11 +41,12 @@ class _MessageViewState extends State<MessageView> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   if (messages[index] != null) {
-                    if (messages[index].info == "stories") {
+                    if (messages[index].info == "story") {
                       return Card(
                           child: Row(
                         children: [
                           AvatarView(20, messages[index].from),
+                          Text(Formater.timeToString(messages[index].time)+" "),
                           Text(messages[index].from.name +
                               " wrote a new story with title" +
                               messages[index].info)
@@ -56,6 +58,7 @@ class _MessageViewState extends State<MessageView> {
                           child: Row(
                         children: [
                           AvatarView(20, messages[index].from),
+                          Text(Formater.timeToString(messages[index].time)+" "),
                           Text(messages[index].from.name + " follows you"),
                         ],
                       ));
@@ -65,7 +68,9 @@ class _MessageViewState extends State<MessageView> {
                       return Card(child: Row(
                         children: [
                           AvatarView(20, messages[index].from),
+                          Text(Formater.timeToString(messages[index].time)+" "),
                           Text(messages[index].from.name + " wrote a message"),
+
                         ],
                       ));
                     }
@@ -78,3 +83,5 @@ class _MessageViewState extends State<MessageView> {
     ]);
   }
 }
+
+

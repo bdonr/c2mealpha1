@@ -1,5 +1,9 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 class Formater{
 
   static String func(int i) {
@@ -22,5 +26,11 @@ class Formater{
     num mod = pow(10.0, places);
     String text = ((value * mod).round().toDouble() / mod).toStringAsFixed(places);
     return (text.toString());
+  }
+
+  static String timeToString(Timestamp x){
+    final DateTime dateTime = x.toDate();
+    final dateString = DateFormat('K:mm').format(dateTime.toLocal());
+    return dateString;
   }
 }

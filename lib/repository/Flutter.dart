@@ -9,6 +9,15 @@ class FlutterRepo {
         .snapshots();
   }
 
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>>
+  getReferenceAndSubCollectionOrderedAsStream(
+      String id, CollectionEnum collectionName, CollectionEnum subCollection,String orderBy,bool asc) {
+    return getReferenceAndSubCollection(id, collectionName, subCollection).orderBy(orderBy, descending: asc)
+        .snapshots();
+  }
+
+
   static CollectionReference<Map<String, dynamic>> getReferenceAndSubCollection(
       String id, CollectionEnum collectionName, CollectionEnum subCollection) {
     return getReferenceOFCollection(collectionName)

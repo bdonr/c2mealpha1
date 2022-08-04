@@ -85,8 +85,8 @@ class FlutterRepository {
           .asBroadcastStream();
 
   static Stream<List<Message>> findMessages(String id) =>
-      FlutterRepo.getReferenceAndSubCollectionAsStream(
-              id, CollectionEnum.users, CollectionEnum.messages)
+      FlutterRepo.getReferenceAndSubCollectionOrderedAsStream(
+              id, CollectionEnum.users, CollectionEnum.messages,"time",true )
           .asyncMap<List<Message>>(
             (profileList) => Future.wait(_mapList2(profileList)),
           )
