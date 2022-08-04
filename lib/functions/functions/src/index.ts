@@ -26,33 +26,49 @@ export const addSocials = functions.firestore
     .onCreate(async (snapshot, context) => {
       const id = context.params.id;
       const userref:DocumentReference = _getRefByString("/users/"+id);
-      _getRefCollection(userref, "follower").
-          get().then((e: QuerySnapshot) => {
-            e.docs.forEach(async (followerqu:DocumentSnapshot) => {
-              if (followerqu.data()!==undefined) {
-                const follower = followerqu?.data();
-                if ( follower?.active!=="undefined") {
-                  if ( follower?.active==true) {
-                    _queryIfSocialIsPresent(follower.user,
-                        _getRef(id, "users"),
-                        snapshot.data().type).
-                        then((a:QuerySnapshot)=>{
-                          if (a.docs.length==0) {
-                            console.log("not dounf");
-                            follower.user.collection("messages").
-                                add(_addMessage(
-                                    userref, "socials",
-                                    snapshot.data().type
-                                ));
-                            _incrementMessageCount(follower.user);
-                          }
-                        });
-                  }
-                }
-              }
-            });
-          });
+      _informFollower(userref, _addMessage(
+          userref, "socials",
+          snapshot.data().type
+      ));
     });
+
+export const addStory = functions.firestore
+    .document("/users/{id}/stories/{docid}")
+    .onCreate(async (snapshot, context) => {
+      const id = context.params.id;
+      const docid = context.params.docid;
+      const userref:DocumentReference = _getRefByString("/users/"+id);
+      const storyref:DocumentReference =
+        _getRefByString("/users/"+id+"/stories/"+docid);
+      const x = [storyref];
+      _informFollower(userref, _addMessage(
+          userref, "story",
+          snapshot.data().title,
+          x,
+      ));
+    });
+
+export const addLikeToStory = functions.firestore
+    .document("/users/{id}/stories/{docid}/likes/{lid}")
+    .onCreate(async (snapshot, context) => {
+      const id = context.params.id;
+      const docid = context.params.docid;
+      const storyref:DocumentReference =
+        _getRefByString("/users/"+id+"/stories/"+docid);
+      storyref.update({likeCount: admin.firestore.FieldValue.increment(1)});
+    });
+
+
+export const removeLikeToStory = functions.firestore
+    .document("/users/{id}/stories/{docid}/likes/{lid}")
+    .onDelete(async (snapshot, context) => {
+      const id = context.params.id;
+      const docid = context.params.docid;
+      const storyref:DocumentReference =
+        _getRefByString("/users/"+id+"/stories/"+docid);
+      storyref.update({likeCount: admin.firestore.FieldValue.increment(-1)});
+    });
+
 export const addMessage = functions.firestore
     .document("/users/{id}/chats/{cid}/messages/{mid}")
     .onCreate(async (snapshot, context) => {
@@ -65,9 +81,6 @@ export const addMessage = functions.firestore
         _getRefByString("/users/"+uid+"/chats/"+cid);
       const messageref:DocumentReference =
         _getRefByString("/users/"+uid+"/chats/"+cid+"/messages/"+mid);
-      console.log(chatref.id);
-      console.log(userref.id);
-      console.log(messageref.id);
       const fromref:DocumentSnapshot = await messageref.get();
       const x = [chatref, messageref];
       userref.collection("messages")
@@ -151,12 +164,13 @@ function _incrementFollowerCount(userref:DocumentReference) {
   });
 }
 /**
+/**
 *
 * @param {DocumentReference } ref ref.
 * @param {DocumentReference } userref userref.
 * @param {String } type type.
 * @return {QuerySnapshot } hfghf ref.
-*/
+
 function _queryIfSocialIsPresent(ref:DocumentReference,
     userref:DocumentReference,
     type:string) {
@@ -165,4 +179,28 @@ function _queryIfSocialIsPresent(ref:DocumentReference,
       where("info", "==", "socials").
       where("type", "==", type).
       get();
+}
+**/
+/**
+* @param {DocumentReference } userref ref.
+* @param {any} message
+* @void
+*/
+function _informFollower(userref:DocumentReference, message:any) {
+  _getRefCollection(userref, "follower").
+      get().then((e: QuerySnapshot) => {
+        e.docs.forEach(async (followerqu:DocumentSnapshot) => {
+          if (followerqu.data()!==undefined) {
+            const follower = followerqu?.data();
+            if ( follower?.active!=="undefined") {
+              if ( follower?.active==true) {
+                console.log(follower.user.id);
+                follower.user.collection("messages").
+                    add(message);
+                _incrementMessageCount(follower.user);
+              }
+            }
+          }
+        });
+      });
 }
