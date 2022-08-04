@@ -7,6 +7,7 @@ import 'package:c2mealpha1/classes/MainImage.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
 import 'package:c2mealpha1/view/HomeView.dart';
+import 'package:c2mealpha1/view/MessageView.dart';
 import 'package:c2mealpha1/view/VisitView.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:c2mealpha1/widgets/FollowUser.dart';
@@ -46,7 +47,7 @@ class _StartPageState extends State<StartPage> {
                 builder: (context, loggedin) {
                   if(loggedin!=null) {
                     if (loggedin!.id == user!.id) {
-                      return HomeView();
+                      return MessageView();
                     }
                     return VisitView();
                   }

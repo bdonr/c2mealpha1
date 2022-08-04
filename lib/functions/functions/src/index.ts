@@ -69,6 +69,17 @@ export const removeLikeToStory = functions.firestore
       storyref.update({likeCount: admin.firestore.FieldValue.increment(-1)});
     });
 
+
+export const addLikeToMessage = functions.firestore
+    .document("*/message/{docid}/likes/{lid}")
+    .onDelete(async (snapshot, context) => {
+      const id = context.params.id;
+      const docid = context.params.docid;
+      const storyref:DocumentReference =
+        _getRefByString("/users/"+id+"/stories/"+docid);
+      storyref.update({likeCount: admin.firestore.FieldValue.increment(-1)});
+    });
+
 export const addMessage = functions.firestore
     .document("/users/{id}/chats/{cid}/messages/{mid}")
     .onCreate(async (snapshot, context) => {

@@ -1,4 +1,4 @@
 enum CollectionEnum{
-  users,images,socials,follows,follower
+  users,images,socials,follows,follower,messages
 
 }

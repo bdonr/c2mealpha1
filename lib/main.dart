@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/FollowerCubit.dart';
+import 'bloc/MessageCubit.dart';
 import 'events/PageEvents.dart';
 import 'firebase_options.dart';
 
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
                 _visitProfile(),
                 _login(),
                 _startFollow(),
+                _startMessages(),
                 _startFollower(),
                 _mainImage(),
 
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
 
   static _startFollow()=>BlocProvider(create: (context) => FollowsCubit()..getFollows("50myTvoVDnY1TIkhiFJh"));
   static _startFollower()=>BlocProvider(create: (context) => FollowerCubit()..getFollower("50myTvoVDnY1TIkhiFJh"));
+  static _startMessages()=>BlocProvider(create: (context) => MessageCubit()..getMessages("50myTvoVDnY1TIkhiFJh"));
   static _login()=>BlocProvider(create: (context) => LoginCubit()..login("50myTvoVDnY1TIkhiFJh"));
   static _mainImage()=>BlocProvider(create: (context) => LoggedInImageCubit()..getImage("50myTvoVDnY1TIkhiFJh"));
   static _visitProfile() => BlocProvider(create: (context)=>ProfilCubit()..getProfile("50myTvoVDnY1TIkhiFJh"));

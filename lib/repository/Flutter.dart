@@ -25,4 +25,8 @@ class FlutterRepo {
       getReferenceOFCollectionAsStream(String id, CollectionEnum collectionName) {
     return getReferenceOFCollection(collectionName).doc(id).snapshots();
   }
+
+  static Future<DocumentSnapshot<Object?>> getDocSnapOfString(String id) async{
+    return await FirebaseFirestore.instance.doc(id).get();
+  }
 }
