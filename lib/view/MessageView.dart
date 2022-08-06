@@ -49,8 +49,8 @@ class _MessageViewState extends State<MessageView> {
                           Text(Formater.timeToString(messages[index].time) +
                               " "),
                           Text(messages[index].from.name +
-                              " wrote a new story with title" +
-                              messages[index].info)
+                              " wrote a new story with title " +
+                              messages[index].type)
                         ],
                       ));
                     }
@@ -65,7 +65,17 @@ class _MessageViewState extends State<MessageView> {
                         ],
                       ));
                     }
-
+                    if (messages[index].info == "socials") {
+                      return Card(
+                          child: Row(
+                            children: [
+                              AvatarView(20, messages[index].from),
+                              Text(Formater.timeToString(messages[index].time) +
+                                  " "),
+                              Text(messages[index].from.name + " added "+messages[index].type),
+                            ],
+                          ));
+                    }
                     if (messages[index].info == "message") {
                       return Card(
                           child: Row(
