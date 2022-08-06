@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/FollowerCubit.dart';
-import '../bloc/LoginCubit.dart';
-import '../bloc/ProfilCubit.dart';
+import '../bloc/loggedin/FollowerCubit.dart';
+import '../bloc/loggedin/LoginCubit.dart';
+
+import '../bloc/visit/VisitCubit.dart';
 import '../classes/Profile.dart';
 import '../widgets/TopView.dart';
 import '../widgets/UserListView.dart';
@@ -34,8 +35,8 @@ class _HomeViewState extends State<HomeView> {
               onPressed: () async =>
               {
                 Navigator.of(context).pop(context),
-                BlocProvider.of<ProfilCubit>(context)
-                    .getProfile("50myTvoVDnY1TIkhiFJh")
+                BlocProvider.of<VisitCubit>(context)
+                    .findProfile("50myTvoVDnY1TIkhiFJh")
               }),
           actions: [
             MenuButton(() {

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../bloc/PokemonDetailsCubit.dart';
 
 abstract class PageEvents extends Equatable{
 

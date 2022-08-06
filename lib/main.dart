@@ -1,11 +1,11 @@
-import 'package:c2mealpha1/bloc/FollowsCubit.dart';
-import 'package:c2mealpha1/bloc/LoginCubit.dart';
-import 'package:c2mealpha1/bloc/MainImageCubit.dart';
-import 'package:c2mealpha1/bloc/NearCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/FollowsCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoggedInImageCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
-import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
-import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
-import 'package:c2mealpha1/bloc/ProfilCubit.dart';
+
+import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:c2mealpha1/classes/MainImage.dart';
 import 'package:c2mealpha1/events/PokemonEvent.dart';
 import 'package:c2mealpha1/events/ProfileEvent.dart';
@@ -15,8 +15,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/FollowerCubit.dart';
-import 'bloc/MessageCubit.dart';
+import 'bloc/loggedin/FollowerCubit.dart';
+import 'bloc/loggedin/MessageCubit.dart';
+import 'bloc/visit/SocialsCubit.dart';
 import 'events/PageEvents.dart';
 import 'firebase_options.dart';
 
@@ -31,7 +32,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pdc = PokemonDetailsCubit();
     return MaterialApp(
       theme: Theme.of(context)
           .copyWith(primaryColor: Colors.red, accentColor: Colors.redAccent),
@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData) {
               return MultiBlocProvider(providers: [
                 _visitProfile(),
+                _visitProfileSocials(),
                 _login(),
+                _startSocials(),
                 _startFollow(),
                 _startMessages(),
                 _startFollower(),
@@ -63,5 +65,7 @@ class MyApp extends StatelessWidget {
   static _startMessages()=>BlocProvider(create: (context) => MessageCubit()..getMessages("50myTvoVDnY1TIkhiFJh"));
   static _login()=>BlocProvider(create: (context) => LoginCubit()..login("50myTvoVDnY1TIkhiFJh"));
   static _mainImage()=>BlocProvider(create: (context) => LoggedInImageCubit()..getImage("50myTvoVDnY1TIkhiFJh"));
-  static _visitProfile() => BlocProvider(create: (context)=>ProfilCubit()..getProfile("50myTvoVDnY1TIkhiFJh"));
+  static _visitProfile() => BlocProvider(create: (context)=>VisitCubit()..findProfile("50myTvoVDnY1TIkhiFJh"));
+  static _visitProfileSocials() => BlocProvider(create: (context)=>SocialsCubit()..getSocials("50myTvoVDnY1TIkhiFJh"));
+  static _startSocials() => BlocProvider(create: (context)=>LoginSocialsCubit()..getSocials("50myTvoVDnY1TIkhiFJh"));
 }

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../classes/Profile.dart';
-import '../repository/PersonRepository.dart';
+import '../../classes/Profile.dart';
+import '../../repository/PersonRepository.dart';
 
 class NearCubit extends Cubit<List<Profile>> {
   PersonRepository repo = new PersonRepository();

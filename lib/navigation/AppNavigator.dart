@@ -1,5 +1,5 @@
 import 'package:c2mealpha1/bloc/NavCubit.dart';
-import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
+
 import 'package:c2mealpha1/data/PokemonListing.dart';
 import 'package:c2mealpha1/events/PokemonEvent.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
@@ -11,10 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/PokemonDetailsCubit.dart';
+
 import '../states/PageStates.dart';
 import '../view/MessageView.dart';
-import '../view/ProfileView.dart';
+import '../view/VisitView.dart';
 
 class AppNavigator extends StatelessWidget {
   @override
@@ -30,9 +30,9 @@ class AppNavigator extends StatelessWidget {
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/messages': (context) => const MessageView(),
         '/notifications':(context)=>const NotificationView(),
-        '/home' : (context)=> const ProfileView(),
+        '/home' : (context)=> const VisitView(),
         '/search': (context)=> const SearchView(),
-        '/profileview': (context)=> const ProfileView(),
+        '/profileview': (context)=> const VisitView(),
 
       },
     );

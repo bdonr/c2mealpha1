@@ -6,7 +6,6 @@ import '../classes/SocialMedia.dart';
 
 class SocialConfig {
   static Color configColor(Social x) {
-    print(x.socialMedia);
     if (x.socialMedia == SocialMedia.INSTAGRAM) {
       return Colors.lightBlueAccent;
     }

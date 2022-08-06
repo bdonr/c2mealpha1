@@ -1,4 +1,4 @@
-import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
+
 import 'package:equatable/equatable.dart';
 
 abstract class PageStates extends Equatable{

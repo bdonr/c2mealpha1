@@ -1,5 +1,5 @@
-import 'package:c2mealpha1/bloc/FollowerCubit.dart';
-import 'package:c2mealpha1/bloc/SocialsCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/FollowerCubit.dart';
+import 'package:c2mealpha1/bloc/visit/SocialsCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

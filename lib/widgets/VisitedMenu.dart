@@ -1,11 +1,10 @@
-import 'package:c2mealpha1/bloc/LoginCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/MainImageCubit.dart';
-import '../bloc/ProfilCubit.dart';
+import '../bloc/loggedin/LoggedInImageCubit.dart';
 import '../classes/Profile.dart';
 import '../helper/formater.dart';
 import '../view/StartPage.dart';

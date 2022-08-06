@@ -1,8 +1,7 @@
-import 'package:c2mealpha1/bloc/LoginCubit.dart';
-import 'package:c2mealpha1/bloc/MainImageCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoggedInImageCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
-import 'package:c2mealpha1/bloc/PokemonBLoc.dart';
-import 'package:c2mealpha1/bloc/PokemonDetailsCubit.dart';
+
 import 'package:c2mealpha1/classes/MainImage.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
@@ -21,8 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/FollowerCubit.dart';
-import '../bloc/ProfilCubit.dart';
+import '../bloc/loggedin/FollowerCubit.dart';
 import '../classes/Profile.dart';
 import '../events/PageEvents.dart';
 import '../events/PokemonEvent.dart';
@@ -39,26 +37,20 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfilCubit, Profile?>(
-
-        builder: (context, user) {
-          if(user!=null) {
-            return BlocBuilder<LoginCubit, Profile?>(
-                builder: (context, loggedin) {
-                  if(loggedin!=null) {
-                    if (loggedin!.id == user!.id) {
-                      return MessageView();
-                    }
-                    return VisitView();
-                  }
-                  return CircularProgressIndicator();
-                });
+    return
+      BlocBuilder<LoginCubit, Profile?>(
+        builder: (context, loggedin) {
+          if (loggedin != null) {
+            if (loggedin != null) {
+              return MessageView();
+            }
+            return CircularProgressIndicator();
           }
           return CircularProgressIndicator();
         });
 
   }
-}
+  }
 /**   child: CustomScrollView(slivers: [
     SliverAppBar(
     expandedHeight: 400,
@@ -165,4 +157,4 @@ class _StartPageState extends State<StartPage> {
     ));
     }
     }
-    **/
+ **/

@@ -1,11 +1,12 @@
 import 'dart:math';
 
+import 'package:c2mealpha1/bloc/visit/SocialsCubit.dart';
+import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 
 class AvatarView extends StatefulWidget {
@@ -57,8 +58,11 @@ class _AvatarViewState extends State<AvatarView> {
                 clipBehavior: Clip.hardEdge,
                 color: Colors.transparent,
                 child: InkWell(onTap: (){
-                    Navigator.pushNamed(context, '/profileview');
-                    BlocProvider.of<ProfilCubit>(context).getProfile(widget.profile.id);
+                  print("pressed:"+widget.profile.id);
+                  print("pressed:"+widget.profile.id);
+                  BlocProvider.of<VisitCubit>(context).findProfile(widget.profile.id);
+                  BlocProvider.of<SocialsCubit>(context).getSocials(widget.profile.id);
+                  Navigator.pushNamed(context, '/profileview');
                 },),
               ),
             ),

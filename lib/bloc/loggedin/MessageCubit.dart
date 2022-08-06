@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:c2mealpha1/classes/Message.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../repository/FlutterUserRepository.dart';
+import '../../repository/FlutterUserRepository.dart';
 
 class MessageCubit extends Cubit<List<Message>> {
   late StreamSubscription c;

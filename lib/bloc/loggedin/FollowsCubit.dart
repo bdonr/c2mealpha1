@@ -5,7 +5,7 @@ import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/repository/PersonRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../classes/Profile.dart';
+import '../../classes/Profile.dart';
 
 class FollowsCubit extends Cubit<List<Profile?>>{
   late StreamSubscription c;
@@ -17,5 +17,8 @@ class FollowsCubit extends Cubit<List<Profile?>>{
       emit(data);
     });
   }
+
+
+
 
 }

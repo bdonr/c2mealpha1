@@ -1,4 +1,5 @@
-import 'package:c2mealpha1/bloc/SocialsCubit.dart';
+import 'package:c2mealpha1/bloc/visit/SocialsCubit.dart';
+import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:c2mealpha1/config/SocialConfig.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/FollowerCubit.dart';
-import '../bloc/FollowsCubit.dart';
-import '../bloc/ProfilCubit.dart';
+import '../bloc/loggedin/FollowerCubit.dart';
+import '../bloc/loggedin/FollowsCubit.dart';
 import '../classes/Profile.dart';
 import '../classes/Social.dart';
 import '../helper/formater.dart';
@@ -33,7 +33,6 @@ class _TopViewState extends State<TopView> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () async => {
                   Navigator.of(context).pop(context),
-                  BlocProvider.of<ProfilCubit>(context).getProfile("1")
                 }),
         actions: [
           MenuButton(() {
@@ -137,46 +136,7 @@ class _TopViewState extends State<TopView> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 300.0),
-                child: BlocBuilder<ProfilCubit, Profile?>(
-                    builder: (context, details) {
-                  if (details != null) {
-                    return BlocBuilder<SocialsCubit, List<Social?>>(
-                        builder: (context, list) {
-                      return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: list.length,
-                          itemBuilder: (context, index) {
-                            List<String> x = list[index]!
-                                .socialMedia
-                                .toString()
-                                .toLowerCase()
-                                .split(".");
 
-                            return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  child: Container(
-                                    color:
-                                        SocialConfig.configColor(list[index]!),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 34, top: 30),
-                                      child:
-                                          SocialConfig.configIcon(list[index]!),
-                                    ),
-                                    width: 90,
-                                    height: 100,
-                                  ),
-                                ));
-                          });
-                    });
-                  }
-                  return CircularProgressIndicator();
-                }),
-              )
             ],
           ),
         ));

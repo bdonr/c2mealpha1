@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:c2mealpha1/classes/Message.dart';
+import 'package:c2mealpha1/classes/SocialMedia.dart';
 import 'package:c2mealpha1/repository/CollectionEnum.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,20 +25,18 @@ class FlutterRepository {
     return FlutterRepo.getReferenceAndSubCollectionAsStream(
             uid, CollectionEnum.users, CollectionEnum.socials)
         .map((event) => event.docs
-            .map((e) => Social(e.get('name'), e.get('url')))
+            .map((e) => Social(_mapStringToEnum(e.get("type")), e.get('url')))
             .toList());
   }
 
   static Stream<Profile> getProfile(uid) {
     return FlutterRepo.getReferenceOFCollectionAsStream(
             uid, CollectionEnum.users)
-        .asyncMap((event) async => Profile(
-            event.id,
-            event.get('name'),
-            event.get('followerCount'),
-            event.get('messageCount'),
-            event.get('follows'),
-            "sadas"));
+        .asyncMap((event) async {
+      var z = await event['mainImage'].get();
+      return Profile(event.id, event.get('name'), event.get('followerCount'),
+          event.get('messageCount'), event.get('follows'), z.get("url"));
+    });
   }
 
   static Stream<List<Profile>> findUserByLocation(
@@ -86,7 +85,7 @@ class FlutterRepository {
 
   static Stream<List<Message>> findMessages(String id) =>
       FlutterRepo.getReferenceAndSubCollectionOrderedAsStream(
-              id, CollectionEnum.users, CollectionEnum.messages,"time",true )
+              id, CollectionEnum.users, CollectionEnum.messages, "time", true)
           .asyncMap<List<Message>>(
             (profileList) => Future.wait(_mapList2(profileList)),
           )
@@ -112,15 +111,8 @@ class FlutterRepository {
     var z = await a['mainImage'].get();
     print(z.id);
     Profile user = _mapProfile(a, z);
-    return Message(
-        m.id,
-        m.get("info"),
-        m.get("type"),
-        m.get("read"),
-        m.get("active"),
-        m.get("time"),
-        user,
-        m.get("optional"));
+    return Message(m.id, m.get("info"), m.get("type"), m.get("read"),
+        m.get("active"), m.get("time"), user, m.get("optional"));
   }
 
   static _mapProfile(a, z) => Profile(
@@ -131,8 +123,46 @@ class FlutterRepository {
       a.get('follows'),
       z.get("url"));
 
-  static findUserByRef(String x,ref)async{
+  static findUserByRef(String x, ref) async {
     DocumentSnapshot user = await FlutterRepo.getDocSnapOfString(ref);
+  }
 
+  static _mapStringToEnum(String x) {
+    if (x == "twitter") {
+      return SocialMedia.TWITTER;
+    }
+    if (x == "xing") {
+      return SocialMedia.XING;
+    }
+    if (x == "facebook") {
+      return SocialMedia.FACEBOOK;
+    }
+    if (x == "twitch") {
+      return SocialMedia.TWITCH;
+    }
+    if (x == "snapshot") {
+      return SocialMedia.SNAPSHAT;
+    }
+    if (x == "pinterest") {
+      return SocialMedia.PINTEREST;
+    }
+    if (x == "onlyfans") {
+      return SocialMedia.ONLYFANS;
+    }
+    if (x == "instagram") {
+      return SocialMedia.INSTAGRAM;
+    }
+    if (x == "tiktok") {
+      return SocialMedia.TIKTOK;
+    }
+    if (x == "youtube") {
+      return SocialMedia.YOUTUBE;
+    }
+    if (x == "blizzard") {
+      return SocialMedia.BLIZZARD;
+    }
+    if (x == "steam") {
+      return SocialMedia.STEAM;
+    }
   }
 }

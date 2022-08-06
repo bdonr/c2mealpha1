@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:c2mealpha1/bloc/FollowerCubit.dart';
-import 'package:c2mealpha1/bloc/NearCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/FollowerCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/NearCubit.dart';
 import 'package:c2mealpha1/repository/PersonRepository.dart';
 import 'package:c2mealpha1/widgets/UserListView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/ProfilCubit.dart';
 import '../classes/Profile.dart';
 import '../states/ProfileState.dart';
 import 'AvatarView.dart';
