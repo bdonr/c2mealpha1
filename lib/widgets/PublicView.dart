@@ -79,16 +79,33 @@ class _PublicViewState extends State<PublicView> {
           expandedHeight: 200,
         ),
         SliverToBoxAdapter(
-          child: Container(
-            child: Text(widget.visit.id),
-          ),
+          child: ShadowBox(
+            Column(children: [
+              Row(children: [
+                Text("Name:"),
+                Padding(padding: EdgeInsets.only(left: 3)),
+                Text(widget.visit.name),
+              ],
+              ),
+              Row(children: [
+                Text("About Me:"),
+                Padding(padding: EdgeInsets.only(left: 3)),
+                Text(widget.visit.about),
+              ],
+              ),
+
+              ])
+          ,Colors.deepPurple.shade50,Colors.deepPurple.shade50,100,100)
         ),
         SliverToBoxAdapter(
           child:
-              BlocBuilder<SocialsCubit, List<Social>>(builder: (context, list) {
+              Padding(
+                padding: EdgeInsets.only(top:5),
+                child: BlocBuilder<SocialsCubit, List<Social>>(builder: (context, list) {
             return
-              ShadowBox(SocialList(list),Colors.grey,Colors.white,100,100);
+                ShadowBox(SocialList(list),Colors.deepPurple.shade50,Colors.deepPurple.shade50,100,100);
           }),
+              ),
         )
       ],
     ));

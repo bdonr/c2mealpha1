@@ -34,8 +34,14 @@ class FlutterRepository {
             uid, CollectionEnum.users)
         .asyncMap((event) async {
       var z = await event['mainImage'].get();
-      return Profile(event.id, event.get('name'), event.get('followerCount'),
-          event.get('messageCount'), event.get('follows'), z.get("url"));
+      return Profile(
+          event.id,
+          event.get('name'),
+          event.get('about')!=null ? event.get("about") : "no Info",
+          event.get('followerCount'),
+          event.get('messageCount'),
+          event.get('follows'),
+          z.get("url"));
     });
   }
 
@@ -53,8 +59,14 @@ class FlutterRepository {
                 FlutterRepo.getReferenceOFCollection(CollectionEnum.users))
         .within(center: g, radius: 10, field: 'position')
         .map((event) => event
-            .map((e) => Profile(e.id, e.get('name'), e.get('followerCount'),
-                e.get('messageCount'), e.get('follows'), "sadas"))
+            .map((e) => Profile(
+                e.id,
+                e.get('name'),
+                e.get('about') !=null? e.get("about") : "no Info",
+                e.get('followerCount'),
+                e.get('messageCount'),
+                e.get('follows'),
+                "sadas"))
             .toList());
   }
 
@@ -118,6 +130,7 @@ class FlutterRepository {
   static _mapProfile(a, z) => Profile(
       a.id,
       a.get('name'),
+      a.get('about')!=null ? a.get("about") : "no Info",
       a.get('followerCount'),
       a.get('messageCount'),
       a.get('follows'),

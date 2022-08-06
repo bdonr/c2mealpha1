@@ -1,5 +1,6 @@
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
+import 'package:c2mealpha1/widgets/TopViewMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import '../bloc/visit/VisitCubit.dart';
 import '../classes/Profile.dart';
 import '../classes/Social.dart';
 import '../helper/formater.dart';
+import 'ShadowBox.dart';
 import 'SocialList.dart';
 import 'TopView.dart';
 
@@ -67,40 +69,31 @@ class _PrivatViewState extends State<PrivatView> {
                   width: double.infinity,
                   fit: BoxFit.fill,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 200, left: 65, bottom: 120),
-                  child: FaIcon(
-                    FontAwesomeIcons.solidHeart,
-                    color: Colors.red,
-                  ),
-                ),
-                Padding(
-                    padding: EdgeInsets.only(left: 0, bottom: 120),
-                    child: Text(
-                      Formater.func(widget.login.followerCount),
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold),
-                    )),
-                Padding(
-                    padding: EdgeInsets.only(left: 70, bottom: 120),
-                    child: Text(
-                      "Follows${Formater.func(widget.login.follows)}",
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold),
-                    )),
+                TopViewMenu(widget.login)
               ],
             ),
           ),
           expandedHeight: 200,
         ),
+
         SliverToBoxAdapter(
-          child: Container(
-            child: Text(widget.login!.id),
-          ),
+            child: ShadowBox(
+                Column(children: [
+                  Row(children: [
+                    Text("Name:"),
+                    Padding(padding: EdgeInsets.only(left: 3)),
+                    Text(widget.visit.name),
+                  ],
+                  ),
+                  Row(children: [
+                    Text("About Me:"),
+                    Padding(padding: EdgeInsets.only(left: 3)),
+                    Text(widget.visit.about),
+                  ],
+                  ),
+
+                ])
+                ,Colors.deepPurple.shade50,Colors.deepPurple.shade50,100,100)
         ),
         SliverToBoxAdapter(
           child:
