@@ -71,7 +71,7 @@ class FlutterRepository {
         .collection(
             collectionRef:
                 FlutterRepo.getReferenceOFCollection(CollectionEnum.users))
-        .within(center: g, radius: 10, field: 'position')
+        .within(center: g, radius: 10, field: 'position').map((e)=>e.where((f)=> uid != f.id))
         .asyncMap((event) => Future.wait(event
             .map((e) async {
               var x = await e["mainImage"].get();
