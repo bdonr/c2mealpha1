@@ -1,4 +1,5 @@
 import 'package:c2mealpha1/bloc/loggedin/FollowsCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/LoggedInPosition.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoggedInImageCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
@@ -29,7 +30,6 @@ void main() {
 class MyApp extends StatelessWidget {
   Future<FirebaseApp> fbApp =
       Firebase.initializeApp(options: DefaultFirebaseOptions.android);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
                 _visitProfileSocials(),
                 _login(),
                 _startSocials(),
+                _startPos(),
                 _startFollow(),
                 _startMessages(),
                 _startFollower(),
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  static _startPos()=>BlocProvider(create: (context) => LoggedInPosition());
   static _startFollow()=>BlocProvider(create: (context) => FollowsCubit()..getFollows("50myTvoVDnY1TIkhiFJh"));
   static _startFollower()=>BlocProvider(create: (context) => FollowerCubit()..getFollower("50myTvoVDnY1TIkhiFJh"));
   static _startMessages()=>BlocProvider(create: (context) => MessageCubit()..getMessages("50myTvoVDnY1TIkhiFJh"));
