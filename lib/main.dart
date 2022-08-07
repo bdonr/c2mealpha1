@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  static _startPos()=>BlocProvider(create: (context) => LoggedInPosition());
+  static _startPos()=>BlocProvider(create: (context) => LoggedInPosition("50myTvoVDnY1TIkhiFJh"));
   static _startFollow()=>BlocProvider(create: (context) => FollowsCubit()..getFollows("50myTvoVDnY1TIkhiFJh"));
   static _startFollower()=>BlocProvider(create: (context) => FollowerCubit()..getFollower("50myTvoVDnY1TIkhiFJh"));
   static _startMessages()=>BlocProvider(create: (context) => MessageCubit()..getMessages("50myTvoVDnY1TIkhiFJh"));

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:c2mealpha1/bloc/loggedin/LoggedInPosition.dart';
 import 'package:c2mealpha1/classes/Message.dart';
 import 'package:c2mealpha1/classes/SocialMedia.dart';
 import 'package:c2mealpha1/repository/CollectionEnum.dart';
@@ -45,6 +46,19 @@ class FlutterRepository {
     });
   }
 
+  static void changePosition(LocationData locationData, String uid) {
+    var geo = new Geoflutterfire();
+    GeoFirePoint g = geo.point(
+        latitude: locationData.latitude!, longitude: locationData.longitude!);
+    FirebaseFirestore.instance.collection("users").doc(uid).update({'position' : g.data});
+  }
+
+
+
+
+
+
+
   static Stream<List<Profile>> findUserByLocation(
       LocationData locationData, uid) {
     var geo = new Geoflutterfire();
@@ -58,16 +72,18 @@ class FlutterRepository {
             collectionRef:
                 FlutterRepo.getReferenceOFCollection(CollectionEnum.users))
         .within(center: g, radius: 10, field: 'position')
-        .map((event) => event
-            .map((e) => Profile(
+        .asyncMap((event) => Future.wait(event
+            .map((e) async {
+              var x = await e["mainImage"].get();
+              return Profile(
                 e.id,
                 e.get('name'),
                 e.get('about') !=null? e.get("about") : "no Info",
                 e.get('followerCount'),
                 e.get('messageCount'),
                 e.get('follows'),
-                "sadas"))
-            .toList());
+                x.get("url"));})
+            .toList()));
   }
 
   static Stream<MainImage> getImage(String id) {
@@ -178,4 +194,7 @@ class FlutterRepository {
       return SocialMedia.STEAM;
     }
   }
+
 }
+
+

@@ -11,7 +11,7 @@ class FollowsCubit extends Cubit<List<Profile?>>{
   late StreamSubscription c;
   FollowsCubit():super([]);
 
-  void getFollows(String id) async{
+  void getFollows(String id){
     c = FlutterRepository.findFollows(id).listen((event) {});
     c.onData((data) {
       emit(data);

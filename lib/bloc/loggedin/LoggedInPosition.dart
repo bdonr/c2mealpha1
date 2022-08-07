@@ -1,24 +1,29 @@
 import 'dart:async';
-
+import 'package:geoflutterfire/src/util.dart';
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:location/location.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart' as geo;
+import 'package:rxdart/rxdart.dart';
+import '../../classes/Profile.dart';
 
-class LoggedInPosition extends Cubit<Stream<LocationData>> {
-  static StreamController<LocationData> _locationController =
-      StreamController<LocationData>();
+class LoggedInPosition extends Cubit<List<Profile>> {
 
   static Location location = Location();
 
-  LoggedInPosition() : super(locationStream) {
+  late String uid;
+  late StreamSubscription c;
+  LoggedInPosition(String uidd) : super([]) {
+    uid = uidd;
     _determinePosition();
+    location.changeSettings(interval: 1000, distanceFilter: 15);
   }
 
-  static Stream<LocationData> get locationStream => _locationController.stream;
 
   void _determinePosition() async {
-    location.changeSettings(interval:5000,distanceFilter: 15);
     bool serviceEnabled;
     // Test if location services are enabled.
     serviceEnabled = await location.serviceEnabled();
@@ -38,10 +43,11 @@ class LoggedInPosition extends Cubit<Stream<LocationData>> {
         }
       }
     }
-    print(location);
     location.onLocationChanged.listen((locationData) {
-        _locationController.add(locationData);
-
+      FlutterRepository.changePosition(locationData, uid);
+      FlutterRepository.findUserByLocation(locationData, uid).listen((event){
+        emit(event);
+      });
     });
   }
 }
