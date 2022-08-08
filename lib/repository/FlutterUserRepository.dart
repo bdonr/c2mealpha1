@@ -1,28 +1,30 @@
 import 'dart:async';
 
-import 'package:c2mealpha1/bloc/loggedin/LoggedInPosition.dart';
 import 'package:c2mealpha1/classes/Message.dart';
 import 'package:c2mealpha1/classes/SocialMedia.dart';
 import 'package:c2mealpha1/repository/CollectionEnum.dart';
-import 'package:c2mealpha1/widgets/AvatarView.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+
 import 'package:location/location.dart';
 
 import '../classes/MainImage.dart';
 import '../classes/Profile.dart';
 import '../classes/Social.dart';
+import '../enums/SearchCriteria.dart';
 import 'Flutter.dart';
 
 class FlutterRepository {
-  final databaseReference = FirebaseDatabase.instance;
-  static List<Profile> follower = [];
+  List<Profile> follower = [];
+  late double distance = 15;
+  late Query<Map<String,dynamic>> query=FirebaseFirestore.instance.collection("users");
+  static final FlutterRepository _singleton = FlutterRepository._internal();
+  factory FlutterRepository() {
+    return _singleton;
+  }
+  FlutterRepository._internal();
 
-  static Stream<List<Social>> socials(uid) {
+  Stream<List<Social>> socials(uid) {
     return FlutterRepo.getReferenceAndSubCollectionAsStream(
             uid, CollectionEnum.users, CollectionEnum.socials)
         .map((event) => event.docs
@@ -30,7 +32,7 @@ class FlutterRepository {
             .toList());
   }
 
-  static Stream<Profile> getProfile(uid) {
+   Stream<Profile> getProfile(uid) {
     return FlutterRepo.getReferenceOFCollectionAsStream(
             uid, CollectionEnum.users)
         .asyncMap((event) async {
@@ -38,7 +40,7 @@ class FlutterRepository {
       return Profile(
           event.id,
           event.get('name'),
-          event.get('about')!=null ? event.get("about") : "no Info",
+          event.get('about') != null ? event.get("about") : "no Info",
           event.get('followerCount'),
           event.get('messageCount'),
           event.get('follows'),
@@ -46,47 +48,40 @@ class FlutterRepository {
     });
   }
 
-  static void changePosition(LocationData locationData, String uid) {
+   void changePosition(LocationData locationData, String uid) {
     var geo = new Geoflutterfire();
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
-    FirebaseFirestore.instance.collection("users").doc(uid).update({'position' : g.data});
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .update({'position': g.data});
   }
 
-
-
-
-
-
-
-  static Stream<List<Profile>> findUserByLocation(
-      LocationData locationData, uid) {
+   Stream<List<Profile>> findUserByLocation(LocationData locationData,String uid) {
     var geo = new Geoflutterfire();
 
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
-    //var res = FirebaseFirestore.instance.collection('users').where(FieldPath.documentId, isNotEqualTo: "Pdu9166AKjSz4BxDOaKtmNkRf3h1").orderBy(FieldPath.documentId);
 
     return geo
-        .collection(
-            collectionRef:
-                FlutterRepo.getReferenceOFCollection(CollectionEnum.users))
-        .within(center: g, radius: 10, field: 'position').map((e)=>e.where((f)=> uid != f.id))
-        .asyncMap((event) => Future.wait(event
-            .map((e) async {
+        .collection(collectionRef: query)
+        .within(center: g, radius: distance, field: 'position')
+        .map((e) => e.where((f) => uid != f.id))
+        .asyncMap((event) => Future.wait(event.map((e) async {
               var x = await e["mainImage"].get();
               return Profile(
-                e.id,
-                e.get('name'),
-                e.get('about') !=null? e.get("about") : "no Info",
-                e.get('followerCount'),
-                e.get('messageCount'),
-                e.get('follows'),
-                x.get("url"));})
-            .toList()));
+                  e.id,
+                  e.get('name'),
+                  e.get('about') != null ? e.get("about") : "no Info",
+                  e.get('followerCount'),
+                  e.get('messageCount'),
+                  e.get('follows'),
+                  x.get("url"));
+            }).toList()));
   }
 
-  static Stream<MainImage> getImage(String id) {
+   Stream<MainImage> getImage(String id) {
     return FlutterRepo.getReferenceAndSubCollection(
             id, CollectionEnum.users, CollectionEnum.images)
         .where("main", isEqualTo: true)
@@ -95,7 +90,7 @@ class FlutterRepository {
         .asStream();
   }
 
-  static Stream<List<Profile>> findFollower(String id) =>
+   Stream<List<Profile>> findFollower(String id) =>
       FlutterRepo.getReferenceAndSubCollectionAsStream(
               id, CollectionEnum.users, CollectionEnum.follower)
           .asyncMap<List<Profile>>(
@@ -103,7 +98,7 @@ class FlutterRepository {
           )
           .asBroadcastStream();
 
-  static Stream<List<Profile>> findFollows(String id) =>
+   Stream<List<Profile>> findFollows(String id) =>
       FlutterRepo.getReferenceAndSubCollectionAsStream(
               id, CollectionEnum.users, CollectionEnum.follows)
           .asyncMap<List<Profile>>(
@@ -111,7 +106,7 @@ class FlutterRepository {
           )
           .asBroadcastStream();
 
-  static Stream<List<Message>> findMessages(String id) =>
+   Stream<List<Message>> findMessages(String id) =>
       FlutterRepo.getReferenceAndSubCollectionOrderedAsStream(
               id, CollectionEnum.users, CollectionEnum.messages, "time", true)
           .asyncMap<List<Message>>(
@@ -119,7 +114,7 @@ class FlutterRepository {
           )
           .asBroadcastStream();
 
-  static Iterable<Future<Profile>> _mapList(
+   Iterable<Future<Profile>> _mapList(
           QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Profile>>((m) async {
         var a = await m['user'].get();
@@ -127,13 +122,13 @@ class FlutterRepository {
         return _mapProfile(a, z);
       });
 
-  static Iterable<Future<Message>> _mapList2(
+   Iterable<Future<Message>> _mapList2(
           QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Message>>((m) async {
         return _mapMessage(m);
       });
 
-  static Future<Message> _mapMessage(m) async {
+   Future<Message> _mapMessage(m) async {
     var a = await m['from'].get();
     print(a.id);
     var z = await a['mainImage'].get();
@@ -143,20 +138,20 @@ class FlutterRepository {
         m.get("active"), m.get("time"), user, m.get("optional"));
   }
 
-  static _mapProfile(a, z) => Profile(
+   _mapProfile(a, z) => Profile(
       a.id,
       a.get('name'),
-      a.get('about')!=null ? a.get("about") : "no Info",
+      a.get('about') != null ? a.get("about") : "no Info",
       a.get('followerCount'),
       a.get('messageCount'),
       a.get('follows'),
       z.get("url"));
 
-  static findUserByRef(String x, ref) async {
+   findUserByRef(String x, ref) async {
     DocumentSnapshot user = await FlutterRepo.getDocSnapOfString(ref);
   }
 
-  static _mapStringToEnum(String x) {
+   _mapStringToEnum(String x) {
     if (x == "twitter") {
       return SocialMedia.TWITTER;
     }
@@ -195,6 +190,28 @@ class FlutterRepository {
     }
   }
 
+  /**
+   *
+   *[{ field: '[doc].[field name]', operator: '==', value: '[any value]' }]
+   */
+
+  nameWhereQueries(String name){
+    query = FirebaseFirestore.instance.collection("users").where("name",isEqualTo: name);
+  }
+  nameGenderWhere(String name,String gender){
+    query = FirebaseFirestore.instance.collection("users").where("name",isEqualTo: name).where("gender",isEqualTo: gender);
+  }
+
+  genderWhere(String gender){
+    query = FirebaseFirestore.instance.collection("users").where("gender",isEqualTo: gender);
+  }
+
+
+  changeRange(double range){
+     distance = range;
+  }
+
+  standartSearch(){
+    query =  FirebaseFirestore.instance.collection("users");
+  }
 }
-
-

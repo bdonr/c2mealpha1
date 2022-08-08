@@ -7,10 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../view/StartPage.dart';
 
 class LoggedInImageCubit extends Cubit<ProfileImageHeader?>{
+  final FlutterRepository repository=FlutterRepository();
   LoggedInImageCubit():super(null);
   late StreamSubscription subscription;
  getImage(uid){
-    subscription = FlutterRepository.getImage(uid).listen((event) {
+    subscription = repository.getImage(uid).listen((event) {
       print(event.toString());
 
     });

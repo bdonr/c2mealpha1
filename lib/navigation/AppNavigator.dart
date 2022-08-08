@@ -26,15 +26,16 @@ class AppNavigator extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const SearchView(),
+        '/': (context) =>  SearchView(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/messages': (context) => const MessageView(),
         '/notifications':(context)=>const NotificationView(),
         '/home' : (context)=> const VisitView(),
-        '/search': (context)=> const SearchView(),
+        '/search': (context)=>  SearchView(),
         '/profileview': (context)=> const VisitView(),
 
       },
+
     );
   }
 }

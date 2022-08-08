@@ -7,12 +7,12 @@ import '../../repository/FlutterUserRepository.dart';
 
 class MessageCubit extends Cubit<List<Message>> {
   late StreamSubscription c;
-
+  final FlutterRepository repository=FlutterRepository();
   MessageCubit():super([]);
 
   List<Message> p = [];
   void getMessages(String id) {
-    c = FlutterRepository.findMessages(id).listen((event) {});
+    c = repository.findMessages(id).listen((event) {});
     c.onData((data) {
       emit(data);
     });

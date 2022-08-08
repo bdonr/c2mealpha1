@@ -9,12 +9,12 @@ import '../../repository/PersonRepository.dart';
 
 class FollowerCubit extends Cubit<List<Profile>> {
   late StreamSubscription c;
-
+  final FlutterRepository repository=FlutterRepository();
   FollowerCubit():super([]);
 
   List<Profile> p = [];
   void getFollower(String id) {
-     c = FlutterRepository.findFollower(id).listen((event) {});
+     c = repository.findFollower(id).listen((event) {});
      c.onData((data) {
        emit(data);
      });

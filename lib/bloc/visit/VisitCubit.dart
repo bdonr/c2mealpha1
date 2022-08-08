@@ -7,11 +7,11 @@ import '../../classes/Profile.dart';
 
 class VisitCubit extends Cubit<Profile?> {
   VisitCubit() : super(null);
-
+  final FlutterRepository repository=FlutterRepository();
   late StreamSubscription x;
 
   void findProfile(String id){
-    FlutterRepository.getProfile(id).listen((event) {
+    repository.getProfile(id).listen((event) {
       emit(event);
     });
   }

@@ -39,22 +39,22 @@ class _PublicViewState extends State<PublicView> {
             MenuButton(() {
               Navigator.pushNamed(context, '/home');
               BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login!.id);
+                  .findProfile(widget.login.id);
             }, FaIcon(FontAwesomeIcons.house)),
             MenuButton(() {
               Navigator.pushNamed(context, '/messages');
               BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login!.id);
+                  .findProfile(widget.login.id);
             }, FaIcon(FontAwesomeIcons.message)),
             MenuButton(() {
               Navigator.pushNamed(context, '/notifications');
               BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login!.id);
+                  .findProfile(widget.login.id);
             }, FaIcon(FontAwesomeIcons.bell)),
             MenuButton(() {
               Navigator.pushNamed(context, '/search');
               BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login!.id);
+                  .findProfile(widget.login.id);
             }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
           ],
           flexibleSpace: Container(

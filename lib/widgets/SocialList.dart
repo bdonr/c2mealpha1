@@ -24,7 +24,7 @@ class _SocialListState extends State<SocialList> {
           shrinkWrap: true,
           itemCount: widget.list.length,
           itemBuilder: (context, index) {
-            List<String> x = widget.list[index]!.socialMedia
+            List<String> x = widget.list[index].socialMedia
                 .toString()
                 .toLowerCase()
                 .split(".");

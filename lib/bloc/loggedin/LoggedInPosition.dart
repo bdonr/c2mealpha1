@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:geoflutterfire/src/util.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,21 +8,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:rxdart/rxdart.dart';
 import '../../classes/Profile.dart';
+import '../../enums/SearchCriteria.dart';
 
 class LoggedInPosition extends Cubit<List<Profile>> {
-
   static Location location = Location();
-
-  late String uid;
+  static late String uid;
   late StreamSubscription c;
+  final FlutterRepository repository=FlutterRepository();
   LoggedInPosition(String uidd) : super([]) {
     uid = uidd;
-    _determinePosition();
     location.changeSettings(interval: 1000, distanceFilter: 15);
   }
 
+  void _changeRange(double x){
 
-  void _determinePosition() async {
+  }
+  void _determinePosition(List<Map<SearchCriteria,dynamic>> criteria,int range) async {
     bool serviceEnabled;
     // Test if location services are enabled.
     serviceEnabled = await location.serviceEnabled();
@@ -44,8 +44,8 @@ class LoggedInPosition extends Cubit<List<Profile>> {
       }
     }
     location.onLocationChanged.listen((locationData) {
-      FlutterRepository.changePosition(locationData, uid);
-      FlutterRepository.findUserByLocation(locationData, uid).listen((event){
+      repository.changePosition(locationData, uid);
+      repository.findUserByLocation(locationData, uid).listen((event) {
         emit(event);
       });
     });

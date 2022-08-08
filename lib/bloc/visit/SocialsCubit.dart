@@ -8,10 +8,10 @@ import '../../classes/Social.dart';
 class SocialsCubit extends Cubit<List<Social>>{
   SocialsCubit():super([]);
   late StreamSubscription subscription;
-
+  final FlutterRepository repository=FlutterRepository();
   void getSocials(uid){
     List<Social> socials = [];
-    FlutterRepository.socials(uid).listen((event) {
+    repository.socials(uid).listen((event) {
       event.forEach((element) {
         socials.add(element);
       });

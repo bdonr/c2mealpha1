@@ -9,9 +9,9 @@ class LoginSocialsCubit extends Cubit<List<Social>> {
   LoginSocialsCubit() : super([]);
   late StreamSubscription subscription;
   List<Social> socials = [];
-
+  final FlutterRepository repository=FlutterRepository();
   void getSocials(uid) {
-    FlutterRepository.socials(uid).listen((event) {
+    repository.socials(uid).listen((event) {
       event.forEach((element) {
         socials.add(element);
       });
