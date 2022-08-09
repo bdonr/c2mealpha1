@@ -159,7 +159,7 @@ class _SearchViewState extends State<SearchView> {
       SliverToBoxAdapter(
           child: Container(
               color: Colors.white,
-              height: 230,
+              height: 200,
               child: Center(
                 child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
                   builder: (context, list) {
@@ -172,7 +172,7 @@ class _SearchViewState extends State<SearchView> {
                         itemCount: list[0].length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4),
+                                crossAxisCount: 5),
                         itemBuilder: (BuildContext context, int index) {
                           return Material(
                             child: InkWell(
@@ -204,7 +204,7 @@ class _SearchViewState extends State<SearchView> {
       SliverToBoxAdapter(
         child: Container(
             color: Colors.white,
-            height: 100,
+            height: 300,
             child: Center(
               child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
                   builder: (context, list2) {
@@ -215,7 +215,9 @@ class _SearchViewState extends State<SearchView> {
                   shrinkWrap: true,
                   itemCount: list2[1].length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 10),
+                      crossAxisCount:4,
+                    mainAxisExtent: 100,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
                     return Material(
                       child: Container(
