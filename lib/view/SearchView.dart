@@ -180,8 +180,14 @@ class _SearchViewState extends State<SearchView> {
                                 this.setState(() {
 
                                 });
-                                BlocProvider.of<SocialSearchCubit>(context)
-                                    .swap(list[0][index]);
+                                if(list[0][index]==SocialMedia.NOTHING){
+                                  BlocProvider.of<SocialSearchCubit>(context)
+                                      .reset();
+                                }
+                                else {
+                                  BlocProvider.of<SocialSearchCubit>(context)
+                                      .swap(list[0][index]);
+                                }
                               },
                               child: Container(
                                   color: SocialConfig.configColorByEnum(

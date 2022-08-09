@@ -240,4 +240,23 @@ class FlutterRepository {
     x[0].removeWhere((item) => item.name == muh.name);
     yield x;
   }
+
+  Stream<List<List<SocialMedia>>> reset() async*{
+   this.socialList = [
+      SocialMedia.ONLYFANS,
+      SocialMedia.YOUTUBE,
+      SocialMedia.TIKTOK,
+      SocialMedia.SNAPCHAT,
+      SocialMedia.INSTAGRAM,
+      SocialMedia.TWITCH,
+      SocialMedia.TWITTER,
+      SocialMedia.NOTHING
+    ];
+
+    this.socialList2 = [];
+    this.x=[];
+    this.x.add(socialList);
+    this.x.add(socialList2);
+    yield x;
+  }
 }

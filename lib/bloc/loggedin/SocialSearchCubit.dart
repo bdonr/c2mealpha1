@@ -24,4 +24,12 @@ class SocialSearchCubit extends Cubit<List<List<SocialMedia>>> {
       emit(data);
     });
   }
+
+  reset(){
+    x = repository.reset().listen((event) {});
+    x.onData((data) {
+      print(data);
+      emit(data);
+    });
+  }
 }
