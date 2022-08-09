@@ -230,8 +230,8 @@ class FlutterRepository {
   }
 
 
-  Stream<List<List<SocialMedia>>> startStream(){
-    return Stream.value(x);
+  Stream<List<List<SocialMedia>>> startStream()async*{
+    yield x;
   }
 
   Stream<List<List<SocialMedia>>> swap(SocialMedia muh) async*{
