@@ -1,9 +1,11 @@
 import 'package:c2mealpha1/states/SearchState.dart';
+import 'package:c2mealpha1/states/SocialSearchState.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 
 import '../../events/SearchEvent.dart';
+import '../../events/SocialSearchEvent.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(InitState()) {
@@ -26,11 +28,15 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
   }
 }
-class SearchSocialBloc extends Bloc<SearchEvent, SearchState> {
+
+class SearchSocialBloc extends Bloc<SocialSearchEvent, SocialSearchState> {
   SearchSocialBloc() : super(SocialSearchInitState()) {
     on((SocialSearchAddEvent event, emit) {
       if (event is SocialSearchAddEvent) {
-        emit(SocialSearchAddState(event.socialList, event.socialList2));
+        emit(SocialSearchAddState(event.x));
+      }
+      if (event is SocialSearchInitEvent) {
+        emit(SocialSearchInitState());
       }
     });
   }

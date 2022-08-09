@@ -16,6 +16,19 @@ import 'Flutter.dart';
 
 class FlutterRepository {
   List<Profile> follower = [];
+  late List<SocialMedia> socialList = [
+    SocialMedia.ONLYFANS,
+    SocialMedia.YOUTUBE,
+    SocialMedia.TIKTOK,
+    SocialMedia.SNAPCHAT,
+    SocialMedia.INSTAGRAM,
+    SocialMedia.TWITCH,
+    SocialMedia.TWITTER,
+    SocialMedia.NOTHING
+  ];
+
+  late List<SocialMedia> socialList2 = [];
+  late List<List<SocialMedia>> x = [socialList,socialList2];
   late double distance = 15;
   late LocationData locationData;
   late Query<Map<String,dynamic>> query=FirebaseFirestore.instance.collection("users");
@@ -214,5 +227,17 @@ class FlutterRepository {
 
   standartSearch(){
     query =  FirebaseFirestore.instance.collection("users");
+  }
+
+
+  Stream<List<List<SocialMedia>>> startStream(){
+    return Stream.value(x);
+  }
+
+  Stream<List<List<SocialMedia>>> swap(SocialMedia muh) async*{
+    print(muh);
+    x[1].add(x[0].firstWhere((e) => e.name == muh.name));
+    x[0].removeWhere((item) => item.name == muh.name);
+    yield x;
   }
 }

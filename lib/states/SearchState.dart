@@ -69,29 +69,3 @@ class GenderAndNameSelectedState extends SearchState{
   @override
   List<Object?> get props =>[this.gender,this.name];
 }
-
-class SocialSearchAddState extends SearchState{
-   List<SocialMedia> socialList=[];
-   List<SocialMedia> socialList2=[];
-  SocialSearchAddState(this.socialList,this.socialList2);
-  @override
-  List<Object?> get props =>[this.socialList,this.socialList2];
-}
-
-class SocialSearchInitState extends SearchState{
-  List<SocialMedia> socialList = [
-    SocialMedia.ONLYFANS,
-    SocialMedia.YOUTUBE,
-    SocialMedia.TIKTOK,
-    SocialMedia.SNAPCHAT,
-    SocialMedia.INSTAGRAM,
-    SocialMedia.TWITCH,
-    SocialMedia.TWITTER,
-    SocialMedia.NOTHING
-  ];
-  List<SocialMedia> socialList2 = [
-  ];
-
-  SocialSearchInitState();
-  List<Object?> get props =>[socialList,this.socialList2];
-}

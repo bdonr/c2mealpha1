@@ -35,32 +35,6 @@ class SliderMoveEvent3 extends SearchEvent{
   List<Object?> get props =>[single];
 }
 
-class SocialSearchAddEvent extends SearchEvent{
-  final List<SocialMedia> socialList;
-  final List<SocialMedia> socialList2;
-  SocialSearchAddEvent(this.socialList,this.socialList2);
-  List<Object?> get props =>[this.socialList,this.socialList2];
-}
-
-class SocialSearchInitEvent extends InitState{
-  final List<SocialMedia> socialList = [
-    SocialMedia.ONLYFANS,
-    SocialMedia.YOUTUBE,
-    SocialMedia.TIKTOK,
-    SocialMedia.SNAPCHAT,
-    SocialMedia.INSTAGRAM,
-    SocialMedia.TWITCH,
-    SocialMedia.TWITTER,
-    SocialMedia.NOTHING
-  ];
-  List<SocialMedia> socialList2 = [
-  ];
-
-  SocialSearchInitEvent();
-  List<Object?> get props =>[socialList,this.socialList2];
-}
-
-
 
 
 class GenderSelectedEvent extends SearchEvent{
