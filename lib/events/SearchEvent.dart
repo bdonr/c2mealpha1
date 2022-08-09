@@ -3,6 +3,7 @@ import 'package:c2mealpha1/states/SearchState.dart';
 import 'package:equatable/equatable.dart';
 import 'package:location/location.dart';
 
+import '../classes/SocialMedia.dart';
 import '../enums/SearchCriteria.dart';
 import '../repository/FlutterUserRepository.dart';
 
@@ -11,6 +12,7 @@ abstract class SearchEvent extends Equatable{
 }
 
 class InitEvent extends SearchEvent{
+
   @override
   List<Object?> get props => [props];
 }
@@ -21,6 +23,45 @@ class SliderMoveEvent extends SearchEvent{
   SliderMoveEvent(this.range);
   List<Object?> get props =>[range];
 }
+class SliderMoveEvent2 extends SearchEvent{
+  final double gender;
+  SliderMoveEvent2(this.gender);
+  List<Object?> get props =>[gender];
+}
+
+class SliderMoveEvent3 extends SearchEvent{
+  final double single;
+  SliderMoveEvent3(this.single);
+  List<Object?> get props =>[single];
+}
+
+class SocialSearchAddEvent extends SearchEvent{
+  final List<SocialMedia> socialList;
+  final List<SocialMedia> socialList2;
+  SocialSearchAddEvent(this.socialList,this.socialList2);
+  List<Object?> get props =>[this.socialList,this.socialList2];
+}
+
+class SocialSearchInitEvent extends InitState{
+  final List<SocialMedia> socialList = [
+    SocialMedia.ONLYFANS,
+    SocialMedia.YOUTUBE,
+    SocialMedia.TIKTOK,
+    SocialMedia.SNAPCHAT,
+    SocialMedia.INSTAGRAM,
+    SocialMedia.TWITCH,
+    SocialMedia.TWITTER,
+    SocialMedia.NOTHING
+  ];
+  List<SocialMedia> socialList2 = [
+  ];
+
+  SocialSearchInitEvent();
+  List<Object?> get props =>[socialList,this.socialList2];
+}
+
+
+
 
 class GenderSelectedEvent extends SearchEvent{
   final String gender;

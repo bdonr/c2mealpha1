@@ -17,6 +17,7 @@ import 'Flutter.dart';
 class FlutterRepository {
   List<Profile> follower = [];
   late double distance = 15;
+  late LocationData locationData;
   late Query<Map<String,dynamic>> query=FirebaseFirestore.instance.collection("users");
   static final FlutterRepository _singleton = FlutterRepository._internal();
   factory FlutterRepository() {
@@ -49,6 +50,7 @@ class FlutterRepository {
   }
 
    void changePosition(LocationData locationData, String uid) {
+    this.locationData= locationData;
     var geo = new Geoflutterfire();
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
@@ -58,15 +60,14 @@ class FlutterRepository {
         .update({'position': g.data});
   }
 
-   Stream<List<Profile>> findUserByLocation(LocationData locationData,String uid) {
+   Stream<List<Profile>> findUserByLocation(String uid) {
     var geo = new Geoflutterfire();
-
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
 
     return geo
         .collection(collectionRef: query)
-        .within(center: g, radius: distance, field: 'position')
+        .within(center: g, radius: distance/1000, field: 'position')
         .map((e) => e.where((f) => uid != f.id))
         .asyncMap((event) => Future.wait(event.map((e) async {
               var x = await e["mainImage"].get();
@@ -165,7 +166,7 @@ class FlutterRepository {
       return SocialMedia.TWITCH;
     }
     if (x == "snapshot") {
-      return SocialMedia.SNAPSHAT;
+      return SocialMedia.SNAPCHAT;
     }
     if (x == "pinterest") {
       return SocialMedia.PINTEREST;

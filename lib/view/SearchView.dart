@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:c2mealpha1/bloc/loggedin/LoggedInPosition.dart';
 import 'package:c2mealpha1/bloc/loggedin/SearchBloc.dart';
+import 'package:c2mealpha1/config/SocialConfig.dart';
 import 'package:c2mealpha1/events/SearchEvent.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/states/SearchState.dart';
@@ -15,6 +16,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 
 import '../classes/Profile.dart';
+import '../classes/Social.dart';
+import '../classes/SocialMedia.dart';
 import '../widgets/UserListView.dart';
 
 class SearchView extends StatefulWidget {
@@ -26,6 +29,9 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   var _value = 20.0;
+  var _gender = 1.0;
+  var _single = 1.0;
+  List<SocialMedia> list2=[];
 
   @override
   Widget build(BuildContext context) {
@@ -63,41 +69,199 @@ class _SearchViewState extends State<SearchView> {
             double.infinity),
       )),
       SliverToBoxAdapter(
-        child: ShadowBox(Material(child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            if (state is SliderMoveState) {
-              _value = state.range;
-            }
-            return Slider(
-              min: 0,
-              max: 100,
-              divisions: 100,
-              value: _value,
-              onChanged: (value) {
-                BlocProvider.of<SearchBloc>(context)
-                    .add(SliderMoveEvent(value));
-              },
-            );
-          },
-        )), Colors.grey, Colors.grey.shade50, 100, double.infinity),
+        child: Material(
+            child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text("Meters around me"),
+                  BlocBuilder<SearchBloc, SearchState>(
+                      builder: (context, state) {
+                    if (state is SliderMoveState) {
+                      _value = state.range;
+                    }
+                    return Slider(
+                      min: 0,
+                      max: 100,
+                      divisions: 100,
+                      label: labelRange(),
+                      value: _value,
+                      onChanged: (value) {
+                        print(value);
+                        BlocProvider.of<SearchBloc>(context)
+                            .add(SliderMoveEvent(value));
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text("Which gender?"),
+                  BlocBuilder<SearchBloc, SearchState>(
+                      builder: (context, state) {
+                    if (state is SliderMoveState2) {
+                      _gender = state.gender;
+                    }
+                    return Slider(
+                      min: 0,
+                      max: 3,
+                      divisions: 2,
+                      value: _gender,
+                      label: labelGender(),
+                      onChanged: (value) {
+                        print(value);
+                        BlocProvider.of<SearchBloc>(context)
+                            .add(SliderMoveEvent2(value));
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                children: [
+                  Text("single?"),
+                  BlocBuilder<SearchBloc, SearchState>(
+                      builder: (context, state) {
+                    print(state);
+                    if (state is SliderMoveState3) {
+                      _single = state.single;
+                    }
+                    return Slider(
+                      min: 0,
+                      max: 3,
+                      divisions: 2,
+                      value: _single,
+                      label: labelSingle(),
+                      onChanged: (value) {
+                        print(value);
+                        BlocProvider.of<SearchBloc>(context)
+                            .add(SliderMoveEvent3(value));
+                      },
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ],
+        )),
       ),
+      SliverToBoxAdapter(child:
+          BlocBuilder<SearchSocialBloc, SearchState>(builder: (context, state) {
+            List<SocialMedia> list = [];
+        if (state is SocialSearchInitState) {
+          list = state.socialList;
+        }
+        if (state is SocialSearchAddState) {
+          list = state.socialList;
+        }
+        return Container(
+          color: Colors.white,
+          height: 230,
+          child: Center(
+            child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: list.length,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+              itemBuilder: (BuildContext context, int index) {
+                return Material(
+                  child: InkWell(
+                    onTap: () {
+                      list2.add(list.firstWhere((e) => e.toString()==list[index].toString()));
+                      list.removeWhere((e)=> e.toString()==list[index].toString());
+                      BlocProvider.of<SearchSocialBloc>(context).add(SocialSearchAddEvent(list, list2));
+                    },
+                    child: Container(
+                        color: SocialConfig.configColorByEnum(list[index]),
+                        child: Center(
+                            child: SocialConfig.configTextEnum(list[index]))),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      })),
+      SliverToBoxAdapter(child:
+          BlocBuilder<SearchSocialBloc, SearchState>(builder: (context, state) {
+        if (state is SocialSearchInitState) {
+
+          list2= state.socialList2;
+        }
+        if (state is SocialSearchAddState) {
+
+          list2= state.socialList2;
+        }
+        {print(list2.toString());}
+        return Container(
+          color: Colors.white,
+          height: 100,
+          child: Center(
+            child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: list2.length,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+              itemBuilder: (BuildContext context, int index) {
+                return Material(
+                  child: Container(
+                      color: SocialConfig.configColorByEnum(list2[index]),
+                      child: Center(
+                          child: SocialConfig.configTextEnum(list2[index]))),
+                );
+              },
+            ),
+          ),
+        );
+      })),
       SliverToBoxAdapter(
-        child: ShadowBox(Material(child: BlocBuilder<SearchBloc, SearchState>(
-          builder: (context, state) {
-            print(state);
-            if (state is SliderMoveState) {
-              _value = state.range;
-              return Text(_value.toString());
-            } else if (state is InitState) {
-              _value = 15;
-              return Text(_value.toString());
-            } else {
-              print("NÖ");
-              return Text(_value.toString());
-            }
-          },
-        )), Colors.grey, Colors.grey.shade50, 100, double.infinity),
+        child: Container(
+          color: Colors.white,
+          height: 100,
+          child: TextButton(
+            child: Text("sad"),
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(16.0),
+              primary: Colors.blue,
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+          ),
+        ),
       )
     ]);
+  }
+
+  String labelSingle() {
+    if (_single == 0) {
+      return "no";
+    }
+    if (_single > 0 && _single < 2) {
+      return "dont care";
+    }
+    return "yes";
+  }
+
+  String labelGender() {
+    if (_gender == 0) {
+      return "male";
+    }
+    if (_gender > 0 && _gender < 2) {
+      return "dont care";
+    }
+    return "female";
+  }
+
+  String labelRange() {
+    return _value.toString() + "meters";
   }
 }

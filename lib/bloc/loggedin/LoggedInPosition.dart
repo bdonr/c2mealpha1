@@ -18,12 +18,13 @@ class LoggedInPosition extends Cubit<List<Profile>> {
   LoggedInPosition(String uidd) : super([]) {
     uid = uidd;
     location.changeSettings(interval: 1000, distanceFilter: 15);
+    _determinePosition();
   }
 
   void _changeRange(double x){
 
   }
-  void _determinePosition(List<Map<SearchCriteria,dynamic>> criteria,int range) async {
+  void _determinePosition() async {
     bool serviceEnabled;
     // Test if location services are enabled.
     serviceEnabled = await location.serviceEnabled();
@@ -45,9 +46,15 @@ class LoggedInPosition extends Cubit<List<Profile>> {
     }
     location.onLocationChanged.listen((locationData) {
       repository.changePosition(locationData, uid);
-      repository.findUserByLocation(locationData, uid).listen((event) {
+      repository.findUserByLocation(uid).listen((event) {
         emit(event);
       });
+    });
+  }
+
+  void searchNew(){
+    repository.findUserByLocation(uid).listen((event) {
+      emit(event);
     });
   }
 }
