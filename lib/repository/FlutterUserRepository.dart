@@ -28,42 +28,41 @@ class FlutterRepository {
   ];
 
   late List<SocialMedia> socialList2 = [];
-  late List<List<SocialMedia>> x = [socialList,socialList2];
+  late List<List<SocialMedia>> x = [socialList, socialList2];
   late double distance = 15;
+
   late LocationData locationData;
-  late Query<Map<String,dynamic>> query=FirebaseFirestore.instance.collection("users");
+  late StreamSubscription<List<Profile>> geosub;
+  late Query<Map<String, dynamic>> query =
+  FirebaseFirestore.instance.collection("users");
   static final FlutterRepository _singleton = FlutterRepository._internal();
+
   factory FlutterRepository() {
     return _singleton;
   }
+
   FlutterRepository._internal();
 
   Stream<List<Social>> socials(uid) {
     return FlutterRepo.getReferenceAndSubCollectionAsStream(
-            uid, CollectionEnum.users, CollectionEnum.socials)
-        .map((event) => event.docs
+        uid, CollectionEnum.users, CollectionEnum.socials)
+        .map((event) =>
+        event.docs
             .map((e) => Social(_mapStringToEnum(e.get("type")), e.get('url')))
             .toList());
   }
 
-   Stream<Profile> getProfile(uid) {
+  Stream<Profile> getProfile(uid) {
     return FlutterRepo.getReferenceOFCollectionAsStream(
-            uid, CollectionEnum.users)
+        uid, CollectionEnum.users)
         .asyncMap((event) async {
       var z = await event['mainImage'].get();
-      return Profile(
-          event.id,
-          event.get('name'),
-          event.get('about') != null ? event.get("about") : "no Info",
-          event.get('followerCount'),
-          event.get('messageCount'),
-          event.get('follows'),
-          z.get("url"));
+      return mapProfile(event, z);
     });
   }
 
-   void changePosition(LocationData locationData, String uid) {
-    this.locationData= locationData;
+  void changePosition(LocationData locationData, String uid) {
+    this.locationData = locationData;
     var geo = new Geoflutterfire();
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
@@ -73,99 +72,137 @@ class FlutterRepository {
         .update({'position': g.data});
   }
 
-   Stream<List<Profile>> findUserByLocation(String uid) {
-    var geo = new Geoflutterfire();
+  Stream<List<Profile?>> findUserByLocation(String uid) {
+    final geo = new Geoflutterfire();
     GeoFirePoint g = geo.point(
         latitude: locationData.latitude!, longitude: locationData.longitude!);
-
     return geo
         .collection(collectionRef: query)
-        .within(center: g, radius: distance/1000, field: 'position')
+        .within(center: g, radius: distance, field: 'position')
         .map((e) => e.where((f) => uid != f.id))
-        .asyncMap((event) => Future.wait(event.map((e) async {
-              var x = await e["mainImage"].get();
-              return Profile(
-                  e.id,
-                  e.get('name'),
-                  e.get('about') != null ? e.get("about") : "no Info",
-                  e.get('followerCount'),
-                  e.get('messageCount'),
-                  e.get('follows'),
-                  x.get("url"));
-            }).toList()));
+        .asyncMap((event) =>
+        Future.wait(event.map((u) async {
+          var x = await u["mainImage"].get();
+          if(this.x[1].isNotEmpty) {
+            List<dynamic> finaltmp = await filterBySocialMedia(u, x);
+            if (finaltmp.isNotEmpty && finaltmp.length!=this.x[1].length) {
+              return mapProfile(u, x);
+            }
+            return null;
+          }
+          return mapProfile(u, x);
+        })));
   }
 
-   Stream<MainImage> getImage(String id) {
+  Profile mapProfile(DocumentSnapshot<Map<String, dynamic>> u, x) {
+    return Profile(
+        u.id,
+        u.get('name'),
+        u.get('about') != null ? u.get("about") : "no Info",
+        u.get('followerCount'),
+        u.get('messageCount'),
+        u.get('follows'),
+        x.get("url"));
+  }
+
+  Future<List<dynamic>> filterBySocialMedia(DocumentSnapshot<Map<String, dynamic>> u, x) async {
+    var y = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(u.id)
+        .collection("socials")
+        .get();
+    List tmpsociallist= y.docs.map((element) => element.get("type")).toList();
+    List finaltmp =[];
+    for(String a in tmpsociallist){
+      for(SocialMedia b  in x[1]){
+        if( a==b.name.toLowerCase()){
+          finaltmp.add(b);
+        }
+      }
+    }
+    return finaltmp;
+  }
+
+  Stream<MainImage> getImage(String id) {
     return FlutterRepo.getReferenceAndSubCollection(
-            id, CollectionEnum.users, CollectionEnum.images)
+        id, CollectionEnum.users, CollectionEnum.images)
         .where("main", isEqualTo: true)
         .get()
-        .then((value) => value.docs.map((e) => MainImage(e.get("url"))).first)
+        .then((value) =>
+    value.docs
+        .map((e) => MainImage(e.get("url")))
+        .first)
         .asStream();
   }
 
-   Stream<List<Profile>> findFollower(String id) =>
+  Stream<List<Profile>> findFollower(String id) =>
       FlutterRepo.getReferenceAndSubCollectionAsStream(
-              id, CollectionEnum.users, CollectionEnum.follower)
+          id, CollectionEnum.users, CollectionEnum.follower)
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
-          )
+      )
           .asBroadcastStream();
 
-   Stream<List<Profile>> findFollows(String id) =>
+  Stream<List<Profile>> findFollows(String id) =>
       FlutterRepo.getReferenceAndSubCollectionAsStream(
-              id, CollectionEnum.users, CollectionEnum.follows)
+          id, CollectionEnum.users, CollectionEnum.follows)
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
-          )
+      )
           .asBroadcastStream();
 
-   Stream<List<Message>> findMessages(String id) =>
+  Stream<List<Message>> findMessages(String id) =>
       FlutterRepo.getReferenceAndSubCollectionOrderedAsStream(
-              id, CollectionEnum.users, CollectionEnum.messages, "time", true)
+          id, CollectionEnum.users, CollectionEnum.messages, "time", true)
           .asyncMap<List<Message>>(
             (profileList) => Future.wait(_mapList2(profileList)),
-          )
+      )
           .asBroadcastStream();
 
-   Iterable<Future<Profile>> _mapList(
-          QuerySnapshot<Map<String, dynamic>> profileList) =>
+  Iterable<Future<Profile>> _mapList(
+      QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Profile>>((m) async {
         var a = await m['user'].get();
         var z = await a['mainImage'].get();
         return _mapProfile(a, z);
       });
 
-   Iterable<Future<Message>> _mapList2(
-          QuerySnapshot<Map<String, dynamic>> profileList) =>
+  Iterable<Future<Message>> _mapList2(
+      QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Message>>((m) async {
         return _mapMessage(m);
       });
 
-   Future<Message> _mapMessage(m) async {
+  Future<Message> _mapMessage(m) async {
     var a = await m['from'].get();
-    print(a.id);
     var z = await a['mainImage'].get();
-    print(z.id);
     Profile user = _mapProfile(a, z);
-    return Message(m.id, m.get("info"), m.get("type"), m.get("read"),
-        m.get("active"), m.get("time"), user, m.get("optional"));
+    return Message(
+        m.id,
+        m.get("info"),
+        m.get("type"),
+        m.get("read"),
+        m.get("active"),
+        m.get("time"),
+        user,
+        m.get("optional"));
   }
 
-   _mapProfile(a, z) => Profile(
-      a.id,
-      a.get('name'),
-      a.get('about') != null ? a.get("about") : "no Info",
-      a.get('followerCount'),
-      a.get('messageCount'),
-      a.get('follows'),
-      z.get("url"));
+  _mapProfile(a, z) =>
+      Profile(
+          a.id,
+          a.get('name'),
+          a.get('about') != null ? a.get("about") : "no Info",
+          a.get('followerCount'),
+          a.get('messageCount'),
+          a.get('follows'),
+          z.get("url"));
 
-   findUserByRef(String x, ref) async {
+  findUserByRef(String x, ref) async {
     DocumentSnapshot user = await FlutterRepo.getDocSnapOfString(ref);
   }
 
-   _mapStringToEnum(String x) {
+  _mapStringToEnum(String x) {
     if (x == "twitter") {
       return SocialMedia.TWITTER;
     }
@@ -209,40 +246,45 @@ class FlutterRepository {
    *[{ field: '[doc].[field name]', operator: '==', value: '[any value]' }]
    */
 
-  nameWhereQueries(String name){
-    query = FirebaseFirestore.instance.collection("users").where("name",isEqualTo: name);
-  }
-  nameGenderWhere(String name,String gender){
-    query = FirebaseFirestore.instance.collection("users").where("name",isEqualTo: name).where("gender",isEqualTo: gender);
-  }
-
-  genderWhere(String gender){
-    query = FirebaseFirestore.instance.collection("users").where("gender",isEqualTo: gender);
+  nameWhereQueries(String name) {
+    query = FirebaseFirestore.instance
+        .collection("users")
+        .where("name", isEqualTo: name);
   }
 
-
-  changeRange(double range){
-     distance = range;
+  nameGenderWhere(String name, String gender) {
+    query = FirebaseFirestore.instance
+        .collection("users")
+        .where("name", isEqualTo: name)
+        .where("gender", isEqualTo: gender);
   }
 
-  standartSearch(){
-    query =  FirebaseFirestore.instance.collection("users");
+  genderWhere(String gender) {
+    query = FirebaseFirestore.instance
+        .collection("users")
+        .where("gender", isEqualTo: gender);
   }
 
+  changeRange(double range) {
+    distance = range;
+  }
 
-  Stream<List<List<SocialMedia>>> startStream()async*{
+  standartSearch() {
+    query = FirebaseFirestore.instance.collection("users");
+  }
+
+  Stream<List<List<SocialMedia>>> startStream() async* {
     yield x;
   }
 
-  Stream<List<List<SocialMedia>>> swap(SocialMedia muh) async*{
-    print(muh);
+  Stream<List<List<SocialMedia>>> swap(SocialMedia muh) async* {
     x[1].add(x[0].firstWhere((e) => e.name == muh.name));
     x[0].removeWhere((item) => item.name == muh.name);
     yield x;
   }
 
-  Stream<List<List<SocialMedia>>> reset() async*{
-   this.socialList = [
+  Stream<List<List<SocialMedia>>> reset() async* {
+    this.socialList = [
       SocialMedia.ONLYFANS,
       SocialMedia.YOUTUBE,
       SocialMedia.TIKTOK,
@@ -254,9 +296,37 @@ class FlutterRepository {
     ];
 
     this.socialList2 = [];
-    this.x=[];
+    this.x = [];
     this.x.add(socialList);
     this.x.add(socialList2);
     yield x;
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>>possible(CollectionReference<Map<String, dynamic>> k) {
+
+    for (var element in x[1]) {
+      if (element == SocialMedia.ONLYFANS) {
+        k..where("type", isEqualTo: "onlyfans");
+      }
+      if (element == SocialMedia.YOUTUBE) {
+        k..where("type", isEqualTo: "youtube");
+      }
+      if (element == SocialMedia.TIKTOK) {
+        k..where("type", isEqualTo: "tiktok");
+      }
+      if (element == SocialMedia.SNAPCHAT) {
+        k..where("type", isEqualTo: "snapchat");
+      }
+      if (element == SocialMedia.INSTAGRAM) {
+        k..where("type", isEqualTo: "instagram");
+      }
+      if (element == SocialMedia.TWITCH) {
+        k..where("type", isEqualTo: "twitch");
+      }
+      if (element == SocialMedia.TWITTER) {
+        k..where("type", isEqualTo: "twitter");
+      }
+    }
+    return k.get();
   }
 }

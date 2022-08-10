@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../classes/Profile.dart';
 import '../../enums/SearchCriteria.dart';
 
-class LoggedInPosition extends Cubit<List<Profile>> {
+class LoggedInPosition extends Cubit<List<Profile?>> {
   static Location location = Location();
   static late String uid;
   late StreamSubscription c;

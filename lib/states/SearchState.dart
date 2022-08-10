@@ -48,6 +48,12 @@ class SliderMoveState3 extends SearchState{
 }
 
 
+class StartSearchState extends SearchState{
+  StartSearchState(){
+    repository.findUserByLocation("50myTvoVDnY1TIkhiFJh");
+  }
+  List<Object?> get props =>[];
+}
 
 class GenderSelectedState extends SearchState{
   final String gender;

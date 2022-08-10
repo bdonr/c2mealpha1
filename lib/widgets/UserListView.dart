@@ -12,7 +12,7 @@ class UserListView extends StatefulWidget {
     Key? key,
     required this.list,
   }) : super(key: key);
-  final List<Profile> list;
+  final List<Profile?> list;
 
   @override
   State<UserListView> createState() => _UserListViewState();
@@ -21,11 +21,15 @@ class UserListView extends StatefulWidget {
 class _UserListViewState extends State<UserListView> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: widget.list.length,
-      itemBuilder: (context, index) => AvatarView(30, widget.list[index]),
-    );
+    if(widget.list.isNotEmpty){
+      return ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.list.length,
+        itemBuilder: (context, index) =>widget.list[index]==null?Container(): AvatarView(30, widget.list[index]!),
+      );
+    }
+    return Container();
+
   }
 }

@@ -6,8 +6,12 @@ import 'package:location/location.dart';
 
 import '../../events/SearchEvent.dart';
 import '../../events/SocialSearchEvent.dart';
+import '../../repository/FlutterUserRepository.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
+
+
+
   SearchBloc() : super(InitState()) {
     on((SearchEvent event, emit) {
       if (event is SliderMoveEvent) {
@@ -19,6 +23,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       if (event is SliderMoveEvent3) {
         emit(SliderMoveState3(event.single));
       }
+      if (event is StartSearchEvent) {
+        emit(StartSearchState());
+      }
+
+
       if (event is GenderSelectedEvent) {
         emit(GenderSelectedState(event.gender));
       }

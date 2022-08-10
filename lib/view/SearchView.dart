@@ -57,7 +57,7 @@ class _SearchViewState extends State<SearchView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                  child: BlocBuilder<LoggedInPosition, List<Profile>>(
+                  child: BlocBuilder<LoggedInPosition, List<Profile?>>(
                       builder: (context, pos) {
                     return Container(
                         height: 100, child: UserListView(list: pos));
@@ -238,7 +238,10 @@ class _SearchViewState extends State<SearchView> {
           height: 100,
           child: TextButton(
             child: Text("sad"),
-            onPressed: () {},
+            onPressed: () {
+              BlocProvider.of<LoggedInPosition>(context)
+                  .searchNew();
+            },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.all(16.0),
               primary: Colors.blue,

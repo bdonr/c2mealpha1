@@ -35,7 +35,10 @@ class SliderMoveEvent3 extends SearchEvent{
   List<Object?> get props =>[single];
 }
 
-
+class StartSearchEvent extends SearchEvent{
+  StartSearchEvent();
+  List<Object?> get props =>[];
+}
 
 class GenderSelectedEvent extends SearchEvent{
   final String gender;
