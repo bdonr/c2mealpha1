@@ -34,7 +34,7 @@ class FlutterRepository {
   late LocationData locationData;
   late StreamSubscription<List<Profile>> geosub;
   late Query<Map<String, dynamic>> query =
-  FirebaseFirestore.instance.collection("users");
+      FirebaseFirestore.instance.collection("users");
   static final FlutterRepository _singleton = FlutterRepository._internal();
 
   factory FlutterRepository() {
@@ -45,16 +45,15 @@ class FlutterRepository {
 
   Stream<List<Social>> socials(uid) {
     return FlutterRepo.getReferenceAndSubCollectionAsStream(
-        uid, CollectionEnum.users, CollectionEnum.socials)
-        .map((event) =>
-        event.docs
+            uid, CollectionEnum.users, CollectionEnum.socials)
+        .map((event) => event.docs
             .map((e) => Social(_mapStringToEnum(e.get("type")), e.get('url')))
             .toList());
   }
 
   Stream<Profile> getProfile(uid) {
     return FlutterRepo.getReferenceOFCollectionAsStream(
-        uid, CollectionEnum.users)
+            uid, CollectionEnum.users)
         .asyncMap((event) async {
       var z = await event['mainImage'].get();
       return mapProfile(event, z);
@@ -80,18 +79,18 @@ class FlutterRepository {
         .collection(collectionRef: query)
         .within(center: g, radius: distance, field: 'position')
         .map((e) => e.where((f) => uid != f.id))
-        .asyncMap((event) =>
-        Future.wait(event.map((u) async {
-          var x = await u["mainImage"].get();
-          if(this.x[1].isNotEmpty) {
-            List<dynamic> finaltmp = await filterBySocialMedia(u, x);
-            if (finaltmp.isNotEmpty && finaltmp.length!=this.x[1].length) {
+        .asyncMap((event) => Future.wait(event.map((u) async {
+              var x = await u["mainImage"].get();
+              if (this.x[1].isNotEmpty) {
+                List<dynamic> finaltmp = await filterBySocialMedia(u, x);
+                if (finaltmp.isNotEmpty &&
+                    finaltmp.length == this.x[1].length) {
+                  return mapProfile(u, x);
+                }
+                return null;
+              }
               return mapProfile(u, x);
-            }
-            return null;
-          }
-          return mapProfile(u, x);
-        })));
+            })));
   }
 
   Profile mapProfile(DocumentSnapshot<Map<String, dynamic>> u, x) {
@@ -105,18 +104,22 @@ class FlutterRepository {
         x.get("url"));
   }
 
-  Future<List<dynamic>> filterBySocialMedia(DocumentSnapshot<Map<String, dynamic>> u, x) async {
+  Future<List<dynamic>> filterBySocialMedia(
+      DocumentSnapshot<Map<String, dynamic>> u, x) async {
     var y = await FirebaseFirestore.instance
         .collection("users")
         .doc(u.id)
         .collection("socials")
         .get();
-    List tmpsociallist= y.docs.map((element) => element.get("type")).toList();
-    List finaltmp =[];
-    for(String a in tmpsociallist){
-      for(SocialMedia b  in x[1]){
-        if( a==b.name.toLowerCase()){
-          finaltmp.add(b);
+    List tmpsociallist = y.docs.map((element) => element.get("type").toString()).toList();
+    List finaltmp = [];
+    print(tmpsociallist);
+    if (tmpsociallist.isNotEmpty) {
+      for (String a in tmpsociallist) {
+        for (SocialMedia b in this.x[1]) {
+          if (a == b.name.toLowerCase()) {
+            finaltmp.add(b);
+          }
         }
       }
     }
@@ -125,42 +128,39 @@ class FlutterRepository {
 
   Stream<MainImage> getImage(String id) {
     return FlutterRepo.getReferenceAndSubCollection(
-        id, CollectionEnum.users, CollectionEnum.images)
+            id, CollectionEnum.users, CollectionEnum.images)
         .where("main", isEqualTo: true)
         .get()
-        .then((value) =>
-    value.docs
-        .map((e) => MainImage(e.get("url")))
-        .first)
+        .then((value) => value.docs.map((e) => MainImage(e.get("url"))).first)
         .asStream();
   }
 
   Stream<List<Profile>> findFollower(String id) =>
       FlutterRepo.getReferenceAndSubCollectionAsStream(
-          id, CollectionEnum.users, CollectionEnum.follower)
+              id, CollectionEnum.users, CollectionEnum.follower)
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
-      )
+          )
           .asBroadcastStream();
 
   Stream<List<Profile>> findFollows(String id) =>
       FlutterRepo.getReferenceAndSubCollectionAsStream(
-          id, CollectionEnum.users, CollectionEnum.follows)
+              id, CollectionEnum.users, CollectionEnum.follows)
           .asyncMap<List<Profile>>(
             (profileList) => Future.wait(_mapList(profileList)),
-      )
+          )
           .asBroadcastStream();
 
   Stream<List<Message>> findMessages(String id) =>
       FlutterRepo.getReferenceAndSubCollectionOrderedAsStream(
-          id, CollectionEnum.users, CollectionEnum.messages, "time", true)
+              id, CollectionEnum.users, CollectionEnum.messages, "time", true)
           .asyncMap<List<Message>>(
             (profileList) => Future.wait(_mapList2(profileList)),
-      )
+          )
           .asBroadcastStream();
 
   Iterable<Future<Profile>> _mapList(
-      QuerySnapshot<Map<String, dynamic>> profileList) =>
+          QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Profile>>((m) async {
         var a = await m['user'].get();
         var z = await a['mainImage'].get();
@@ -168,7 +168,7 @@ class FlutterRepository {
       });
 
   Iterable<Future<Message>> _mapList2(
-      QuerySnapshot<Map<String, dynamic>> profileList) =>
+          QuerySnapshot<Map<String, dynamic>> profileList) =>
       profileList.docs.map<Future<Message>>((m) async {
         return _mapMessage(m);
       });
@@ -177,26 +177,18 @@ class FlutterRepository {
     var a = await m['from'].get();
     var z = await a['mainImage'].get();
     Profile user = _mapProfile(a, z);
-    return Message(
-        m.id,
-        m.get("info"),
-        m.get("type"),
-        m.get("read"),
-        m.get("active"),
-        m.get("time"),
-        user,
-        m.get("optional"));
+    return Message(m.id, m.get("info"), m.get("type"), m.get("read"),
+        m.get("active"), m.get("time"), user, m.get("optional"));
   }
 
-  _mapProfile(a, z) =>
-      Profile(
-          a.id,
-          a.get('name'),
-          a.get('about') != null ? a.get("about") : "no Info",
-          a.get('followerCount'),
-          a.get('messageCount'),
-          a.get('follows'),
-          z.get("url"));
+  _mapProfile(a, z) => Profile(
+      a.id,
+      a.get('name'),
+      a.get('about') != null ? a.get("about") : "no Info",
+      a.get('followerCount'),
+      a.get('messageCount'),
+      a.get('follows'),
+      z.get("url"));
 
   findUserByRef(String x, ref) async {
     DocumentSnapshot user = await FlutterRepo.getDocSnapOfString(ref);
@@ -302,8 +294,8 @@ class FlutterRepository {
     yield x;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>>possible(CollectionReference<Map<String, dynamic>> k) {
-
+  Future<QuerySnapshot<Map<String, dynamic>>> possible(
+      CollectionReference<Map<String, dynamic>> k) {
     for (var element in x[1]) {
       if (element == SocialMedia.ONLYFANS) {
         k..where("type", isEqualTo: "onlyfans");
