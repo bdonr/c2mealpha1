@@ -289,6 +289,13 @@ class FlutterRepository {
     yield x;
   }
 
+  Stream<List<List<SocialMedia>>> swapOtherDirection(SocialMedia muh) async* {
+    x[0].add(x[1].firstWhere((e) => e.name == muh.name));
+    x[1].removeWhere((item) => item.name == muh.name);
+    yield x;
+  }
+
+
   Stream<List<List<SocialMedia>>> reset() async* {
     this.socialList = [
       SocialMedia.ONLYFANS,

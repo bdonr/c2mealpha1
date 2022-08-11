@@ -25,6 +25,15 @@ class SocialSearchCubit extends Cubit<List<List<SocialMedia>>> {
     });
   }
 
+  swapOtherDirection(SocialMedia muh) {
+    x = repository.swapOtherDirection(muh).listen((event) {});
+    x.onData((data) {
+      print(data);
+      emit(data);
+    });
+  }
+
+
   reset(){
     x = repository.reset().listen((event) {});
     x.onData((data) {
@@ -34,7 +43,6 @@ class SocialSearchCubit extends Cubit<List<List<SocialMedia>>> {
   }
 
   setExact(){
-
     repository.exact=!repository.exact;
     repository.anyRes=!repository.anyRes;
   print(repository.anyRes);

@@ -210,35 +210,64 @@ class _SearchViewState extends State<SearchView> {
                 ),
               ))),
       SliverToBoxAdapter(
-        child: Container(
-            color: Colors.white,
-            height: 300,
-            child: Center(
-              child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
-                  builder: (context, list2) {
-                if (list2.length == 0) {
-                  return Container();
-                }
-                return GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: list2[1].length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:4,
-                    mainAxisExtent: 100,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Material(
-                      child: Container(
-                          color:
-                              SocialConfig.configColorByEnum(list2[1][index]),
-                          child: Center(
-                              child: SocialConfig.configTextEnum(
-                                  list2[1][index]))),
-                    );
-                  },
-                );
-              }),
-            )),
+        child: Material(
+          child: Container(
+              color: Colors.white,
+              height: 300,
+              child: Center(
+                child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
+                    builder: (context, list2) {
+                  if (list2.length == 0) {
+                    return Container();
+                  }
+
+                  return GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: list2[1].length,
+                      gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4),
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            this.setState(() {
+
+                            });
+                              BlocProvider.of<SocialSearchCubit>(context)
+                                  .swapOtherDirection(list2[1][index]);
+
+                          },
+                          child: Container(
+                              color: SocialConfig.configColorByEnum(
+                                  list2[1][index]),
+                              child: Center(
+                                  child: SocialConfig.configTextEnum(
+                                      list2[1][index]))),
+                        );
+                      });
+
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: list2[1].length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:4,
+                      mainAxisExtent: 100,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Material(
+                        child: Container(
+                            color:
+                                SocialConfig.configColorByEnum(list2[1][index]),
+                            child: Center(
+                                child: SocialConfig.configTextEnum(
+                                    list2[1][index]))),
+                      );
+                    },
+                  );
+                }),
+              )),
+        ),
       ),
       SliverToBoxAdapter(
         child: Container(
