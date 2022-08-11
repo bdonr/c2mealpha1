@@ -8,6 +8,7 @@ import 'package:c2mealpha1/events/SearchEvent.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/states/SearchState.dart';
 import 'package:c2mealpha1/states/SocialSearchState.dart';
+import 'package:c2mealpha1/widgets/CustomSwitch.dart';
 import 'package:c2mealpha1/widgets/ShadowBox.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -161,44 +162,51 @@ class _SearchViewState extends State<SearchView> {
               color: Colors.white,
               height: 300,
               child: Center(
-                child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
-                  builder: (context, list) {
-                    print("blabla" + list.toString());
-                    if (list.length == 0) {
-                      return Container();
-                    }
-                    return GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: list[0].length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Material(
-                            child: InkWell(
-                              onTap: () {
-                                this.setState(() {
+                child: Material(
+                  child: Column(
+                    children: [
+                      CustomSwitch(),
+                      Expanded(
+                        child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
+                          builder: (context, list) {
+                            print("blabla" + list.toString());
+                            if (list.length == 0) {
+                              return Container();
+                            }
+                            return GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: list[0].length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 4),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      this.setState(() {
 
+                                      });
+                                      if(list[0][index]==SocialMedia.NOTHING){
+                                        BlocProvider.of<SocialSearchCubit>(context)
+                                            .reset();
+                                      }
+                                      else {
+                                        BlocProvider.of<SocialSearchCubit>(context)
+                                            .swap(list[0][index]);
+                                      }
+                                    },
+                                    child: Container(
+                                        color: SocialConfig.configColorByEnum(
+                                            list[0][index]),
+                                        child: Center(
+                                            child: SocialConfig.configTextEnum(
+                                                list[0][index]))),
+                                  );
                                 });
-                                if(list[0][index]==SocialMedia.NOTHING){
-                                  BlocProvider.of<SocialSearchCubit>(context)
-                                      .reset();
-                                }
-                                else {
-                                  BlocProvider.of<SocialSearchCubit>(context)
-                                      .swap(list[0][index]);
-                                }
-                              },
-                              child: Container(
-                                  color: SocialConfig.configColorByEnum(
-                                      list[0][index]),
-                                  child: Center(
-                                      child: SocialConfig.configTextEnum(
-                                          list[0][index]))),
-                            ),
-                          );
-                        });
-                  },
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ))),
       SliverToBoxAdapter(

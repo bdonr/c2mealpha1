@@ -30,7 +30,8 @@ class FlutterRepository {
   late List<SocialMedia> socialList2 = [];
   late List<List<SocialMedia>> x = [socialList, socialList2];
   late double distance = 15;
-
+  bool exact = false;
+  bool anyRes = true;
   late LocationData locationData;
   late StreamSubscription<List<Profile>> geosub;
   late Query<Map<String, dynamic>> query =
@@ -82,9 +83,11 @@ class FlutterRepository {
         .asyncMap((event) => Future.wait(event.map((u) async {
               var x = await u["mainImage"].get();
               if (this.x[1].isNotEmpty) {
-                List<dynamic> finaltmp = await filterBySocialMedia(u, x);
-                if (finaltmp.isNotEmpty &&
-                    finaltmp.length == this.x[1].length) {
+                int res = await filterBySocialMedia(u);
+                if (exact && res==this.x[1].length) {
+                  return mapProfile(u, x);
+                }
+                if (anyRes && res>=1) {
                   return mapProfile(u, x);
                 }
                 return null;
@@ -104,27 +107,38 @@ class FlutterRepository {
         x.get("url"));
   }
 
-  Future<List<dynamic>> filterBySocialMedia(
-      DocumentSnapshot<Map<String, dynamic>> u, x) async {
+  Future<int> filterBySocialMedia(
+      DocumentSnapshot<Map<String, dynamic>> u) async {
+    List<String>tmpsociallist =x[1].map((e) => e.name.toLowerCase()).toList();
+    print(tmpsociallist);
+    QuerySnapshot y = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(u.id)
+        .collection("socials").where("type",whereIn: tmpsociallist).get();
+    return y.docs.map((e) => e.get("type").toString()).length;
+
+  }
+
+  bool filterOnly(List<String> tmpsociallist){
+    return (tmpsociallist.length==tmpsociallist.length);
+  }
+
+
+  bool filterAny(List<String> tmpsociallist){
+    return (tmpsociallist.length>1);
+  }
+
+  Future<int> filterBySocialMediaOLD(DocumentSnapshot<Map<String,dynamic>>u,x) async {
     var y = await FirebaseFirestore.instance
         .collection("users")
         .doc(u.id)
         .collection("socials")
         .get();
-    List tmpsociallist = y.docs.map((element) => element.get("type").toString()).toList();
-    List finaltmp = [];
-    print(tmpsociallist);
-    if (tmpsociallist.isNotEmpty) {
-      for (String a in tmpsociallist) {
-        for (SocialMedia b in this.x[1]) {
-          if (a == b.name.toLowerCase()) {
-            finaltmp.add(b);
-          }
-        }
-      }
-    }
-    return finaltmp;
+    return y.docs.map((element) => element.get("type").toString()).toList().length;
   }
+
+
+
 
   Stream<MainImage> getImage(String id) {
     return FlutterRepo.getReferenceAndSubCollection(
