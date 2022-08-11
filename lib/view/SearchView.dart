@@ -8,8 +8,10 @@ import 'package:c2mealpha1/events/SearchEvent.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/states/SearchState.dart';
 import 'package:c2mealpha1/states/SocialSearchState.dart';
+import 'package:c2mealpha1/widgets/ContrainedShadowBox.dart';
 import 'package:c2mealpha1/widgets/CustomSwitch.dart';
 import 'package:c2mealpha1/widgets/ShadowBox.dart';
+import 'package:c2mealpha1/widgets/UserGridView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +55,7 @@ class _SearchViewState extends State<SearchView> {
           flexibleSpace: Container(child: Text("Search"))),
       SliverToBoxAdapter(
           child: Center(
-        child: ShadowBox(
+        child: ContrainedShadowBox(
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -61,7 +63,7 @@ class _SearchViewState extends State<SearchView> {
                   child: BlocBuilder<LoggedInPosition, List<Profile?>>(
                       builder: (context, pos) {
                     return Container(
-                        height: 100, child: UserListView(list: pos));
+                        height: 100, child: UserGridView(list: pos));
                   }),
                 ),
               ],
@@ -221,50 +223,7 @@ class _SearchViewState extends State<SearchView> {
                     return Container();
                   }
 
-                  return GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: list2[1].length,
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4),
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          onTap: () {
-                            this.setState(() {
-
-                            });
-                              BlocProvider.of<SocialSearchCubit>(context)
-                                  .swapOtherDirection(list2[1][index]);
-
-                          },
-                          child: Container(
-                              color: SocialConfig.configColorByEnum(
-                                  list2[1][index]),
-                              child: Center(
-                                  child: SocialConfig.configTextEnum(
-                                      list2[1][index]))),
-                        );
-                      });
-
-
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: list2[1].length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:4,
-                      mainAxisExtent: 100,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Material(
-                        child: Container(
-                            color:
-                                SocialConfig.configColorByEnum(list2[1][index]),
-                            child: Center(
-                                child: SocialConfig.configTextEnum(
-                                    list2[1][index]))),
-                      );
-                    },
-                  );
+                  return buildGridView(list2);
                 }),
               )),
         ),
@@ -288,6 +247,33 @@ class _SearchViewState extends State<SearchView> {
         ),
       )
     ]);
+  }
+
+  GridView buildGridView(List<List<SocialMedia>> list2) {
+    return GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: list2[1].length,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4),
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          this.setState(() {
+
+                          });
+                            BlocProvider.of<SocialSearchCubit>(context)
+                                .swapOtherDirection(list2[1][index]);
+
+                        },
+                        child: Container(
+                            color: SocialConfig.configColorByEnum(
+                                list2[1][index]),
+                            child: Center(
+                                child: SocialConfig.configTextEnum(
+                                    list2[1][index]))),
+                      );
+                    });
   }
 
   String labelSingle() {
