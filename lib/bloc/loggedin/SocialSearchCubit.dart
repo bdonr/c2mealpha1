@@ -32,4 +32,14 @@ class SocialSearchCubit extends Cubit<List<List<SocialMedia>>> {
       emit(data);
     });
   }
+
+  setExact(){
+
+    repository.exact=!repository.exact;
+    repository.anyRes=!repository.anyRes;
+  print(repository.anyRes);
+  print(repository.exact);
+
+  }
+
 }

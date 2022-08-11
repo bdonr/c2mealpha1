@@ -1,5 +1,7 @@
+import 'package:c2mealpha1/bloc/loggedin/SocialSearchCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomSwitch extends StatefulWidget {
   const CustomSwitch({Key? key}) : super(key: key);
@@ -11,23 +13,9 @@ class CustomSwitch extends StatefulWidget {
 class _CustomSwitchState extends State<CustomSwitch> {
   @override
   bool isSwitched = false;
-  var textValue = 'Switch is OFF';
+  var textValue = '';
 
-  void toggleSwitch(bool value) {
-    if (isSwitched == false) {
-      setState(() {
-        isSwitched = true;
-        textValue = 'with any';
-      });
-      print('with all ');
-    } else {
-      setState(() {
-        isSwitched = false;
-        textValue = 'with all';
-      });
-      print('Switch Button is OFF');
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +23,24 @@ class _CustomSwitchState extends State<CustomSwitch> {
       Transform.scale(
           scale: 2,
           child: Switch(
-            onChanged: toggleSwitch,
+            onChanged: (value) => {
+              if (isSwitched == false)
+                {
+                  setState(() {
+                    BlocProvider.of<SocialSearchCubit>(context).setExact();
+                    isSwitched = true;
+                    textValue = 'with all of this socials';
+                  })
+                }
+              else
+                {
+                  setState(() {
+                    BlocProvider.of<SocialSearchCubit>(context).setExact();
+                    isSwitched = !isSwitched;
+                    textValue = 'with any of this socials';
+                  })
+                }
+            },
             value: isSwitched,
             activeColor: Colors.blue,
             activeTrackColor: Colors.yellow,
