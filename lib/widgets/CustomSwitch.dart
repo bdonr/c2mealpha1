@@ -13,40 +13,42 @@ class CustomSwitch extends StatefulWidget {
 class _CustomSwitchState extends State<CustomSwitch> {
   @override
   bool isSwitched = false;
-  var textValue = '';
+  var textValue = 'any';
 
 
 
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Transform.scale(
-          scale: 2,
-          child: Switch(
-            onChanged: (value) => {
-              if (isSwitched == false)
-                {
-                  setState(() {
-                    BlocProvider.of<SocialSearchCubit>(context).setExact();
-                    isSwitched = true;
-                    textValue = 'with all of this socials';
-                  })
-                }
-              else
-                {
-                  setState(() {
-                    BlocProvider.of<SocialSearchCubit>(context).setExact();
-                    isSwitched = !isSwitched;
-                    textValue = 'with any of this socials';
-                  })
-                }
-            },
-            value: isSwitched,
-            activeColor: Colors.blue,
-            activeTrackColor: Colors.yellow,
-            inactiveThumbColor: Colors.redAccent,
-            inactiveTrackColor: Colors.orange,
-          )),
+      Expanded(
+        child: Transform.scale(
+            scale: 2,
+            child: Switch(
+              onChanged: (value) => {
+                if (isSwitched == false)
+                  {
+                    setState(() {
+                      BlocProvider.of<SocialSearchCubit>(context).setExact();
+                      isSwitched = true;
+                      textValue = 'all';
+                    })
+                  }
+                else
+                  {
+                    setState(() {
+                      BlocProvider.of<SocialSearchCubit>(context).setExact();
+                      isSwitched = !isSwitched;
+                      textValue = 'any';
+                    })
+                  }
+              },
+              value: isSwitched,
+              activeColor: Colors.blue,
+              activeTrackColor: Colors.yellow,
+              inactiveThumbColor: Colors.redAccent,
+              inactiveTrackColor: Colors.orange,
+            )),
+      ),
       Text(
         '$textValue',
         style: TextStyle(fontSize: 20),

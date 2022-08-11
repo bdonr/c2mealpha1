@@ -167,9 +167,21 @@ class _SearchViewState extends State<SearchView> {
                 child: Material(
                   child: Column(
                     children: [
-                      CustomSwitch(),
                       Expanded(
-                        child: BlocBuilder<SocialSearchCubit, List<List<SocialMedia>>>(
+                        child: Row(
+                          children: [
+                            Text("How many socials should match ?"),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 14),
+                              child: CustomSwitch(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: BlocBuilder<SocialSearchCubit,
+                            List<List<SocialMedia>>>(
                           builder: (context, list) {
                             print("blabla" + list.toString());
                             if (list.length == 0) {
@@ -184,15 +196,15 @@ class _SearchViewState extends State<SearchView> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: () {
-                                      this.setState(() {
-
-                                      });
-                                      if(list[0][index]==SocialMedia.NOTHING){
-                                        BlocProvider.of<SocialSearchCubit>(context)
+                                      this.setState(() {});
+                                      if (list[0][index] ==
+                                          SocialMedia.NOTHING) {
+                                        BlocProvider.of<SocialSearchCubit>(
+                                                context)
                                             .reset();
-                                      }
-                                      else {
-                                        BlocProvider.of<SocialSearchCubit>(context)
+                                      } else {
+                                        BlocProvider.of<SocialSearchCubit>(
+                                                context)
                                             .swap(list[0][index]);
                                       }
                                     },
@@ -235,8 +247,7 @@ class _SearchViewState extends State<SearchView> {
           child: TextButton(
             child: Text("sad"),
             onPressed: () {
-              BlocProvider.of<LoggedInPosition>(context)
-                  .searchNew();
+              BlocProvider.of<LoggedInPosition>(context).searchNew();
             },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.all(16.0),
@@ -251,29 +262,23 @@ class _SearchViewState extends State<SearchView> {
 
   GridView buildGridView(List<List<SocialMedia>> list2) {
     return GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: list2[1].length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4),
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          this.setState(() {
-
-                          });
-                            BlocProvider.of<SocialSearchCubit>(context)
-                                .swapOtherDirection(list2[1][index]);
-
-                        },
-                        child: Container(
-                            color: SocialConfig.configColorByEnum(
-                                list2[1][index]),
-                            child: Center(
-                                child: SocialConfig.configTextEnum(
-                                    list2[1][index]))),
-                      );
-                    });
+        shrinkWrap: true,
+        itemCount: list2[1].length,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            onTap: () {
+              this.setState(() {});
+              BlocProvider.of<SocialSearchCubit>(context)
+                  .swapOtherDirection(list2[1][index]);
+            },
+            child: Container(
+                color: SocialConfig.configColorByEnum(list2[1][index]),
+                child: Center(
+                    child: SocialConfig.configTextEnum(list2[1][index]))),
+          );
+        });
   }
 
   String labelSingle() {
