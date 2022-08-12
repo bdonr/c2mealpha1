@@ -48,7 +48,7 @@ class FlutterRepository {
     return FlutterRepo.getReferenceAndSubCollectionAsStream(
             uid, CollectionEnum.users, CollectionEnum.socials)
         .map((event) => event.docs
-            .map((e) => Social(_mapStringToEnum(e.get("type")), e.get('url')))
+            .map((e) => Social(_mapStringToEnum(e.get("type")), e.get("url")))
             .toList());
   }
 

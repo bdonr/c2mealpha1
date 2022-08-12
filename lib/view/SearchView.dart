@@ -54,25 +54,7 @@ class _SearchViewState extends State<SearchView> {
                   }),
           flexibleSpace: Container(child: Text("Search"))),
       SliverToBoxAdapter(
-          child: Center(
-        child: ContrainedShadowBox(
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: BlocBuilder<LoggedInPosition, List<Profile?>>(
-                      builder: (context, pos) {
-                    return Container(
-                        height: 100, child: UserGridView(list: pos));
-                  }),
-                ),
-              ],
-            ),
-            Colors.grey,
-            Colors.grey.shade50,
-            500,
-            double.infinity),
-      )),
+          child: SearchResultUserView()),
       SliverToBoxAdapter(
         child: Material(
             child: Column(
@@ -303,5 +285,34 @@ class _SearchViewState extends State<SearchView> {
 
   String labelRange() {
     return _value.toString() + "meters";
+  }
+}
+
+class SearchResultUserView extends StatelessWidget {
+  const SearchResultUserView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoggedInPosition, List<Profile?>>(
+        builder: (context, pos) {
+    return Center(
+        child: ContrainedShadowBox(
+        Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+              child: Container(
+                  height: 100, child: UserGridView(list: pos)))
+            ,
+        ],
+      ),
+      Colors.grey,
+      Colors.grey.shade50,
+      500,
+      double.infinity),
+      );
+  });
   }
 }
