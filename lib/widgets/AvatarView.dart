@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:c2mealpha1/bloc/visit/DoIFollowCubit.dart';
 import 'package:c2mealpha1/bloc/visit/SocialsCubit.dart';
 import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,6 +63,7 @@ class _AvatarViewState extends State<AvatarView> {
                   print("pressed:"+widget.profile.id);
                   BlocProvider.of<VisitCubit>(context).findProfile(widget.profile.id);
                   BlocProvider.of<SocialsCubit>(context).getSocials(widget.profile.id);
+                  BlocProvider.of<DoIFollowCubit>(context).areWeFollower(widget.profile);
                   Navigator.pushNamed(context, '/profileview');
                 },),
               ),

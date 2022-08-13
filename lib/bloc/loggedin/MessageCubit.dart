@@ -12,7 +12,7 @@ class MessageCubit extends Cubit<List<Message>> {
 
   List<Message> p = [];
   void getMessages(String id) {
-    c = repository.findMessages(id).listen((event) {});
+    c = repository.findMessages().listen((event) {});
     c.onData((data) {
       emit(data);
     });

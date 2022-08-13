@@ -50,7 +50,7 @@ class SliderMoveState3 extends SearchState{
 
 class StartSearchState extends SearchState{
   StartSearchState(){
-    repository.findUserByLocation("50myTvoVDnY1TIkhiFJh");
+    repository.findUserByLocation();
   }
   List<Object?> get props =>[];
 }

@@ -12,11 +12,9 @@ import '../../enums/SearchCriteria.dart';
 
 class LoggedInPosition extends Cubit<List<Profile?>> {
   static Location location = Location();
-  static late String uid;
   late StreamSubscription c;
   final FlutterRepository repository=FlutterRepository();
-  LoggedInPosition(String uidd) : super([]) {
-    uid = uidd;
+  LoggedInPosition() : super([]) {
     location.changeSettings(interval: 1000, distanceFilter: 15);
     _determinePosition();
   }
@@ -45,15 +43,15 @@ class LoggedInPosition extends Cubit<List<Profile?>> {
       }
     }
     location.onLocationChanged.listen((locationData) {
-      repository.changePosition(locationData, uid);
-      repository.findUserByLocation(uid).listen((event) {
+      repository.changePosition(locationData);
+      repository.findUserByLocation().listen((event) {
         emit(event);
       });
     });
   }
 
   void searchNew(){
-    repository.findUserByLocation(uid).listen((event) {
+    repository.findUserByLocation().listen((event) {
       emit(event);
     });
   }

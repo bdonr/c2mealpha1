@@ -6,8 +6,8 @@ class LoggedInSocialCubit extends Cubit<List<Social>>{
   LoggedInSocialCubit():super([]);
   final FlutterRepository repository=FlutterRepository();
 
-  void getSocials(id){
-    repository.socials(id).listen((event) {
+  void getSocials(){
+    repository.socials().listen((event) {
       emit(event);
     });
   }

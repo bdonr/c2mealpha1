@@ -77,7 +77,7 @@ class _PublicViewState extends State<PublicView> {
                           width: double.infinity,
                           fit: BoxFit.fill,
                         ),
-                        TopViewMenu(visit,login),
+                        TopViewMenu(visit),
 
                       ],
                     ),

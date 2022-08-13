@@ -48,7 +48,7 @@ class SocialUpdateState extends SocialEditState{
   final Social social;
   final String id;
   SocialUpdateState(this.social,this.id){
-    repository.addSocial(social, id);
+    repository.addSocial(social);
   }
   @override
   List<Object?> get props => [this.social,this.id];

@@ -11,7 +11,7 @@ class SocialsCubit extends Cubit<List<Social>>{
   final FlutterRepository repository=FlutterRepository();
   void getSocials(uid){
     List<Social> socials = [];
-    repository.socials(uid).listen((event) {
+    repository.socials().listen((event) {
       event.forEach((element) {
         socials.add(element);
       });
