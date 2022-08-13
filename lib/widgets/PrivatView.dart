@@ -41,6 +41,10 @@ class _PrivatViewState extends State<PrivatView> {
               BlocProvider.of<VisitCubit>(context).findProfile(widget.login.id);
             }, FaIcon(FontAwesomeIcons.house)),
             MenuButton(() {
+              Navigator.pushNamed(context, '/edit');
+              BlocProvider.of<VisitCubit>(context).findProfile(widget.login.id);
+            }, FaIcon(FontAwesomeIcons.gear)),
+            MenuButton(() {
               Navigator.pushNamed(context, '/messages');
               BlocProvider.of<VisitCubit>(context).findProfile(widget.login.id);
             }, FaIcon(FontAwesomeIcons.message)),

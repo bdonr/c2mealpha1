@@ -4,9 +4,11 @@ import 'package:c2mealpha1/data/PokemonListing.dart';
 import 'package:c2mealpha1/events/PokemonEvent.dart';
 import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/view/FollowerView.dart';
+import 'package:c2mealpha1/view/HomeView.dart';
 import 'package:c2mealpha1/view/NotificationView.dart';
 import 'package:c2mealpha1/view/SearchView.dart';
 import 'package:c2mealpha1/view/StartPage.dart';
+import 'package:c2mealpha1/widgets/EditView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,13 +28,14 @@ class AppNavigator extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) =>  SearchView(),
+        '/': (context) =>  VisitView(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/messages': (context) => const MessageView(),
         '/notifications':(context)=>const NotificationView(),
         '/home' : (context)=> const VisitView(),
         '/search': (context)=>  SearchView(),
         '/profileview': (context)=> const VisitView(),
+        "/edit":(context)=>const EditView()
 
       },
 

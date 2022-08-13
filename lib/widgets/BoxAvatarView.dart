@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -55,16 +56,17 @@ class _BoxAvatarViewState extends State<BoxAvatarView> {
                   ),
                 ),
                 footer: Container(
-                  height: 30,
+                  height: 40,
                   child: GridTileBar(
                     backgroundColor: Colors.black12,
                     title: Text(
                       widget.profile.name,
                       style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.bold),
+                          fontSize: 10, fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text(widget.profile.followerCount.toString()),
-                    trailing: const FaIcon(FontAwesomeIcons.personWalking),
+                    subtitle: Text(widget.profile.followerCount.toString()+"follower",style: const TextStyle(
+                        fontSize: 10, fontWeight: FontWeight.bold),),
+
                   ),
                 ),
               )),
@@ -72,7 +74,7 @@ class _BoxAvatarViewState extends State<BoxAvatarView> {
               child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async{
                     BlocProvider.of<VisitCubit>(context).findProfile(widget.profile.id);
                       BlocProvider.of<SocialsCubit>(context).getSocials(widget.profile.id);
                     Navigator.pushNamed(context, '/profileview');
