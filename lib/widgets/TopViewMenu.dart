@@ -1,3 +1,4 @@
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,14 +7,16 @@ import '../classes/Profile.dart';
 import 'SplashIconButton.dart';
 
 class TopViewMenu extends StatefulWidget {
-  const TopViewMenu(this.profile, {Key? key}) : super(key: key);
+  const TopViewMenu(this.profile,this.visiter, {Key? key}) : super(key: key);
   final Profile profile;
+  final Profile visiter;
 
   @override
   State<TopViewMenu> createState() => _TopViewMenuState();
 }
 
 class _TopViewMenuState extends State<TopViewMenu> {
+  FlutterRepository repository = FlutterRepository();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,7 +49,9 @@ class _TopViewMenuState extends State<TopViewMenu> {
                         MaterialStateProperty.all(Colors.deepPurple),
                     overlayColor: MaterialStateProperty.all(Colors.red),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    repository.addFriends(widget.profile, widget.visiter);
+                  },
                   child: const Text(
                     'Follow',
                     style: TextStyle(color: Colors.white),

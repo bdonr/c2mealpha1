@@ -13,11 +13,10 @@ import '../classes/Social.dart';
 import '../config/SocialConfig.dart';
 import 'ShadowBox.dart';
 import 'TopView.dart';
+import 'TopViewMenu.dart';
 
 class PublicView extends StatefulWidget {
-  const PublicView(this.login, this.visit, {Key? key}) : super(key: key);
-  final Profile login;
-  final Profile visit;
+  const PublicView({Key? key}) : super(key: key);
 
   @override
   State<PublicView> createState() => _PublicViewState();
@@ -26,88 +25,107 @@ class PublicView extends StatefulWidget {
 class _PublicViewState extends State<PublicView> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-        child: CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () async => {
-                    Navigator.of(context).pop(context),
-                  }),
-          actions: [
-            MenuButton(() {
-              Navigator.pushNamed(context, '/home');
-              BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login.id);
-            }, FaIcon(FontAwesomeIcons.house)),
-            MenuButton(() {
-              Navigator.pushNamed(context, '/messages');
-              BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login.id);
-            }, FaIcon(FontAwesomeIcons.message)),
-            MenuButton(() {
-              Navigator.pushNamed(context, '/notifications');
-              BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login.id);
-            }, FaIcon(FontAwesomeIcons.bell)),
-            MenuButton(() {
-              Navigator.pushNamed(context, '/search');
-              BlocProvider.of<VisitCubit>(context)
-                  .findProfile(widget.login.id);
-            }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
-          ],
-          flexibleSpace: Container(
-            height: 300,
-            width: 50,
-            decoration: const BoxDecoration(
-              borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(27.0)),
-            ),
-            child: Stack(
-              children: [
-                Image(
-                  image: NetworkImage(widget.visit.profilImageurl),
-                  alignment: Alignment.center,
-                  height: double.infinity,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                ),
-              ],
-            ),
-          ),
-          expandedHeight: 200,
-        ),
-        SliverToBoxAdapter(
-          child: ShadowBox(
-            Column(children: [
-              Row(children: [
-                Text("Name:"),
-                Padding(padding: EdgeInsets.only(left: 3)),
-                Text(widget.visit.name),
-              ],
-              ),
-              Row(children: [
-                Text("About Me:"),
-                Padding(padding: EdgeInsets.only(left: 3)),
-                Text(widget.visit.about),
-              ],
-              ),
+    return BlocBuilder<VisitCubit, Profile?>(builder: (context, visit) {
+      return BlocBuilder<LoginCubit, Profile?>(
+        builder: (context, login) {
+          if (visit != null && login != null) {
+            return Material(
+                child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  leading: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () async => {
+                            Navigator.of(context).pop(context),
+                          }),
+                  actions: [
+                    MenuButton(() {
+                      Navigator.pushNamed(context, '/home');
+                      BlocProvider.of<VisitCubit>(context)
+                          .findProfile(login.id);
+                    }, FaIcon(FontAwesomeIcons.house)),
+                    MenuButton(() {
+                      Navigator.pushNamed(context, '/messages');
+                      BlocProvider.of<VisitCubit>(context)
+                          .findProfile(login.id);
+                    }, FaIcon(FontAwesomeIcons.message)),
+                    MenuButton(() {
+                      Navigator.pushNamed(context, '/notifications');
+                      BlocProvider.of<VisitCubit>(context)
+                          .findProfile(login.id);
+                    }, FaIcon(FontAwesomeIcons.bell)),
+                    MenuButton(() {
+                      Navigator.pushNamed(context, '/search');
+                      BlocProvider.of<VisitCubit>(context)
+                          .findProfile(login.id);
+                    }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
+                  ],
+                  flexibleSpace: Container(
+                    height: 300,
+                    width: 50,
+                    decoration: const BoxDecoration(
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(27.0)),
+                    ),
+                    child: Stack(
+                      children: [
 
-              ])
-          ,Colors.deepPurple.shade50,Colors.deepPurple.shade50,100,100)
-        ),
-        SliverToBoxAdapter(
-          child:
-              Padding(
-                padding: EdgeInsets.only(top:5),
-                child: BlocBuilder<SocialsCubit, List<Social>>(builder: (context, list) {
-            return
-                ShadowBox(SocialList(list),Colors.deepPurple.shade50,Colors.deepPurple.shade50,100,100);
-          }),
-              ),
-        )
-      ],
-    ));
+                        Image(
+                          image: NetworkImage(visit.profilImageurl),
+                          alignment: Alignment.center,
+                          height: double.infinity,
+                          width: double.infinity,
+                          fit: BoxFit.fill,
+                        ),
+                        TopViewMenu(visit,login),
+
+                      ],
+                    ),
+                  ),
+                  expandedHeight: 200,
+                ),
+                SliverToBoxAdapter(
+                    child: ShadowBox(
+                        Column(children: [
+                          Row(
+                            children: [
+                              Text("Name:"),
+                              Padding(padding: EdgeInsets.only(left: 3)),
+                              Text(visit.name),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text("About Me:"),
+                              Padding(padding: EdgeInsets.only(left: 3)),
+                              Text(visit.about),
+                            ],
+                          ),
+                        ]),
+                        Colors.deepPurple.shade50,
+                        Colors.deepPurple.shade50,
+                        100,
+                        100)),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: BlocBuilder<SocialsCubit, List<Social>>(
+                        builder: (context, list) {
+                      return ShadowBox(
+                          SocialList(list),
+                          Colors.deepPurple.shade50,
+                          Colors.deepPurple.shade50,
+                          100,
+                          100);
+                    }),
+                  ),
+                )
+              ],
+            ));
+          }
+          return Container();
+        },
+      );
+    });
   }
 }

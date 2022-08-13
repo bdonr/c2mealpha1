@@ -23,11 +23,11 @@ class _VisitViewState extends State<VisitView> {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, profile) {
       return BlocBuilder<VisitCubit, Profile?>(builder: (context, visit) {
         if(visit!= null && profile!=null && visit.id==profile.id){
-          return PrivatView(profile,visit);
+          return PrivatView();
         }
         else{
           if(visit!=null && profile!=null) {
-            return PublicView(profile, visit);
+            return PublicView();
           }
         }
         return CircularProgressIndicator();

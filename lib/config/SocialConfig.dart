@@ -86,6 +86,9 @@ class SocialConfig {
     if (x == SocialMedia.XING) {
       return FaIcon(FontAwesomeIcons.xing, color: Colors.white);
     }
+    if (x == SocialMedia.TIKTOK) {
+      return FaIcon(FontAwesomeIcons.tiktok, color: Colors.white);
+    }
     return FaIcon(FontAwesomeIcons.hourglassEmpty, color: Colors.white);
   }
 
@@ -113,6 +116,10 @@ class SocialConfig {
     if (x.socialMedia == SocialMedia.XING) {
       return FaIcon(FontAwesomeIcons.xing, color: Colors.white);
     }
+    if (x.socialMedia == SocialMedia.TIKTOK) {
+      return FaIcon(FontAwesomeIcons.tiktok, color: Colors.white);
+    }
+
     return FaIcon(FontAwesomeIcons.hourglassEmpty, color: Colors.white);
   }
 

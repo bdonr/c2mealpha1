@@ -75,6 +75,18 @@ class FlutterRepository {
     return social;
   }
 
+  addFriends(Profile visit,Profile login){
+    DocumentReference ref = FirebaseFirestore.instance.collection("users").doc(login.id);
+    FirebaseFirestore.instance.collection("users").doc(visit.id).collection("follower").where("user",isEqualTo: ref).get().then((value) => {
+      if(value.docs.length>0){
+          print("already found")
+      }
+      else{
+        FirebaseFirestore.instance.collection("users").doc(visit.id).collection("follower").add({"user":ref,"active":true})
+      }
+    });
+  }
+
   Stream<Profile> getProfile(uid) {
     return FlutterRepo.getReferenceOFCollectionAsStream(
             uid, CollectionEnum.users)
