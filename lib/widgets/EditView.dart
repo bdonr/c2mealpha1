@@ -179,7 +179,6 @@ class _EditItemState extends State<EditItem> {
     final myController = TextEditingController();
     return BlocBuilder<SocialChangeBloc, SocialEditState>(
         builder: (context, state) {
-      print(state);
       if (state is SocialInitState) {
         myController.text = widget.description.link;
       }
