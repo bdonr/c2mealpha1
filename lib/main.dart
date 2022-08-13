@@ -5,6 +5,7 @@ import 'package:c2mealpha1/bloc/loggedin/LoggedInImageCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/SocialChangeBloc.dart';
 
 import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:c2mealpha1/classes/MainImage.dart';
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
                 _startFollower(),
                 _mainImage(),
                 _startSearch(),
-                _startSocialSearch()
+                _startSocialSearch(),
+                _socialListen()
               ], child: SafeArea(child: AppNavigator()));
             }
             if (snapshot.hasError) {
@@ -63,7 +65,7 @@ class MyApp extends StatelessWidget {
           }),
     );
   }
-
+  static _socialListen()=>BlocProvider(create: (context) => SocialChangeBloc());
   static _startPos()=>BlocProvider(create: (context) => LoggedInPosition("50myTvoVDnY1TIkhiFJh"));
   static _startSearch()=>BlocProvider(create: (context) => SearchBloc());
   static _startSocialSearch()=>BlocProvider(create: (context) => SocialSearchCubit()..start());

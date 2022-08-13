@@ -52,6 +52,29 @@ class FlutterRepository {
             .toList());
   }
 
+  Future<Social> addSocial(Social social, String id) async {
+    Map<String,String> map = {"type": social.socialMedia.name.toLowerCase(), "url": social.link};
+    QuerySnapshot x = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(id)
+        .collection("socials")
+        .where("type", isEqualTo: social.socialMedia.name.toLowerCase())
+        .get();
+    if (x.size > 0) {
+      x.docs.forEach((element) {
+        element.reference
+            .set(map);
+      });
+    } else {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(id)
+          .collection("socials")
+          .add(map);
+    }
+    return social;
+  }
+
   Stream<Profile> getProfile(uid) {
     return FlutterRepo.getReferenceOFCollectionAsStream(
             uid, CollectionEnum.users)
@@ -84,10 +107,10 @@ class FlutterRepository {
               var x = await u["mainImage"].get();
               if (this.x[1].isNotEmpty) {
                 int res = await filterBySocialMedia(u);
-                if (exact && res==this.x[1].length) {
+                if (exact && res == this.x[1].length) {
                   return mapProfile(u, x);
                 }
-                if (anyRes && res>=1) {
+                if (anyRes && res >= 1) {
                   return mapProfile(u, x);
                 }
                 return null;
@@ -109,36 +132,37 @@ class FlutterRepository {
 
   Future<int> filterBySocialMedia(
       DocumentSnapshot<Map<String, dynamic>> u) async {
-    List<String>tmpsociallist =x[1].map((e) => e.name.toLowerCase()).toList();
+    List<String> tmpsociallist = x[1].map((e) => e.name.toLowerCase()).toList();
     print(tmpsociallist);
     QuerySnapshot y = await FirebaseFirestore.instance
         .collection("users")
         .doc(u.id)
-        .collection("socials").where("type",whereIn: tmpsociallist).get();
+        .collection("socials")
+        .where("type", whereIn: tmpsociallist)
+        .get();
     return y.docs.map((e) => e.get("type").toString()).length;
-
   }
 
-  bool filterOnly(List<String> tmpsociallist){
-    return (tmpsociallist.length==tmpsociallist.length);
+  bool filterOnly(List<String> tmpsociallist) {
+    return (tmpsociallist.length == tmpsociallist.length);
   }
 
-
-  bool filterAny(List<String> tmpsociallist){
-    return (tmpsociallist.length>1);
+  bool filterAny(List<String> tmpsociallist) {
+    return (tmpsociallist.length > 1);
   }
 
-  Future<int> filterBySocialMediaOLD(DocumentSnapshot<Map<String,dynamic>>u,x) async {
+  Future<int> filterBySocialMediaOLD(
+      DocumentSnapshot<Map<String, dynamic>> u, x) async {
     var y = await FirebaseFirestore.instance
         .collection("users")
         .doc(u.id)
         .collection("socials")
         .get();
-    return y.docs.map((element) => element.get("type").toString()).toList().length;
+    return y.docs
+        .map((element) => element.get("type").toString())
+        .toList()
+        .length;
   }
-
-
-
 
   Stream<MainImage> getImage(String id) {
     return FlutterRepo.getReferenceAndSubCollection(
@@ -294,7 +318,6 @@ class FlutterRepository {
     x[1].removeWhere((item) => item.name == muh.name);
     yield x;
   }
-
 
   Stream<List<List<SocialMedia>>> reset() async* {
     this.socialList = [
