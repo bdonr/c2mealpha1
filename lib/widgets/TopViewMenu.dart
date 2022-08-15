@@ -21,9 +21,13 @@ class _TopViewMenuState extends State<TopViewMenu> {
   FlutterRepository repository = FlutterRepository();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DoIFollowCubit,bool>(
+    return StreamBuilder<bool>(
+      stream: repository.areWeFriends(widget.profile),
       builder: (context,doIfollow){
-        print(doIfollow);
+
+
+        if(doIfollow.hasData){
+          print(doIfollow.data);
         return Padding(
           padding: EdgeInsets.only(top: 120),
           child: Column(
@@ -46,7 +50,26 @@ class _TopViewMenuState extends State<TopViewMenu> {
                   )
                 ],
               ),
-              !doIfollow?Row(
+              !doIfollow.data!?Row(
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.deepPurple),
+                          overlayColor: MaterialStateProperty.all(Colors.red),
+                        ),
+                        onPressed: () {
+                          repository.addFriends(widget.profile);
+                          repository.areWeFriends(widget.profile);
+                          setState((){
+                          });
+                        },
+                        child: const Text(
+                          'Follow',
+                          style: TextStyle(color: Colors.white),
+                        ))
+                  ],
+                ):Row(
                 children: [
                   TextButton(
                       style: ButtonStyle(
@@ -55,18 +78,22 @@ class _TopViewMenuState extends State<TopViewMenu> {
                         overlayColor: MaterialStateProperty.all(Colors.red),
                       ),
                       onPressed: () {
-                        repository.addFriends(widget.profile);
+
+                        repository.removeFriends(widget.profile);
+                        setState((){
+                        });
                       },
                       child: const Text(
-                        'Follow',
+                        'UnFollow',
                         style: TextStyle(color: Colors.white),
                       ))
                 ],
-              ):Container()
+              )
             ],
           ),
         );
-
+        }
+        return Container();
       });
   }
 }

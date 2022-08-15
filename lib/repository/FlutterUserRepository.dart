@@ -35,6 +35,7 @@ class FlutterRepository {
   bool exact = false;
   bool anyRes = true;
   late LocationData locationData;
+  late StreamSubscription blub;
   late StreamSubscription<List<Profile>> geosub;
   late Query<Map<String, dynamic>> query =
       FirebaseFirestore.instance.collection("users");
@@ -93,8 +94,8 @@ class FlutterRepository {
         .where("user", isEqualTo: loggedIn!.ref)
         .get()
         .then((value) => {
-              if (value.docs.length > 0)
-                {print("already found")}
+              if (value.docs.isNotEmpty)
+                value.docs[0].reference.update({"active":true})
               else
                 {
                   visit.ref
@@ -104,18 +105,23 @@ class FlutterRepository {
             });
   }
 
-  Stream<bool> areWeFriends(Profile visit) async* {
-    bool res = true;
-    print("ref"+visit.ref.toString());
+  removeFriends(Profile visit) {
     visit.ref
         .collection("follower")
         .where("user", isEqualTo: loggedIn!.ref)
         .get()
         .then((value) => {
-              print("asdadad")
-            //  if (value.docs.isEmpty) {res = false}
+              if (value.docs.length > 0)
+                {
+                  value.docs[0].reference.update({"active":false})
+                }
             });
-    yield res;
+  }
+
+  Stream<bool> areWeFriends(Profile visit)  {
+      return visit.ref
+        .collection("follower")
+        .where("user", isEqualTo: loggedIn!.ref).where("active",isEqualTo:true).snapshots().map((event) => event.docs.isNotEmpty);
   }
 
   Stream<Profile> getProfile(uid) {

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../bloc/visit/DoIFollowCubit.dart';
 import '../bloc/visit/SocialsCubit.dart';
 import '../bloc/visit/VisitCubit.dart';
 import '../classes/Profile.dart';
@@ -76,7 +77,8 @@ class _BoxAvatarViewState extends State<BoxAvatarView> {
                   child: InkWell(
                     onTap: () async{
                     BlocProvider.of<VisitCubit>(context).findProfile(widget.profile.id);
-                      BlocProvider.of<SocialsCubit>(context).getSocials(widget.profile.id);
+                    BlocProvider.of<SocialsCubit>(context).getSocials(widget.profile.id);
+                    BlocProvider.of<DoIFollowCubit>(context).areWeFollower(widget.profile);
                     Navigator.pushNamed(context, '/profileview');
                     },
                   ))),

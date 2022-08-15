@@ -14,7 +14,7 @@ class DoIFollowCubit extends Cubit<bool>{
 
   areWeFollower(Profile profile){
     repository.areWeFriends(profile).listen((event) {
-      emit(event);
+
     });
   }
 }
