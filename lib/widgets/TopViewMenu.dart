@@ -61,8 +61,6 @@ class _TopViewMenuState extends State<TopViewMenu> {
                         onPressed: () {
                           repository.addFriends(widget.profile);
                           repository.areWeFriends(widget.profile);
-                          setState((){
-                          });
                         },
                         child: const Text(
                           'Follow',

@@ -5,9 +5,12 @@ import 'package:c2mealpha1/classes/Message.dart';
 import 'package:c2mealpha1/classes/SocialMedia.dart';
 import 'package:c2mealpha1/repository/CollectionEnum.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../classes/MainImage.dart';
 import '../classes/Profile.dart';
@@ -406,4 +409,49 @@ class FlutterRepository {
     }
     return k.get();
   }
-}
+
+/**
+  uploadImage() async {
+    final _storage = FirebaseStorage.instance;
+    final _picker = ImagePicker();
+
+
+    //Check Permissions
+    await Permission.photos.request();
+
+    var permissionStatus = await Permission.photos.status;
+
+    if (permissionStatus.isGranted){
+      //Select Image
+
+      XFile? image = await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      if (image != null){
+        //Upload to Firebase
+        var snapshot = await _storage.ref('path/to/image.png')
+            .child('folderName/imageName')
+            .putData(await image.readAsBytes(),
+            SettableMetadata(contentType: 'image/$fileType'));
+
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+
+        setState(() {
+          imageUrl = downloadUrl;
+        });
+      } else {
+        firebase
+            .storage()
+            .ref('path/to/image.png') // specify filename with extension
+            .putString(base64str.split(',')[1], "base64", {contentType: 'image/png'})
+
+
+
+      }
+        print('No Path Received');
+      }
+
+    } else {
+      print('Grant Permissions and try again');
+    }
+
+    */
+  }
