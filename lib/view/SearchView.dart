@@ -76,7 +76,6 @@ class _SearchViewState extends State<SearchView> {
                       label: labelRange(),
                       value: _value,
                       onChanged: (value) {
-                        print(value);
                         BlocProvider.of<SearchBloc>(context)
                             .add(SliderMoveEvent(value));
                       },
@@ -102,7 +101,6 @@ class _SearchViewState extends State<SearchView> {
                       value: _gender,
                       label: labelGender(),
                       onChanged: (value) {
-                        print(value);
                         BlocProvider.of<SearchBloc>(context)
                             .add(SliderMoveEvent2(value));
                       },
@@ -118,7 +116,6 @@ class _SearchViewState extends State<SearchView> {
                   Text("single?"),
                   BlocBuilder<SearchBloc, SearchState>(
                       builder: (context, state) {
-                    print(state);
                     if (state is SliderMoveState3) {
                       _single = state.single;
                     }
@@ -129,7 +126,6 @@ class _SearchViewState extends State<SearchView> {
                       value: _single,
                       label: labelSingle(),
                       onChanged: (value) {
-                        print(value);
                         BlocProvider.of<SearchBloc>(context)
                             .add(SliderMoveEvent3(value));
                       },
@@ -165,7 +161,6 @@ class _SearchViewState extends State<SearchView> {
                         child: BlocBuilder<SocialSearchCubit,
                             List<List<SocialMedia>>>(
                           builder: (context, list) {
-                            print("blabla" + list.toString());
                             if (list.length == 0) {
                               return Container();
                             }

@@ -12,8 +12,6 @@ class LoggedInImageCubit extends Cubit<ProfileImageHeader?>{
   late StreamSubscription subscription;
  getImage(uid){
     subscription = repository.getImage(uid).listen((event) {
-      print(event.toString());
-
     });
   }
 

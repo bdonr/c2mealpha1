@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
             future: fbApp,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+
                 return FutureBuilder(
                     future: repository.login("50myTvoVDnY1TIkhiFJh"),
                     builder: (context, snap) {

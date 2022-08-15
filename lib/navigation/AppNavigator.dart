@@ -1,8 +1,6 @@
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 
-import 'package:c2mealpha1/data/PokemonListing.dart';
 import 'package:c2mealpha1/events/PokemonEvent.dart';
-import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/view/FollowerView.dart';
 import 'package:c2mealpha1/view/HomeView.dart';
 import 'package:c2mealpha1/view/NotificationView.dart';

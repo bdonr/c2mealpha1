@@ -35,7 +35,6 @@ class PersonRepository {
 
   static Stream<List<Profile>> followerProfile(int k, int min) async* {
     var intValue = Random().nextInt(_users.length-1);
-    print(intValue);
     while (follow.length < min) {
       await Future.delayed(const Duration(milliseconds: 1));
       if (intValue != k) {
@@ -45,8 +44,6 @@ class PersonRepository {
         yield follow;
       }
       else {
-        print("follow"+intValue.toString());
-
         intValue = Random().nextInt(_users.length-1);
       }
     }
@@ -59,7 +56,6 @@ class PersonRepository {
 
   static Stream<List<Profile>> followsProfile(int k, int min) async* {
     var intValue = Random().nextInt(_users.length-1);
-    print(intValue);
     while (follows.length < min) {
       await Future.delayed(const Duration(milliseconds: 1));
       if (intValue != k) {
@@ -69,8 +65,6 @@ class PersonRepository {
         yield follows;
       }
       else {
-        print("follow"+intValue.toString());
-
         intValue = Random().nextInt(_users.length-1);
       }
     }

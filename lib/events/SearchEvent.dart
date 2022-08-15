@@ -1,4 +1,4 @@
-import 'package:c2mealpha1/classes/Profile.dart';
+ import 'package:c2mealpha1/classes/Profile.dart';
 import 'package:c2mealpha1/states/SearchState.dart';
 import 'package:equatable/equatable.dart';
 import 'package:location/location.dart';

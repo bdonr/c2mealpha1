@@ -93,7 +93,6 @@ class SocialConfig {
   }
 
   static FaIcon configIcon(Social x) {
-    print(x.socialMedia);
     if (x.socialMedia == SocialMedia.INSTAGRAM) {
       return FaIcon(FontAwesomeIcons.instagram, color: Colors.white);
     }
@@ -105,7 +104,7 @@ class SocialConfig {
     }
     if (x.socialMedia == SocialMedia.FACEBOOK) {
       return FaIcon(FontAwesomeIcons.facebook, color: Colors.white);
-      ;
+
     }
     if (x.socialMedia == SocialMedia.ONLYFANS) {
       return FaIcon(FontAwesomeIcons.fan, color: Colors.white);

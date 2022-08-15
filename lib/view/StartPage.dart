@@ -3,7 +3,6 @@ import 'package:c2mealpha1/bloc/loggedin/LoggedInImageCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 
 import 'package:c2mealpha1/classes/MainImage.dart';
-import 'package:c2mealpha1/states/PokemonState.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
 import 'package:c2mealpha1/view/HomeView.dart';
 import 'package:c2mealpha1/view/MessageView.dart';

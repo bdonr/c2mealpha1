@@ -46,7 +46,7 @@ class _TopViewMenuState extends State<TopViewMenu> {
                   )
                 ],
               ),
-              doIfollow?Row(
+              !doIfollow?Row(
                 children: [
                   TextButton(
                       style: ButtonStyle(
@@ -68,18 +68,5 @@ class _TopViewMenuState extends State<TopViewMenu> {
         );
 
       });
-  }
-
-  bool _findFollowShip(List<Profile?> profile){
-    bool found=false;
-    profile.forEach((element) {
-      if(element!=null) {
-        if (element.id == widget.profile.id) {
-          found = true;
-        }
-      }
-    });
-    return found;
-
   }
 }
