@@ -27,7 +27,7 @@ class AppNavigator extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) =>  ImageView(),
+        '/': (context) =>  VisitView(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/messages': (context) => const MessageView(),
         '/notifications':(context)=>const NotificationView(),

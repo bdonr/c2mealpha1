@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/widgets/TopViewMenu.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +27,8 @@ class PrivatView extends StatefulWidget {
 }
 
 class _PrivatViewState extends State<PrivatView> {
+  Object get selected => "60";
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
@@ -38,28 +45,23 @@ class _PrivatViewState extends State<PrivatView> {
               actions: [
                 MenuButton(() {
                   Navigator.pushNamed(context, '/home');
-                  BlocProvider.of<VisitCubit>(context)
-                      .findProfile(login.id);
+                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
                 }, FaIcon(FontAwesomeIcons.house)),
                 MenuButton(() {
                   Navigator.pushNamed(context, '/edit');
-                  BlocProvider.of<VisitCubit>(context)
-                      .findProfile(login.id);
+                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
                 }, FaIcon(FontAwesomeIcons.gear)),
                 MenuButton(() {
                   Navigator.pushNamed(context, '/messages');
-                  BlocProvider.of<VisitCubit>(context)
-                      .findProfile(login.id);
+                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
                 }, FaIcon(FontAwesomeIcons.message)),
                 MenuButton(() {
                   Navigator.pushNamed(context, '/notifications');
-                  BlocProvider.of<VisitCubit>(context)
-                      .findProfile(login.id);
+                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
                 }, FaIcon(FontAwesomeIcons.bell)),
                 MenuButton(() {
                   Navigator.pushNamed(context, '/search');
-                  BlocProvider.of<VisitCubit>(context)
-                      .findProfile(login.id);
+                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
                 }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
               ],
               flexibleSpace: Container(
@@ -121,14 +123,88 @@ class _PrivatViewState extends State<PrivatView> {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: const Offset(1, 3), // changes position of shadow
+                          offset:
+                              const Offset(1, 3), // changes position of shadow
                         ),
                       ],
                     ),
                     height: 100,
                     child: SocialList(list));
               }),
-            )
+            ),
+            SliverToBoxAdapter(
+              child: CarouselSlider(
+                options: CarouselOptions(height: 200.0),
+                items: [1, 2, 3, 4, 5].map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      if (i == 1) {
+                        return GridTile(
+                          child: Container(
+                            height: 20,
+                            child: Material(
+                                child: CircleAvatar(
+                              backgroundColor: Colors.deepPurple,
+                              radius: 2,
+                              child: Icon(Icons.add),
+                            )),
+                          ),
+                          footer: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            height: 40,
+                            child: GridTileBar(
+                              backgroundColor: Colors.black12,
+                              title: Text(
+                                "Write a new Story",
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                login.followerCount.toString() + "follower",
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return Positioned.fill(
+                        bottom: 0.0,
+                        child: GridTile(
+                          child: Material(
+                            child: Image.network(
+                              login.profilImageurl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          footer: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            height: 40,
+                            child: GridTileBar(
+                              backgroundColor: Colors.black12,
+                              title: Text(
+                                login.name,
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                login.followerCount.toString() + "follower",
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
           ],
         ));
       }
