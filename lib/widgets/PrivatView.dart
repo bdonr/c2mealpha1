@@ -98,7 +98,9 @@ class _PrivatViewState extends State<PrivatView> {
                                 top: 40,
                                 child: Material(
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.pushNamed(context, "/addStoryView");
+                                    },
                                     child: CircleAvatar(
                                       backgroundColor: Colors.deepPurple,
                                       radius: 30,

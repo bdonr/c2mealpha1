@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 import '../states/PageStates.dart';
+import '../view/AddMessageView.dart';
 import '../view/MessageView.dart';
 import '../view/VisitView.dart';
 
@@ -35,6 +36,7 @@ class AppNavigator extends StatelessWidget {
         '/home' : (context)=> const PrivatView(),
         '/search': (context)=>  SearchView(),
         '/profileview': (context)=> const VisitView(),
+        '/addStoryView': (context)=> const AddMessageView(),
         "/edit":(context)=>const EditView()
 
       },
