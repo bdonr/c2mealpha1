@@ -36,55 +36,7 @@ class _PrivatViewState extends State<PrivatView> {
         return Material(
             child: CustomScrollView(
           slivers: [
-            SliverAppBar(
-              leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () async => {
-                        Navigator.of(context).pop(context),
-                      }),
-              actions: [
-                MenuButton(() {
-                  Navigator.pushNamed(context, '/home');
-                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
-                }, FaIcon(FontAwesomeIcons.house)),
-                MenuButton(() {
-                  Navigator.pushNamed(context, '/edit');
-                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
-                }, FaIcon(FontAwesomeIcons.gear)),
-                MenuButton(() {
-                  Navigator.pushNamed(context, '/messages');
-                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
-                }, FaIcon(FontAwesomeIcons.message)),
-                MenuButton(() {
-                  Navigator.pushNamed(context, '/notifications');
-                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
-                }, FaIcon(FontAwesomeIcons.bell)),
-                MenuButton(() {
-                  Navigator.pushNamed(context, '/search');
-                  BlocProvider.of<VisitCubit>(context).findProfile(login.id);
-                }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
-              ],
-              flexibleSpace: Container(
-                height: 300,
-                width: 50,
-                decoration: const BoxDecoration(
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(27.0)),
-                ),
-                child: Stack(
-                  children: [
-                    Image(
-                      image: NetworkImage(login.profilImageurl),
-                      alignment: Alignment.center,
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                    ),
-                  ],
-                ),
-              ),
-              expandedHeight: 200,
-            ),
+            TopView(login),
             SliverToBoxAdapter(
                 child: ShadowBox(
                     Column(children: [
@@ -140,19 +92,26 @@ class _PrivatViewState extends State<PrivatView> {
                     builder: (BuildContext context) {
                       if (i == 1) {
                         return GridTile(
-                          child: Container(
-                            height: 20,
-                            child: Material(
-                                child: CircleAvatar(
-                              backgroundColor: Colors.deepPurple,
-                              radius: 2,
-                              child: Icon(Icons.add),
-                            )),
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                top: 40,
+                                child: Material(
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.deepPurple,
+                                      radius: 30,
+                                      child: Icon(Icons.add),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           footer: Container(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)
-                            ),
+                                borderRadius: BorderRadius.circular(20)),
                             height: 40,
                             child: GridTileBar(
                               backgroundColor: Colors.black12,
@@ -170,32 +129,28 @@ class _PrivatViewState extends State<PrivatView> {
                           ),
                         );
                       }
-                      return Positioned.fill(
-                        bottom: 0.0,
-                        child: GridTile(
-                          child: Material(
-                            child: Image.network(
-                              login.profilImageurl,
-                              fit: BoxFit.cover,
-                            ),
+                      return GridTile(
+                        child: Material(
+                          child: Image.network(
+                            login.profilImageurl,
+                            fit: BoxFit.cover,
                           ),
-                          footer: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)
+                        ),
+                        footer: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20)),
+                          height: 40,
+                          child: GridTileBar(
+                            backgroundColor: Colors.black12,
+                            title: Text(
+                              login.name,
+                              style: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
                             ),
-                            height: 40,
-                            child: GridTileBar(
-                              backgroundColor: Colors.black12,
-                              title: Text(
-                                login.name,
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                login.followerCount.toString() + "follower",
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              ),
+                            subtitle: Text(
+                              login.followerCount.toString() + "follower",
+                              style: const TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),

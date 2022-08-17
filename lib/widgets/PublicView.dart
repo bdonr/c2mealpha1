@@ -32,58 +32,7 @@ class _PublicViewState extends State<PublicView> {
             return Material(
                 child: CustomScrollView(
               slivers: [
-                SliverAppBar(
-                  leading: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () async => {
-                            Navigator.of(context).pop(context),
-                          }),
-                  actions: [
-                    MenuButton(() {
-                      Navigator.pushNamed(context, '/home');
-                      BlocProvider.of<VisitCubit>(context)
-                          .findProfile(login.id);
-                    }, FaIcon(FontAwesomeIcons.house)),
-                    MenuButton(() {
-                      Navigator.pushNamed(context, '/messages');
-                      BlocProvider.of<VisitCubit>(context)
-                          .findProfile(login.id);
-                    }, FaIcon(FontAwesomeIcons.message)),
-                    MenuButton(() {
-                      Navigator.pushNamed(context, '/notifications');
-                      BlocProvider.of<VisitCubit>(context)
-                          .findProfile(login.id);
-                    }, FaIcon(FontAwesomeIcons.bell)),
-                    MenuButton(() {
-                      Navigator.pushNamed(context, '/search');
-                      BlocProvider.of<VisitCubit>(context)
-                          .findProfile(login.id);
-                    }, FaIcon(FontAwesomeIcons.magnifyingGlass)),
-                  ],
-                  flexibleSpace: Container(
-                    height: 300,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(27.0)),
-                    ),
-                    child: Stack(
-                      children: [
-
-                        Image(
-                          image: NetworkImage(visit.profilImageurl),
-                          alignment: Alignment.center,
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.fill,
-                        ),
-                        TopViewMenu(visit),
-
-                      ],
-                    ),
-                  ),
-                  expandedHeight: 200,
-                ),
+                TopView(visit),
                 SliverToBoxAdapter(
                     child: ShadowBox(
                         Column(children: [

@@ -8,6 +8,7 @@ import 'package:c2mealpha1/view/NotificationView.dart';
 import 'package:c2mealpha1/view/SearchView.dart';
 import 'package:c2mealpha1/view/StartPage.dart';
 import 'package:c2mealpha1/widgets/EditView.dart';
+import 'package:c2mealpha1/widgets/PrivatView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +32,7 @@ class AppNavigator extends StatelessWidget {
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/messages': (context) => const MessageView(),
         '/notifications':(context)=>const NotificationView(),
-        '/home' : (context)=> const VisitView(),
+        '/home' : (context)=> const PrivatView(),
         '/search': (context)=>  SearchView(),
         '/profileview': (context)=> const VisitView(),
         "/edit":(context)=>const EditView()
