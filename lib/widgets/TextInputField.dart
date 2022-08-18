@@ -16,6 +16,7 @@ class _TextInputFieldState extends State<TextInputField> {
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 21),
               child: TextFormField(
+
                   controller: widget.titleController,
                   textInputAction: TextInputAction.done,
                   validator: (value) {

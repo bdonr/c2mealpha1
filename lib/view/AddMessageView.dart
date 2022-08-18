@@ -1,4 +1,5 @@
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
+import 'package:c2mealpha1/widgets/LongTextField.dart';
 import 'package:c2mealpha1/widgets/TextIconInput.dart';
 import 'package:c2mealpha1/widgets/TextInputField.dart';
 import 'package:c2mealpha1/widgets/TopView.dart';
@@ -44,7 +45,9 @@ class _AddMessageViewState extends State<AddMessageView> {
                   child: Column(
                     children: [
                       TextInputField(textController1),
-                      TextInputField(textController2),
+                      Padding(padding: EdgeInsets.only(top: 40)),
+                      LongTextField(textController2,5),
+                      Padding(padding: EdgeInsets.only(top: 40)),
                       ElevatedButton(
                         onPressed: () {
                           // Validate returns true if the form is valid, or false otherwise.
