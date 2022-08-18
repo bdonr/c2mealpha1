@@ -1,5 +1,6 @@
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/widgets/TextIconInput.dart';
+import 'package:c2mealpha1/widgets/TextInputField.dart';
 import 'package:c2mealpha1/widgets/TopView.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,6 +26,11 @@ class _AddMessageViewState extends State<AddMessageView> {
 
   late String title;
   late String description;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController textController1 = TextEditingController();
+  final TextEditingController textController2 = TextEditingController();
+  final TextEditingController textController3 = TextEditingController();
+  final TextEditingController textController4 = TextEditingController();
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
       if (login != null) {
@@ -35,39 +41,30 @@ class _AddMessageViewState extends State<AddMessageView> {
                 slivers: [
               TopView(login),
               SliverToBoxAdapter(
-                  child: GestureDetector(
-                      //onTap: () => FocusScope.of(context).unfocus(),
-                      /// > flutter 2.0
-                      onTap: () =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
-                      child: ListView(
-                          padding: const EdgeInsets.all(14.0),
-                          shrinkWrap: true,
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
-                          children: [
-                            Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 21),
-                                child: TextFormField(
-                                  controller: titleController,
-                                    textInputAction: TextInputAction.done,
-                                    onFieldSubmitted: (value){
-                                     print(value);
-                                    }
-                                )
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 21),
-                                child: TextFormField(
-                                  controller: descriptionController,
-                                    textInputAction: TextInputAction.done,
-                                    onFieldSubmitted: (value){
-                                      print(value);
-                                    }
-                                )
-                            ),
-
-                          ])))
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextInputField(textController1),
+                      TextInputField(textController2),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Validate returns true if the form is valid, or false otherwise.
+                          if (_formKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            print(textController1.text+"   "+textController2.text);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Processing Data')),
+                            );
+                          }
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ]));
       }
       return CircularProgressIndicator();
