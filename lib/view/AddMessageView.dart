@@ -29,8 +29,6 @@ class _AddMessageViewState extends State<AddMessageView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController textController1 = TextEditingController();
   final TextEditingController textController2 = TextEditingController();
-  final TextEditingController textController3 = TextEditingController();
-  final TextEditingController textController4 = TextEditingController();
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
       if (login != null) {
