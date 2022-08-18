@@ -30,6 +30,7 @@ class _AddMessageViewState extends State<AddMessageView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController textController1 = TextEditingController();
   final TextEditingController textController2 = TextEditingController();
+  final TextEditingController textController3 = TextEditingController();
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
       if (login != null) {
@@ -44,8 +45,10 @@ class _AddMessageViewState extends State<AddMessageView> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      TextInputField(textController1),
+                      TextInputField(textController1,"Please enter a title",40),
                       Padding(padding: EdgeInsets.only(top: 40)),
+                      TextInputField(textController3,"Please enter a title",160),
+                      Padding(padding: EdgeInsets.only(top: 160)),
                       LongTextField(textController2,5),
                       Padding(padding: EdgeInsets.only(top: 40)),
                       ElevatedButton(
