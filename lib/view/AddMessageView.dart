@@ -16,23 +16,61 @@ class AddMessageView extends StatefulWidget {
 }
 
 class _AddMessageViewState extends State<AddMessageView> {
+  @override
+  late FocusNode focusNode = FocusNode();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  late TextEditingController currentEditor;
+  bool emojiShowing = false;
 
-
+  late String title;
+  late String description;
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
       if (login != null) {
         return Material(
-          child: CustomScrollView(
-            slivers: [
+            child: CustomScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                slivers: [
               TopView(login),
-              TextIconInput(),
-              TextIconInput(),
-            ],
-          ),
-        );
+              SliverToBoxAdapter(
+                  child: GestureDetector(
+                      //onTap: () => FocusScope.of(context).unfocus(),
+                      /// > flutter 2.0
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                      child: ListView(
+                          padding: const EdgeInsets.all(14.0),
+                          shrinkWrap: true,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 21),
+                                child: TextFormField(
+                                  controller: titleController,
+                                    textInputAction: TextInputAction.done,
+                                    onFieldSubmitted: (value){
+                                     print(value);
+                                    }
+                                )
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 21),
+                                child: TextFormField(
+                                  controller: descriptionController,
+                                    textInputAction: TextInputAction.done,
+                                    onFieldSubmitted: (value){
+                                      print(value);
+                                    }
+                                )
+                            ),
+
+                          ])))
+            ]));
       }
       return CircularProgressIndicator();
     });
-    ;
   }
 }
