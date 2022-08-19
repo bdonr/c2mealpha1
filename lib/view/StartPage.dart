@@ -5,7 +5,7 @@ import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/classes/MainImage.dart';
 import 'package:c2mealpha1/states/ProfileState.dart';
 import 'package:c2mealpha1/view/HomeView.dart';
-import 'package:c2mealpha1/view/MessageView.dart';
+import 'package:c2mealpha1/view/NotificationView.dart';
 import 'package:c2mealpha1/view/VisitView.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
 import 'package:c2mealpha1/widgets/FollowUser.dart';
@@ -24,6 +24,7 @@ import '../classes/Profile.dart';
 import '../events/PageEvents.dart';
 import '../events/PokemonEvent.dart';
 import '../helper/formater.dart';
+import 'MessageView.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
@@ -36,20 +37,14 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      BlocBuilder<LoginCubit, Profile?>(
-        builder: (context, loggedin) {
-          if (loggedin != null) {
-            if (loggedin != null) {
-              return MessageView();
-            }
-            return CircularProgressIndicator();
-          }
-          return CircularProgressIndicator();
-        });
-
+    return BlocBuilder<LoginCubit, Profile?>(builder: (context, loggedin) {
+      if (loggedin != null) {
+        return MessageView();
+      }
+      return CircularProgressIndicator();
+    });
   }
-  }
+}
 /**   child: CustomScrollView(slivers: [
     SliverAppBar(
     expandedHeight: 400,

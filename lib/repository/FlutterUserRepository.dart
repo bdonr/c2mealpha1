@@ -235,10 +235,10 @@ class FlutterRepository {
           )
           .asBroadcastStream();
 
-  Stream<List<Message>> findMessages() =>
+  Stream<List<NotificationMessage>> findMessages() =>
       FlutterRepo.getReferenceAndSubCollectionOrderedAsStream(loggedIn!.id,
               CollectionEnum.users, CollectionEnum.messages, "time", true)
-          .asyncMap<List<Message>>(
+          .asyncMap<List<NotificationMessage>>(
             (profileList) => Future.wait(_mapList2(profileList)),
           )
           .asBroadcastStream();
@@ -251,17 +251,17 @@ class FlutterRepository {
         return _mapProfile(a, z);
       });
 
-  Iterable<Future<Message>> _mapList2(
+  Iterable<Future<NotificationMessage>> _mapList2(
           QuerySnapshot<Map<String, dynamic>> profileList) =>
-      profileList.docs.map<Future<Message>>((m) async {
+      profileList.docs.map<Future<NotificationMessage>>((m) async {
         return _mapMessage(m);
       });
 
-  Future<Message> _mapMessage(m) async {
+  Future<NotificationMessage> _mapMessage(m) async {
     var a = await m['from'].get();
     var z = await a['mainImage'].get();
     Profile user = _mapProfile(a, z);
-    return Message(m.id, m.get("info"), m.get("type"), m.get("read"),
+    return NotificationMessage(m.id, m.get("info"), m.get("type"), m.get("read"),
         m.get("active"), m.get("time"), user, m.get("optional"));
   }
 

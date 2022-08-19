@@ -1,4 +1,6 @@
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
+import 'package:c2mealpha1/classes/Story.dart';
+import 'package:c2mealpha1/repository/MessageRepository.dart';
 import 'package:c2mealpha1/widgets/LongTextField.dart';
 import 'package:c2mealpha1/widgets/TextIconInput.dart';
 import 'package:c2mealpha1/widgets/TextInputField.dart';
@@ -31,6 +33,7 @@ class _AddMessageViewState extends State<AddMessageView> {
   final TextEditingController textController1 = TextEditingController();
   final TextEditingController textController2 = TextEditingController();
   final TextEditingController textController3 = TextEditingController();
+  final MessageRepository repository = MessageRepository();
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
       if (login != null) {
@@ -47,17 +50,13 @@ class _AddMessageViewState extends State<AddMessageView> {
                     children: [
                       TextInputField(textController1,"Please enter a title",40),
                       Padding(padding: EdgeInsets.only(top: 40)),
-                      TextInputField(textController3,"Please enter a title",160),
-                      Padding(padding: EdgeInsets.only(top: 160)),
                       LongTextField(textController2,5),
                       Padding(padding: EdgeInsets.only(top: 40)),
                       ElevatedButton(
                         onPressed: () {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            print(textController1.text+"   "+textController2.text);
+                            repository.createStory(textController1.text, textController2.text);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Processing Data')),
                             );

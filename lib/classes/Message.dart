@@ -13,7 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
  */
 
 
-class Message {
+class NotificationMessage {
   final String id;
   final String info;
   final String type;
@@ -23,6 +23,6 @@ class Message {
   final Profile from;
   late List<dynamic>optional;
 
-  Message(this.id, this.info, this.type, this.read, this.active, this.time,
+  NotificationMessage(this.id, this.info, this.type, this.read, this.active, this.time,
       this.from, this.optional);
 }

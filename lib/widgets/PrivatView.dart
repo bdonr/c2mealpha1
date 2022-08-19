@@ -2,10 +2,14 @@ import 'dart:math';
 
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
+import 'package:c2mealpha1/bloc/visit/StoryCubit.dart';
+import 'package:c2mealpha1/classes/Story.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
+import 'package:c2mealpha1/repository/MessageRepository.dart';
 import 'package:c2mealpha1/widgets/TopViewMenu.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +32,7 @@ class PrivatView extends StatefulWidget {
 
 class _PrivatViewState extends State<PrivatView> {
   Object get selected => "60";
+  final MessageRepository repository = MessageRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -85,82 +90,64 @@ class _PrivatViewState extends State<PrivatView> {
               }),
             ),
             SliverToBoxAdapter(
-              child: CarouselSlider(
-                options: CarouselOptions(height: 200.0),
-                items: [1, 2, 3, 4, 5].map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      if (i == 1) {
-                        return GridTile(
-                          child: Stack(
+              child: StreamBuilder<List<Story>>(
+                  stream: repository.findStoriesOfUser(),
+                  builder: (context, list) {
+                    if (list.hasData) {
+                      return CarouselSlider.builder(
+                        itemCount: list.data!.length,
+                        itemBuilder:
+                            (BuildContext context, int index, int realIndex) {
+                          print(list.data);
+                          return Stack(
                             children: [
-                              Positioned(
-                                top: 40,
-                                child: Material(
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(context, "/addStoryView");
-                                    },
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.deepPurple,
-                                      radius: 30,
-                                      child: Icon(Icons.add),
+                              Positioned.fill(
+                                bottom: 0.0,
+                                child: GridTile(
+                                  child: Image.network(
+                                    login.profilImageurl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  footer: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    height: 40,
+                                    child: GridTileBar(
+                                      backgroundColor: Colors.black12,
+                                      title: Text(
+                                        list.data![index].title,
+                                        style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                        list.data![index].description,
+                                        style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
+                              Positioned.fill(
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        BlocProvider.of<StoryCubit>(context).visit(list.data![index].ref);
+                                        Navigator.pushNamed(context, "/storyDetail");
+                                      },
+                                    )),
+                              ),
                             ],
-                          ),
-                          footer: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            height: 40,
-                            child: GridTileBar(
-                              backgroundColor: Colors.black12,
-                              title: Text(
-                                "Write a new Story",
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                login.followerCount.toString() + "follower",
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      return GridTile(
-                        child: Material(
-                          child: Image.network(
-                            login.profilImageurl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        footer: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)),
-                          height: 40,
-                          child: GridTileBar(
-                            backgroundColor: Colors.black12,
-                            title: Text(
-                              login.name,
-                              style: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              login.followerCount.toString() + "follower",
-                              style: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
+                          );
+                        },
+                        options: CarouselOptions(height: 200.0),
                       );
-                    },
-                  );
-                }).toList(),
-              ),
+                    }
+                    return CircularProgressIndicator();
+                  }),
             ),
           ],
         ));

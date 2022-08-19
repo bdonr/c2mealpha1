@@ -23,6 +23,7 @@ class _TextInputFieldState extends State<TextInputField> {
                 children: [
                   Expanded(
                     child: TextFormField(
+
                         maxLength: widget.maxLenght,
                         controller: widget.titleController,
                         textInputAction: TextInputAction.done,

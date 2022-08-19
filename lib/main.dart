@@ -7,6 +7,7 @@ import 'package:c2mealpha1/bloc/loggedin/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/SocialChangeBloc.dart';
 import 'package:c2mealpha1/bloc/visit/DoIFollowCubit.dart';
+import 'package:c2mealpha1/bloc/visit/StoryCubit.dart';
 
 import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:c2mealpha1/classes/MainImage.dart';
@@ -65,7 +66,8 @@ class MyApp extends StatelessWidget {
                           _startSearch(),
                           _startSocialSearch(),
                           _socialListen(),
-                          _doIfollow()
+                          _doIfollow(),
+                          _visitStory(),
                         ], child: SafeArea(child: AppNavigator()));
                       }
                       if (snap.hasError) {
@@ -122,4 +124,8 @@ class MyApp extends StatelessWidget {
   static _startSocials() => BlocProvider(
       create: (context) =>
           LoginSocialsCubit()..getSocials("50myTvoVDnY1TIkhiFJh"));
+
+  static _visitStory() => BlocProvider(
+      create: (context) =>
+          StoryCubit());
 }
