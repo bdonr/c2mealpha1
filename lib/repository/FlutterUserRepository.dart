@@ -121,6 +121,19 @@ class FlutterRepository {
             });
   }
 
+  Future<Profile> findProfile(DocumentReference ref) async {
+    var refn = await ref.get();
+    var x = await refn["mainImage"].get();
+    return Profile(
+        refn.id,
+        refn.get('name'),
+        refn.get('about') != null ? refn.get("about") : "no Info",
+        refn.get('followerCount'),
+        refn.get('messageCount'),
+        refn.get('follows'),
+        x.get("url"));
+  }
+
   Stream<bool> areWeFriends(Profile visit)  {
       return visit.ref
         .collection("follower")
