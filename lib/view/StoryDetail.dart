@@ -41,27 +41,14 @@ class _StoryDetailState extends State<StoryDetail> {
                   child: CustomScrollView(slivers: [
                 TopView(repository.loggedIn!),
                 SliverToBoxAdapter(
-                    child: ListTile(
-                  leading: Container(
-                      height: 50,
-                      width: 50,
-                      child: AvatarView(100, repository.loggedIn!)),
-                  title: Text(
-                    visit.title,
-                    style: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Container(
-                    child: Text(visit.description.toString()),
-                  ),
-                  trailing: Container(
-                      height: 100,
-                      width: 100,
-                      child: LikeCommentRow(visit.ref, repository.loggedIn!)),
-                )),
+                    child: CommentItem(
+                        visit.title, visit.description, visit.ref,
+                        repository: repository)),
                 SliverPadding(padding: EdgeInsets.only(top: 100)),
                 SliverToBoxAdapter(
-                  child: Divider(),
+                  child: Divider(
+                    thickness: 1,
+                  ),
                 ),
                 SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -74,24 +61,9 @@ class _StoryDetailState extends State<StoryDetail> {
                               future: stream.data![index].profile,
                               builder: (context, user) {
                                 if (user.hasData) {
-                                  return ListTile(
-                                      leading: Container(
-                                          height: 50,
-                                          width: 50,
-                                          child: AvatarView(100, user.data!)),
-                                      subtitle: Column(
-                                        children: [
-                                          Text(
-                                            stream.data![index].text,
-                                            style: TextStyle(
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          LikeCommentRow(
-                                              stream.data![index].ref,
-                                              repository.loggedIn!),
-                                        ],
-                                      ));
+                                  return CommentItem(stream.data![index].text,
+                                      null, stream.data![index].ref,
+                                      repository: repository);
                                 }
                                 return Container();
                               })),
@@ -130,6 +102,47 @@ class _StoryDetailState extends State<StoryDetail> {
           });
       return Container();
     }));
+  }
+}
+
+class CommentItem extends StatelessWidget {
+  const CommentItem(
+    this.title,
+    this.description,
+    this.reference, {
+    Key? key,
+    required this.repository,
+  }) : super(key: key);
+
+  final FlutterRepository repository;
+  final String title;
+  final String? description;
+  final DocumentReference reference;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+          height: 50, width: 50, child: AvatarView(100, repository.loggedIn!)),
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(padding: EdgeInsets.only(top: 40)),
+          description != null
+              ? Text(
+                  description!,
+                  style: TextStyle(
+                      color: Colors.black87, fontWeight: FontWeight.w400),
+                )
+              : Container(),
+          LikeCommentRow(reference, repository.loggedIn!),
+        ],
+      ),
+    );
   }
 }
 
