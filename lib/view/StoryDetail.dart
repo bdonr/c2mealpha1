@@ -61,8 +61,8 @@ class _StoryDetailState extends State<StoryDetail> {
                               future: stream.data![index].profile,
                               builder: (context, user) {
                                 if (user.hasData) {
-                                  return CommentItem(stream.data![index].text,
-                                      null, stream.data![index].ref,
+                                  return CommentItem(null,
+                                      stream.data![index].text, stream.data![index].ref,
                                       repository: repository);
                                 }
                                 return Container();
@@ -115,8 +115,8 @@ class CommentItem extends StatelessWidget {
   }) : super(key: key);
 
   final FlutterRepository repository;
-  final String title;
-  final String? description;
+  final String? title;
+  final String description;
   final DocumentReference reference;
 
   @override
@@ -124,21 +124,22 @@ class CommentItem extends StatelessWidget {
     return ListTile(
       leading: Container(
           height: 50, width: 50, child: AvatarView(100, repository.loggedIn!)),
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
-      ),
+      title: title != null
+          ? Text(
+              title!,
+              style:
+                  TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+            )
+          : Container(),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(padding: EdgeInsets.only(top: 40)),
-          description != null
-              ? Text(
-                  description!,
-                  style: TextStyle(
-                      color: Colors.black87, fontWeight: FontWeight.w400),
-                )
-              : Container(),
+          Text(
+            description!,
+            style:
+                TextStyle(color: Colors.black87, fontWeight: FontWeight.w400),
+          ),
           LikeCommentRow(reference, repository.loggedIn!),
         ],
       ),
