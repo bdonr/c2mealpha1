@@ -54,10 +54,15 @@ class _StoryDetailState extends State<StoryDetail> {
                   subtitle: Container(
                     child: Text(visit.description.toString()),
                   ),
-                  trailing: Container(height:100,width:100,child: LikeCommentRow(visit.ref, repository.loggedIn!)),
+                  trailing: Container(
+                      height: 100,
+                      width: 100,
+                      child: LikeCommentRow(visit.ref, repository.loggedIn!)),
                 )),
                 SliverPadding(padding: EdgeInsets.only(top: 100)),
-                SliverToBoxAdapter(child: Divider(),),
+                SliverToBoxAdapter(
+                  child: Divider(),
+                ),
                 SliverList(
                     delegate: SliverChildBuilderDelegate(
                         childCount: stream.data!.length,
@@ -76,11 +81,11 @@ class _StoryDetailState extends State<StoryDetail> {
                                           child: AvatarView(100, user.data!)),
                                       subtitle: Column(
                                         children: [
-                                           Text(
+                                          Text(
                                             stream.data![index].text,
                                             style: TextStyle(
                                                 color: Colors.black87,
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.w400),
                                           ),
                                           LikeCommentRow(
                                               stream.data![index].ref,
@@ -90,7 +95,9 @@ class _StoryDetailState extends State<StoryDetail> {
                                 }
                                 return Container();
                               })),
-                      Divider(thickness: 1,)
+                      Divider(
+                        thickness: 1,
+                      )
                     ],
                   );
                 })),
