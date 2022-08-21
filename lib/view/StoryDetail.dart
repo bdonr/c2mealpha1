@@ -26,7 +26,7 @@ class StoryDetail extends StatefulWidget {
 class _StoryDetailState extends State<StoryDetail> {
   final FlutterRepository repository = FlutterRepository();
   final MessageRepository messageRepository = MessageRepository();
-  final TextEditingController controller = new TextEditingController();
+  final TextEditingController controller = TextEditingController();
   bool showComments = false;
 
   @override
@@ -45,7 +45,7 @@ class _StoryDetailState extends State<StoryDetail> {
                         visit.title, visit.description, visit.ref,
                         repository: repository)),
                 SliverPadding(padding: EdgeInsets.only(top: 100)),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: Divider(
                     thickness: 1,
                   ),
@@ -67,7 +67,7 @@ class _StoryDetailState extends State<StoryDetail> {
                                 }
                                 return Container();
                               })),
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       )
                     ],
@@ -89,7 +89,7 @@ class _StoryDetailState extends State<StoryDetail> {
                             messageRepository.addComment(
                                 visit.ref, controller.text);
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.send,
                             color: Colors.deepPurple,
                           ))
