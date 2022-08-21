@@ -74,17 +74,19 @@ class _StoryDetailState extends State<StoryDetail> {
                                           height: 50,
                                           width: 50,
                                           child: AvatarView(100, user.data!)),
-                                      title: Text(
-                                        stream.data![index].text,
-                                        style: TextStyle(
-                                            color: Colors.black87,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: LikeCommentRow(
-                                          stream.data![index].ref,
-                                          repository.loggedIn!),
-                                      trailing: Icon(Icons.keyboard_arrow_right,
-                                          color: Colors.black87, size: 30.0));
+                                      subtitle: Column(
+                                        children: [
+                                           Text(
+                                            stream.data![index].text,
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          LikeCommentRow(
+                                              stream.data![index].ref,
+                                              repository.loggedIn!),
+                                        ],
+                                      ));
                                 }
                                 return Container();
                               })),
