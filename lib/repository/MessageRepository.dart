@@ -37,9 +37,10 @@ class MessageRepository {
   }
 
   Stream<List<Comment>> findCommentsOfRef(DocumentReference ref){
-    return ref.collection("comments").get().then((value) async {
-      return value.docs.map((e) => Comment(e.get("text"), repository.findProfile(e["user"]),e["ref"])).toList();
-    }).asStream().asBroadcastStream();
+
+    return ref.collection("comments").snapshots().map((event){
+      return event.docs.map((e) => Comment(e.get("text"), repository.findProfile(e["user"]),e["ref"])).toList();
+    });
   }
   Stream<int> findLikesOfRef(DocumentReference ref){
     return ref.collection("likes").get().then((value) async {
