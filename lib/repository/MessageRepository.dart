@@ -27,7 +27,8 @@ class MessageRepository {
 
   addComment(DocumentReference ref, String text) async {
     ref.collection("comments")
-        .add({"user": repository.loggedIn!.ref, "text": text, "ref": ref});
+        .add({"user": repository.loggedIn!.ref, "text": text, "parentref": ref}).then((value) =>
+       value.update({"ref":value}));
   }
 
   Stream<Story> findStory(DocumentReference id) {
@@ -38,7 +39,7 @@ class MessageRepository {
   Stream<List<Comment>> findCommentsOfRef(DocumentReference ref){
     return ref.collection("comments").get().then((value) async {
       return value.docs.map((e) => Comment(e.get("text"), repository.findProfile(e["user"]),e["ref"])).toList();
-    }).asStream();
+    }).asStream().asBroadcastStream();
   }
   Stream<int> findLikesOfRef(DocumentReference ref){
     return ref.collection("likes").get().then((value) async {
