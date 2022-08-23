@@ -1,6 +1,7 @@
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 
 import 'package:c2mealpha1/events/PokemonEvent.dart';
+import 'package:c2mealpha1/view/CommentDetailView.dart';
 import 'package:c2mealpha1/view/FollowerView.dart';
 import 'package:c2mealpha1/view/HomeView.dart';
 import 'package:c2mealpha1/view/ImageView.dart';
@@ -39,8 +40,8 @@ class AppNavigator extends StatelessWidget {
         '/profileview': (context)=> const VisitView(),
         '/addStoryView': (context)=> const AddMessageView(),
         "/edit":(context)=>const EditView(),
-        "/storyDetail":(context)=>const StoryDetail()
-
+        "/storyDetail":(context)=>const StoryDetail(),
+        "/commentDetail":(context)=>const CommentDetailView()
       },
 
     );

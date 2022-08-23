@@ -6,7 +6,10 @@ import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/SocialChangeBloc.dart';
+import 'package:c2mealpha1/bloc/visit/CommentCubit.dart';
+import 'package:c2mealpha1/bloc/visit/CommentsCubit.dart';
 import 'package:c2mealpha1/bloc/visit/DoIFollowCubit.dart';
+import 'package:c2mealpha1/bloc/visit/StoriesCubit.dart';
 import 'package:c2mealpha1/bloc/visit/StoryCubit.dart';
 
 import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
@@ -48,7 +51,6 @@ class MyApp extends StatelessWidget {
             future: fbApp,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-
                 return FutureBuilder(
                     future: repository.login("50myTvoVDnY1TIkhiFJh"),
                     builder: (context, snap) {
@@ -68,6 +70,8 @@ class MyApp extends StatelessWidget {
                           _socialListen(),
                           _doIfollow(),
                           _visitStory(),
+                          _visitComments(),
+                          _visitStories(repository)
                         ], child: SafeArea(child: AppNavigator()));
                       }
                       if (snap.hasError) {
@@ -128,4 +132,7 @@ class MyApp extends StatelessWidget {
   static _visitStory() => BlocProvider(
       create: (context) =>
           StoryCubit());
+
+  static _visitStories(FlutterRepository repository)=> BlocProvider(create: (context) => StoriesCubit()..visit(repository.loggedIn!.ref));
+  static _visitComments()=> BlocProvider(create: (context) => CommentsCubit());
 }

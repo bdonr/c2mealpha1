@@ -36,6 +36,11 @@ class MessageRepository {
         event.get("text"), event.get("likeCount"), id));
   }
 
+  Stream<Comment> findComment(DocumentReference id) {
+    return id.snapshots().map((e) => Comment(e.get("text"), repository.findProfile(e["user"]),e["ref"]));
+  }
+  
+  
   Stream<List<Comment>> findCommentsOfRef(DocumentReference ref){
 
     return ref.collection("comments").snapshots().map((event){
@@ -67,8 +72,8 @@ class MessageRepository {
         .map((event) => event.docs.isEmpty);
   }
 
-  Stream<List<Story>>? findStoriesOfUser() {
-    return repository.loggedIn?.ref.collection("stories").snapshots().map((e) =>
+  Stream<List<Story>> findStoriesOfUser(DocumentReference ref) {
+    return ref.collection("stories").snapshots().map((e) =>
         e.docs
             .map((f) => Story(f.id, f.get("titel"), f.get("text"),
                 f.get("likeCount") ?? 0, f.reference))

@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
+import 'package:c2mealpha1/bloc/visit/CommentsCubit.dart';
+import 'package:c2mealpha1/bloc/visit/StoriesCubit.dart';
 import 'package:c2mealpha1/bloc/visit/StoryCubit.dart';
 import 'package:c2mealpha1/classes/Story.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
@@ -90,15 +92,13 @@ class _PrivatViewState extends State<PrivatView> {
               }),
             ),
             SliverToBoxAdapter(
-              child: StreamBuilder<List<Story>>(
-                  stream: repository.findStoriesOfUser(),
+              child: BlocBuilder<StoriesCubit,List<Story>>(
                   builder: (context, list) {
-                    if (list.hasData) {
+                    if (list.isNotEmpty) {
                       return CarouselSlider.builder(
-                        itemCount: list.data!.length,
+                        itemCount: list.length,
                         itemBuilder:
                             (BuildContext context, int index, int realIndex) {
-                          print(list.data);
                           return Stack(
                             children: [
                               Positioned.fill(
@@ -115,13 +115,13 @@ class _PrivatViewState extends State<PrivatView> {
                                     child: GridTileBar(
                                       backgroundColor: Colors.black12,
                                       title: Text(
-                                        list.data![index].title,
+                                        list[index].title,
                                         style: const TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       subtitle: Text(
-                                        list.data![index].description,
+                                        list[index].description,
                                         style: const TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold),
@@ -135,7 +135,8 @@ class _PrivatViewState extends State<PrivatView> {
                                     color: Colors.transparent,
                                     child: InkWell(
                                       onTap: () {
-                                        BlocProvider.of<StoryCubit>(context).visit(list.data![index].ref);
+                                        BlocProvider.of<StoryCubit>(context).visit(list[index].ref);
+                                        BlocProvider.of<CommentsCubit>(context).visit(list[index].ref);
                                         Navigator.pushNamed(context, "/storyDetail");
                                       },
                                     )),
