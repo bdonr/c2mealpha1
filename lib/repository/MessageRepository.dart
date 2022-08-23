@@ -40,14 +40,14 @@ class MessageRepository {
 
   Stream<Comment> findComment(DocumentReference id) {
     return id.snapshots().map((e) =>
-        Comment(e.get("text"), repository.findProfile(e["user"]), e["ref"]));
+        Comment(e.get("text"), repository.findProfile(e["user"]), e["ref"],e["parentref"]));
   }
 
 
   Stream<List<Comment>> findCommentsOfRef(DocumentReference ref) {
     return ref.collection("comments").snapshots().map((event) {
       return event.docs.map((e) =>
-          Comment(e.get("text"), repository.findProfile(e["user"]), e["ref"]))
+          Comment(e.get("text"), repository.findProfile(e["user"]), e["ref"],e["parentref"]))
           .toList();
     });
   }

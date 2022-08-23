@@ -41,7 +41,7 @@ class _StoryDetailState extends State<StoryDetail> {
 
                 return Scaffold(
                   body: CustomScrollView(slivers: [
-                    TopView(repository.loggedIn!),
+                    TopView(null),
                     SliverToBoxAdapter(
                         child: CommentItem(
                             visit.title, visit.description, visit.ref,

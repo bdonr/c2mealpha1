@@ -5,6 +5,7 @@ class Comment {
   final String text;
   final Future<Profile> profile;
   final DocumentReference ref;
+  final DocumentReference parent;
 
-  Comment(this.text, this.profile, this.ref);
+  Comment(this.text, this.profile, this.ref,this.parent);
 }

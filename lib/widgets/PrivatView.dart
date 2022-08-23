@@ -37,12 +37,13 @@ class _PrivatViewState extends State<PrivatView> {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocBuilder<LoginCubit, Profile?>(builder: (context, login) {
       if (login != null) {
         return Material(
             child: CustomScrollView(
           slivers: [
-            TopView(login),
+            TopView(null),
             SliverToBoxAdapter(
                 child: ShadowBox(
                     Column(children: [

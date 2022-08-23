@@ -43,7 +43,7 @@ class _AddMessageViewState extends State<AddMessageView> {
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 slivers: [
-              TopView(login),
+              TopView(null),
               SliverToBoxAdapter(
                 child: Form(
                   key: _formKey,

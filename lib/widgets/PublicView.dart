@@ -32,7 +32,7 @@ class _PublicViewState extends State<PublicView> {
             return Material(
                 child: CustomScrollView(
               slivers: [
-                TopView(visit),
+                TopView(null),
                 SliverToBoxAdapter(
                     child: ShadowBox(
                         Column(children: [

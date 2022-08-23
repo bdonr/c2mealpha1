@@ -1,6 +1,7 @@
 import 'package:c2mealpha1/bloc/visit/SocialsCubit.dart';
 import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
 import 'package:c2mealpha1/config/SocialConfig.dart';
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,21 +16,24 @@ import '../classes/Social.dart';
 import '../helper/formater.dart';
 
 class TopView extends StatefulWidget {
-  const TopView(this.login,{Key? key}) : super(key: key);
-  final Profile login;
-
+  const TopView(this.backBehavior,{Key? key}) : super(key: key);
+  final VoidCallback? backBehavior;
   @override
   State<TopView> createState() => _TopViewState();
 }
 
 class _TopViewState extends State<TopView> {
+  final FlutterRepository repository =FlutterRepository();
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () async => {
+            print(widget.backBehavior.toString()),
+            widget.backBehavior,
                 Navigator.of(context).pop(context),
+
               }),
       actions: [
         MenuButton(() {
@@ -57,7 +61,7 @@ class _TopViewState extends State<TopView> {
         child: Stack(
           children: [
                Image(
-                image: NetworkImage(widget.login.profilImageurl),
+                image: NetworkImage(repository.loggedIn!.profilImageurl),
                 alignment: Alignment.center,
                 height: double.infinity,
                 width: double.infinity,
@@ -79,6 +83,7 @@ class MenuButton extends StatelessWidget {
   }) : super(key: key);
   final VoidCallback callback;
   final FaIcon icon;
+
 
   @override
   Widget build(BuildContext context) {
