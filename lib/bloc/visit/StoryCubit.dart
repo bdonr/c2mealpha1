@@ -9,7 +9,9 @@ class StoryCubit extends Cubit<Story?>{
   final MessageRepository repository=MessageRepository();
   StoryCubit() : super(null);
   visit(DocumentReference id){
+
     repository.findStory(id).listen((event) {
+      print(event.likeCount);
       emit(event);
     });
   }

@@ -1,3 +1,4 @@
+import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/repository/MessageRepository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,11 +10,10 @@ import '../classes/Profile.dart';
 import 'AvatarView.dart';
 
 class LikeCommentRow extends StatefulWidget {
-  const LikeCommentRow(this.reference, this.loggedIn, {Key? key})
+  const LikeCommentRow(this.reference,{Key? key})
       : super(key: key);
 
   final DocumentReference reference;
-  final Profile loggedIn;
 
   @override
   State<LikeCommentRow> createState() => _LikeCommentRowState();
@@ -21,25 +21,25 @@ class LikeCommentRow extends StatefulWidget {
 
 class _LikeCommentRowState extends State<LikeCommentRow> {
   final MessageRepository messageRepository = MessageRepository();
+  final FlutterRepository repository = FlutterRepository();
   late bool showComments = false;
   final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    print(widget.reference);
     return Column(children: [
       Row(
         children: [
           StreamBuilder<bool>(
               stream:
-                  messageRepository.DoIlike(widget.reference, widget.loggedIn),
+                  messageRepository.DoIlike(widget.reference,repository.loggedIn!),
               builder: (context, doIFollow) {
                 if (doIFollow.hasData) {
                   if (!doIFollow.data!) {
                     return IconButton(
                         onPressed: () {
                           messageRepository.unlike(
-                              widget.reference, widget.loggedIn);
+                              widget.reference, repository.loggedIn!);
                         },
                         icon: FaIcon(
                           FontAwesomeIcons.solidHeart,
@@ -50,7 +50,7 @@ class _LikeCommentRowState extends State<LikeCommentRow> {
                       onPressed: () {
                         setState(() {
                           messageRepository.like(
-                              widget.reference, widget.loggedIn);
+                              widget.reference, repository.loggedIn!);
                         });
                       },
                       icon: FaIcon(

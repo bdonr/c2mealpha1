@@ -1,4 +1,3 @@
-import 'package:c2mealpha1/bloc/visit/CommentCubit.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
 import 'package:c2mealpha1/repository/MessageRepository.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../bloc/visit/CommentsCubit.dart';
+import '../bloc/visit/CommentCubit.dart';
 import '../bloc/visit/StoryCubit.dart';
 import '../classes/Comment.dart';
 import '../classes/Profile.dart';
@@ -36,8 +35,10 @@ class _StoryDetailState extends State<StoryDetail> {
   Widget build(BuildContext context) {
     return BlocBuilder<StoryCubit, Story?>(builder: (context, visit) {
       if (visit != null) {
-        return BlocBuilder<CommentsCubit,List<Comment>>(
+        return StreamBuilder<List<Comment>>(
+            stream: messageRepository.findCommentsOfRef(visit.ref),
             builder: (context, comments) {
+
                 return Scaffold(
                   body: CustomScrollView(slivers: [
                     TopView(repository.loggedIn!),
@@ -53,27 +54,29 @@ class _StoryDetailState extends State<StoryDetail> {
                     ),
                     SliverList(
                         delegate: SliverChildBuilderDelegate(
-                            childCount: comments.length,
+                            childCount: comments.data?.length,
                             (BuildContext context, int index) {
-                      return Column(
-                        children: [
-                          FutureBuilder<Profile>(
-                              future: comments[index].profile,
-                              builder: (context, user) {
-                                if (user.hasData) {
-                                  return CommentItem(
-                                      null,
-                                      comments[index].text,
-                                      comments[index].ref,
-                                      repository: repository);
-                                }
-                                return Container();
-                              }),
-                          const Divider(
-                            thickness: 1,
-                          )
-                        ],
-                      );
+                              if(comments.hasData) {
+                                return Column(
+                                  children: [
+                                    FutureBuilder<Profile>(
+                                        future: comments.data![index].profile,
+                                        builder: (context, user) {
+                                          if (user.hasData) {
+                                            return CommentItem(
+                                                null,
+                                                comments.data![index].text,
+                                                comments.data![index].ref,
+                                                repository: repository);
+                                          }
+                                          return Container();
+                                        }),
+                                    const Divider(
+                                      thickness: 1,
+                                    )
+                                  ],
+                                );
+                              }
                     })),
                     SliverToBoxAdapter(
                       child: SingleChildScrollView(
@@ -83,7 +86,7 @@ class _StoryDetailState extends State<StoryDetail> {
                               width: double.infinity,
                               height: 150,
                               color: Colors.orange,
-                              child: TextInputField(controller, "write", 160)),
+                              child: WriteCommentInput(visit.ref,controller, "write", 160)),
                         ]),
                       ),
                     ),SliverFillRemaining()
@@ -125,7 +128,7 @@ class CommentItem extends StatelessWidget {
             )
           : Container(),
       subtitle: InkWell(
-        onTap: ()=>Navigator.of(context).pushNamed("/commentDetail"),
+        onTap: ()=>{Navigator.of(context).pushNamed("/commentDetail"),BlocProvider.of<CommentCubit>(context).visit(reference)},
         child: Container(
           color: Colors.transparent,
           child: Column(
@@ -137,7 +140,7 @@ class CommentItem extends StatelessWidget {
                 style: const TextStyle(
                     color: Colors.black87, fontWeight: FontWeight.w400),
               ),
-              LikeCommentRow(reference, repository.loggedIn!),
+              LikeCommentRow(reference),
             ],
           ),
         ),

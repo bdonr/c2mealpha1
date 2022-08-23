@@ -27,31 +27,37 @@ class MessageRepository {
 
   addComment(DocumentReference ref, String text) async {
     ref.collection("comments")
-        .add({"user": repository.loggedIn!.ref, "text": text, "parentref": ref}).then((value) =>
-       value.update({"ref":value}));
+        .add({"user": repository.loggedIn!.ref, "text": text, "parentref": ref})
+        .then((value) =>
+        value.update({"ref": value}));
   }
 
   Stream<Story> findStory(DocumentReference id) {
-    return id.snapshots().map((event) => Story(event.id, event.get("titel"),
-        event.get("text"), event.get("likeCount"), id));
+    return id.snapshots().map((event) =>
+        Story(event.id, event.get("titel"),
+            event.get("text"), event.get("likeCount"), id));
   }
 
   Stream<Comment> findComment(DocumentReference id) {
-    return id.snapshots().map((e) => Comment(e.get("text"), repository.findProfile(e["user"]),e["ref"]));
+    return id.snapshots().map((e) =>
+        Comment(e.get("text"), repository.findProfile(e["user"]), e["ref"]));
   }
-  
-  
-  Stream<List<Comment>> findCommentsOfRef(DocumentReference ref){
 
-    return ref.collection("comments").snapshots().map((event){
-      return event.docs.map((e) => Comment(e.get("text"), repository.findProfile(e["user"]),e["ref"])).toList();
+
+  Stream<List<Comment>> findCommentsOfRef(DocumentReference ref) {
+    return ref.collection("comments").snapshots().map((event) {
+      return event.docs.map((e) =>
+          Comment(e.get("text"), repository.findProfile(e["user"]), e["ref"]))
+          .toList();
     });
   }
-  Stream<int> findLikesOfRef(DocumentReference ref){
+
+  Stream<int> findLikesOfRef(DocumentReference ref) {
     return ref.collection("likes").get().then((value) async {
       return value.docs.length;
     }).asStream();
   }
+
   like(DocumentReference ref, Profile user) async {
     await ref.collection("likes").add({"user": user.ref});
   }
@@ -71,15 +77,26 @@ class MessageRepository {
         .snapshots()
         .map((event) => event.docs.isEmpty);
   }
+  Stream<List<Story>>? findStoriesOfLoggedUser() {
+    return repository.loggedIn?.ref.collection("stories").snapshots().map((e) =>
+        e.docs.map((f) =>
+            Story(f.id, f.get("titel"), f.get("text"),
+                f.get("likeCount") ?? 0, f.reference))
+            .toList());
+  }
 
   Stream<List<Story>> findStoriesOfUser(DocumentReference ref) {
     return ref.collection("stories").snapshots().map((e) =>
         e.docs
-            .map((f) => Story(f.id, f.get("titel"), f.get("text"),
+            .map((f) =>
+            Story(f.id, f.get("titel"), f.get("text"),
                 f.get("likeCount") ?? 0, f.reference))
             .toList());
   }
 }
+
+
+
 
 /**createMessage(DocumentReference<Object>? user,String text)async{
     DocumentReference<Object>? user = repository.loggedIn?.ref;

@@ -5,6 +5,7 @@ import 'package:c2mealpha1/widgets/LongTextField.dart';
 import 'package:c2mealpha1/widgets/TextIconInput.dart';
 import 'package:c2mealpha1/widgets/TextInputField.dart';
 import 'package:c2mealpha1/widgets/TopView.dart';
+import 'package:c2mealpha1/widgets/WriteStoryInput.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _AddMessageViewState extends State<AddMessageView> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      TextInputField(textController1,"Please enter a title",40),
+                      WriteStoryInput(textController1,"Please enter a title",40),
                       Padding(padding: EdgeInsets.only(top: 40)),
                       LongTextField(textController2,5),
                       Padding(padding: EdgeInsets.only(top: 40)),

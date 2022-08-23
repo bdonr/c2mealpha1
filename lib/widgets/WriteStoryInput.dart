@@ -1,28 +1,25 @@
-import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
-import 'package:c2mealpha1/repository/MessageRepository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class WriteCommentInput extends StatefulWidget {
-  const WriteCommentInput(this.reference,this.titleController, this.hinText, this.maxLenght,
-      {Key? key})
-      : super(key: key);
+import '../repository/FlutterUserRepository.dart';
+import '../repository/MessageRepository.dart';
+
+class WriteStoryInput extends StatefulWidget {
+  const WriteStoryInput(this.titleController,this.hinText,this.maxLenght,{Key? key}) : super(key: key);
+
+  @override
+  State<WriteStoryInput> createState() => _WriteStoryInputState();
+
   final TextEditingController titleController;
   final String hinText;
   final int maxLenght;
-  final DocumentReference reference;
 
-
-  @override
-  State<WriteCommentInput> createState() => _WriteCommentInputState();
 }
 
-class _WriteCommentInputState extends State<WriteCommentInput> {
+class _WriteStoryInputState extends State<WriteStoryInput> {
   final MessageRepository messageRepository = MessageRepository();
   final FlutterRepository repository = FlutterRepository();
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -42,7 +39,7 @@ class _WriteCommentInputState extends State<WriteCommentInput> {
                 },
                 onFieldSubmitted: (value) {
                   setState(() {
-                    messageRepository.addComment(widget.reference, widget.titleController.text);
+
                   });
                 }),
           ),

@@ -7,9 +7,8 @@ import 'package:c2mealpha1/bloc/loggedin/NearCubit.dart';
 import 'package:c2mealpha1/bloc/NavCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/SocialChangeBloc.dart';
 import 'package:c2mealpha1/bloc/visit/CommentCubit.dart';
-import 'package:c2mealpha1/bloc/visit/CommentsCubit.dart';
 import 'package:c2mealpha1/bloc/visit/DoIFollowCubit.dart';
-import 'package:c2mealpha1/bloc/visit/StoriesCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/MyStoriesCubit.dart';
 import 'package:c2mealpha1/bloc/visit/StoryCubit.dart';
 
 import 'package:c2mealpha1/bloc/visit/VisitCubit.dart';
@@ -70,8 +69,8 @@ class MyApp extends StatelessWidget {
                           _socialListen(),
                           _doIfollow(),
                           _visitStory(),
-                          _visitComments(),
-                          _visitStories(repository)
+                          _visitComment(),
+                          _visitMyStories()
                         ], child: SafeArea(child: AppNavigator()));
                       }
                       if (snap.hasError) {
@@ -133,6 +132,6 @@ class MyApp extends StatelessWidget {
       create: (context) =>
           StoryCubit());
 
-  static _visitStories(FlutterRepository repository)=> BlocProvider(create: (context) => StoriesCubit()..visit(repository.loggedIn!.ref));
-  static _visitComments()=> BlocProvider(create: (context) => CommentsCubit());
+  static _visitMyStories()=> BlocProvider(create: (context) => MyStoriesCubit());
+  static _visitComment()=> BlocProvider(create: (context) => CommentCubit());
 }

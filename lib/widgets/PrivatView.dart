@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:c2mealpha1/bloc/loggedin/LoginCubit.dart';
 import 'package:c2mealpha1/bloc/loggedin/LoginSocialsCubit.dart';
-import 'package:c2mealpha1/bloc/visit/CommentsCubit.dart';
-import 'package:c2mealpha1/bloc/visit/StoriesCubit.dart';
+import 'package:c2mealpha1/bloc/loggedin/MyStoriesCubit.dart';
 import 'package:c2mealpha1/bloc/visit/StoryCubit.dart';
 import 'package:c2mealpha1/classes/Story.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
@@ -92,7 +91,7 @@ class _PrivatViewState extends State<PrivatView> {
               }),
             ),
             SliverToBoxAdapter(
-              child: BlocBuilder<StoriesCubit,List<Story>>(
+              child: BlocBuilder<MyStoriesCubit,List<Story>>(
                   builder: (context, list) {
                     if (list.isNotEmpty) {
                       return CarouselSlider.builder(
@@ -136,7 +135,6 @@ class _PrivatViewState extends State<PrivatView> {
                                     child: InkWell(
                                       onTap: () {
                                         BlocProvider.of<StoryCubit>(context).visit(list[index].ref);
-                                        BlocProvider.of<CommentsCubit>(context).visit(list[index].ref);
                                         Navigator.pushNamed(context, "/storyDetail");
                                       },
                                     )),

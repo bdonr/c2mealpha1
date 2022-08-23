@@ -4,14 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../classes/Story.dart';
 
-class StoriesCubit extends Cubit<List<Story>>{
-  StoriesCubit():super([]);
+class MyStoriesCubit extends Cubit<List<Story>>{
   final MessageRepository repository = MessageRepository();
-  visit(DocumentReference reference){
-    print("sdasda"+reference.toString());
-    repository.findStoriesOfUser(reference).listen((event) {
+  MyStoriesCubit():super([]){
+    repository.findStoriesOfLoggedUser()?.listen((event) {
       print(event);
       emit(event);
     });
   }
+
 }
