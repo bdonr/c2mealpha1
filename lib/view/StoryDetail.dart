@@ -128,71 +128,70 @@ class CommentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      ListTile(
-        leading: SizedBox(
-            height: 50,
-            width: 50,
-            child: AvatarView(100, repository.loggedIn!)),
-        title: title != null
-            ? Text(
-                title!,
+      Row(children: [
+        AvatarView(20, repository.loggedIn!),
+        Text(repository.loggedIn!.name.toString())
+      ]),
+      title!=null?Text(
+        title!,
+        style:
+            const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+      ):Text(""),InkWell(
+        onTap: () => {
+          Navigator.of(context).pushNamed("/commentDetail"),
+          BlocProvider.of<CommentCubit>(context).visit(reference)
+        },
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.only(top: 40)),
+              Text(
+                description,
                 style: const TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.bold),
-              )
-            : Container(),
-        subtitle: InkWell(
-          onTap: () => {
-            Navigator.of(context).pushNamed("/commentDetail"),
-            BlocProvider.of<CommentCubit>(context).visit(reference)
-          },
-          child: Container(
-            color: Colors.transparent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(padding: EdgeInsets.only(top: 40)),
-                Text(
-                  description,
-                  style: const TextStyle(
-                      color: Colors.black87, fontWeight: FontWeight.w400),
-                ),
-              ],
-            ),
+                    color: Colors.black87, fontWeight: FontWeight.w400),
+              ),
+              StreamBuilder<List<ObjectImage>>(
+                  stream: imageRepository.findImagesOf(reference),
+                  builder: (context, list) {
+                    print(list);
+                    if (list.hasData && list.data!.isNotEmpty) {
+                      return GridView.builder(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 400,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20),
+                          itemCount: list.data!.length,
+                          itemBuilder: (context, index) {
+                            print(list.data![index].thumb);
+                            return Container(
+                              height: double.infinity,
+                              width: double.infinity,
+                              child: Image.network(list.data![index].medium),
+                            );
+                          });
+                    }
+
+                    return Container();
+                  }),
+              LikeCommentRow(reference),
+            ],
           ),
+
         ),
       ),
-      StreamBuilder<List<ObjectImage>>(
-          stream: imageRepository.findImagesOf(reference),
-          builder: (context, list) {
-            print(list);
-            if (list.hasData) {
-              return GridView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  gridDelegate:
-                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 400,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20),
-                  itemCount: list.data!.length,
-                  itemBuilder: (context, index) {
-                    print(list.data![index].thumb);
-                    return Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      child: Image.network(list.data![index].medium!),
-                    );
-                  });
-            }
-
-            return Container();
-          }),
-      LikeCommentRow(reference),
     ]);
   }
 }
 
 /**
+ *
+ *
  *
  *
  *
