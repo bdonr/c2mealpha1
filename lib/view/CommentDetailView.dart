@@ -1,5 +1,6 @@
 import 'package:c2mealpha1/bloc/visit/CommentCubit.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
+import 'package:c2mealpha1/repository/ImageRepository.dart';
 import 'package:c2mealpha1/repository/MessageRepository.dart';
 import 'package:c2mealpha1/widgets/LikeCommentRow.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,7 @@ class CommentDetailView extends StatefulWidget {
 class _CommentDetailViewState extends State<CommentDetailView> {
   FlutterRepository repository = FlutterRepository();
   MessageRepository messageRepository = MessageRepository();
+  ImageRepository imageRepository = ImageRepository();
   final scrollController = ScrollController();
   final TextEditingController controller = TextEditingController();
 
@@ -67,7 +69,7 @@ class _CommentDetailViewState extends State<CommentDetailView> {
                                           null,
                                           commentlist.data![index].text,
                                           commentlist.data![index].ref,
-                                          repository: repository);
+                                          repository: repository,imageRepository: imageRepository,);
                                     }
                                     return Container();
                                   }),

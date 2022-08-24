@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:c2mealpha1/classes/ObjectImage.dart';
 import 'package:c2mealpha1/repository/FlutterUserRepository.dart';
+import 'package:c2mealpha1/repository/ImageRepository.dart';
 import 'package:c2mealpha1/repository/MessageRepository.dart';
 import 'package:c2mealpha1/widgets/AvatarView.dart';
+import 'package:c2mealpha1/widgets/ImagePickV.dart';
 import 'package:c2mealpha1/widgets/LikeCommentRow.dart';
 import 'package:c2mealpha1/widgets/ShadowBox.dart';
 import 'package:c2mealpha1/widgets/TextInputField.dart';
@@ -10,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../bloc/visit/CommentCubit.dart';
 import '../bloc/visit/StoryCubit.dart';
@@ -27,6 +33,7 @@ class StoryDetail extends StatefulWidget {
 class _StoryDetailState extends State<StoryDetail> {
   final FlutterRepository repository = FlutterRepository();
   final MessageRepository messageRepository = MessageRepository();
+  final ImageRepository imageRepository = ImageRepository();
   final TextEditingController controller = TextEditingController();
   bool showComments = false;
   final _formKey = GlobalKey<FormState>();
@@ -38,60 +45,66 @@ class _StoryDetailState extends State<StoryDetail> {
         return StreamBuilder<List<Comment>>(
             stream: messageRepository.findCommentsOfRef(visit.ref),
             builder: (context, comments) {
-
-                return Scaffold(
-                  body: CustomScrollView(slivers: [
-                    TopView(null),
-                    SliverToBoxAdapter(
-                        child: CommentItem(
-                            visit.title, visit.description, visit.ref,
-                            repository: repository)),
-                    const SliverPadding(padding: EdgeInsets.only(top: 100)),
-                    const SliverToBoxAdapter(
-                      child: Divider(
-                        thickness: 1,
-                      ),
+              return Scaffold(
+                body: CustomScrollView(slivers: [
+                  TopView(null),
+                  SliverToBoxAdapter(
+                      child: CommentItem(
+                    visit.title,
+                    visit.description,
+                    visit.ref,
+                    repository: repository,
+                    imageRepository: imageRepository,
+                  )),
+                  const SliverPadding(padding: EdgeInsets.only(top: 100)),
+                  const SliverToBoxAdapter(
+                    child: Divider(
+                      thickness: 1,
                     ),
-                    SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                            childCount: comments.data?.length,
-                            (BuildContext context, int index) {
-                              if(comments.hasData) {
-                                return Column(
-                                  children: [
-                                    FutureBuilder<Profile>(
-                                        future: comments.data![index].profile,
-                                        builder: (context, user) {
-                                          if (user.hasData) {
-                                            return CommentItem(
-                                                null,
-                                                comments.data![index].text,
-                                                comments.data![index].ref,
-                                                repository: repository);
-                                          }
-                                          return Container();
-                                        }),
-                                    const Divider(
-                                      thickness: 1,
-                                    )
-                                  ],
-                                );
-                              }
-                    })),
-                    SliverToBoxAdapter(
-                      child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(children: [
-                          Container(
-                              width: double.infinity,
-                              height: 150,
-                              color: Colors.orange,
-                              child: WriteCommentInput(visit.ref,controller, "write", 160)),
-                        ]),
-                      ),
-                    ),SliverFillRemaining()
-                  ]),
-                );
+                  ),
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          childCount: comments.data?.length,
+                          (BuildContext context, int index) {
+                    if (comments.hasData) {
+                      return Column(
+                        children: [
+                          FutureBuilder<Profile>(
+                              future: comments.data![index].profile,
+                              builder: (context, user) {
+                                if (user.hasData) {
+                                  return CommentItem(
+                                    null,
+                                    comments.data![index].text,
+                                    comments.data![index].ref,
+                                    repository: repository,
+                                    imageRepository: imageRepository,
+                                  );
+                                }
+                                return Container();
+                              }),
+                          const Divider(
+                            thickness: 1,
+                          )
+                        ],
+                      );
+                    }
+                    return null;
+                  })),
+                  SliverToBoxAdapter(
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Container(
+                          width: double.infinity,
+                          height: 200,
+                          color: Colors.orange,
+                          child: WriteCommentInput(
+                              visit.ref, controller, "write", 160)),
+                    ),
+                  ),
+                  SliverFillRemaining()
+                ]),
+              );
 
               return Container();
             });
@@ -102,53 +115,89 @@ class _StoryDetailState extends State<StoryDetail> {
 }
 
 class CommentItem extends StatelessWidget {
-  const CommentItem(
-    this.title,
-    this.description,
-    this.reference, {
-    Key? key,
-    required this.repository,
-  }) : super(key: key);
+  const CommentItem(this.title, this.description, this.reference,
+      {Key? key, required this.repository, required this.imageRepository})
+      : super(key: key);
 
   final FlutterRepository repository;
+  final ImageRepository imageRepository;
   final String? title;
   final String description;
   final DocumentReference reference;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: SizedBox(
-          height: 50, width: 50, child: AvatarView(100, repository.loggedIn!)),
-      title: title != null
-          ? Text(
-              title!,
-              style: const TextStyle(
-                  color: Colors.black87, fontWeight: FontWeight.bold),
-            )
-          : Container(),
-      subtitle: InkWell(
-        onTap: ()=>{Navigator.of(context).pushNamed("/commentDetail"),BlocProvider.of<CommentCubit>(context).visit(reference)},
-        child: Container(
-          color: Colors.transparent,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(padding: EdgeInsets.only(top: 40)),
-              Text(
-                description,
+    return Column(children: [
+      ListTile(
+        leading: SizedBox(
+            height: 50,
+            width: 50,
+            child: AvatarView(100, repository.loggedIn!)),
+        title: title != null
+            ? Text(
+                title!,
                 style: const TextStyle(
-                    color: Colors.black87, fontWeight: FontWeight.w400),
-              ),
-              LikeCommentRow(reference),
-            ],
+                    color: Colors.black87, fontWeight: FontWeight.bold),
+              )
+            : Container(),
+        subtitle: InkWell(
+          onTap: () => {
+            Navigator.of(context).pushNamed("/commentDetail"),
+            BlocProvider.of<CommentCubit>(context).visit(reference)
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 40)),
+                Text(
+                  description,
+                  style: const TextStyle(
+                      color: Colors.black87, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    );
+      StreamBuilder<List<ObjectImage>>(
+          stream: imageRepository.findImagesOf(reference),
+          builder: (context, list) {
+            print(list);
+            if (list.hasData) {
+              return GridView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate:
+                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 400,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
+                  itemCount: list.data!.length,
+                  itemBuilder: (context, index) {
+                    print(list.data![index].thumb);
+                    return Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      child: Image.network(list.data![index].medium!),
+                    );
+                  });
+            }
+
+            return Container();
+          }),
+      LikeCommentRow(reference),
+    ]);
   }
 }
 
+/**
+ *
+ *
+ *
+ *
+ */
 /**
  *
  * if (visit != null) {
